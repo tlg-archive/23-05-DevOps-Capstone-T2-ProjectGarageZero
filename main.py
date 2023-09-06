@@ -95,3 +95,35 @@ if __name__ == '__main__':
 
     for verb in verbs:
         print(f"Verb: {verb.name}")
+
+
+
+########tix 89 below: 
+
+# Load your game data (locations, items, characters, verbs) from JSON files
+
+# Define a list of valid verbs from your verbs.json file
+valid_verbs = ["get", "go", "drive", "exit", "give", "help", "ignore", "inventory", "look", "open", "pull", "put", "start", "talk", "time", "use"]
+
+# Get user input
+user_input = input("Enter your command: ")
+words = user_input.lower().split()  # Convert to lowercase and split
+
+# Parse the input
+if len(words) >= 2:
+    verb, noun = words[0], words[1]
+    # Check if the verb is valid
+    if verb in valid_verbs:
+        # Match and execute actions based on the verb and noun
+        if verb == "go":
+            # Handle "go" command
+            # Check if the noun (location) is valid and accessible from the current location
+            # Update the player's location
+            pass  # Placeholder for handling "go" command
+        elif verb == "get":
+            # Handle "get" command (pick up items)
+            # Check if the noun (
+
+
+
+#########################tix 89 done. ##################
