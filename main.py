@@ -1,4 +1,7 @@
 import json
+import os
+import sys
+from ticket_83 import *
 
 # Load data from JSON files
 with open('locations.json', 'r') as f:
@@ -51,6 +54,13 @@ for item_data in items_data['Items']:
         item_data['Type']
     )
     items.append(item)
+
+
+#this is importing the start screen that maria created. 
+display_splash_screen()
+
+
+
 
 #ticket 89
 # Implement your game logic and text parser here
