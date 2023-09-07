@@ -2,6 +2,7 @@ import json
 import os
 import sys
 from ticket_83 import *
+from functionsTest import *
 
 # Load data from JSON files
 with open('locations.json', 'r') as f:
@@ -60,7 +61,7 @@ for item_data in items_data['Items']:
 display_splash_screen()
 main_game_loop()
 new_game()
-
+move_player(directions_data)
 
 
 
