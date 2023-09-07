@@ -58,6 +58,8 @@ for item_data in items_data['Items']:
 
 #this is importing the start screen that maria created. 
 display_splash_screen()
+main_game_loop()
+new_game()
 
 
 
