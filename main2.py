@@ -8,6 +8,10 @@ with open('directions.json', 'r') as f:
 with open('locations.json', 'r') as f:
 	locations_data = json.load(f)
 
+# Load description data from the JSON file
+with open('descriptions.json', 'r') as f:
+	descriptions_data = json.load(f)
+
 # Initial location
 current_location = 'Elevator'
 
