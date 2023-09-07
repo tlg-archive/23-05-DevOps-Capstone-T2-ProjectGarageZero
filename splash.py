@@ -35,6 +35,13 @@ def display_splash_screen():
     input("Press Enter to continue...")
     clear_screen()
 
+    print("Best User Experience"
+    print(" For best gaming experience please set your terminal to the following dimensions")
+    print("desired_height = 30")
+    print("desired_width = 175")
+    input("Press Enter to continue...")
+    clear_screen()
+    
     print("Player is presented with the option to play a New Game.")
     input("Press Enter to start a New Game...")
 
