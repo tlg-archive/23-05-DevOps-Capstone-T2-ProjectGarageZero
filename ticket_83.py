@@ -1,4 +1,5 @@
 import os
+from functionsTest.py import *
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -61,7 +62,8 @@ def new_game():
     print("Game has started!")
     # Game logic will go here
     while True:
-        action = input("> ").strip()
+	action = input("> ").strip()
+	move_player(action)
         if action.lower() == "quit":
             break
         # Handle game-specific commands and logic here
