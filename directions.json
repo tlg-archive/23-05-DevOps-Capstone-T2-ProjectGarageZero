@@ -1,0 +1,37 @@
+{
+  "Directions": {
+    "Elevator": {
+      "South": "Parking West 1"
+    },
+    "Parking West 1": {
+      "North": "Elevator",
+      "East": "Parking East 1",
+      "South": "Parking West 2"
+    },
+    "Parking East 1": {
+      "West": "Parking West 1",
+      "South": "Parking East 2"
+    },
+    "Parking West 2": {
+      "North": "Parking West 1",
+      "East": "Parking East 2",
+      "South": "Parking West 3"
+    },
+    "Parking East 2": {
+      "North": "Parking East 1",
+      "South": "Parking East 3",
+      "West": "Parking West 2"
+    },
+    "Parking West 3": {
+      "North": "Parking West 2",
+      "East": "Parking East 3"
+    },
+    "Parking East 3": {
+      "North": "Parking East 2",
+      "South": "Exit"
+    },
+    "Exit": {
+      "North": "Parking East 3"
+    }
+  }
+}
