@@ -39,7 +39,7 @@ def display_splash_screen():
     input("Press Enter to start a New Game...")
 
 def main_game_loop():
-    display_splash_screen()
+    #display_splash_screen()
     while True:
         clear_screen()
         print("Welcome to Project Garage Zero: The Apprentice's Dilemma!")
