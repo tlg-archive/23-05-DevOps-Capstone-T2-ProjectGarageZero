@@ -6,7 +6,8 @@
       "Directions": {
         "South": "Parking West 1"
       },
-      "Items": ["Garbage Can", "Gum"]
+      "Items": ["Garbage Can", "Gum"],
+      "Note": "none"
     },
     {
       "Name": "Parking Exit",
@@ -14,7 +15,8 @@
       "Directions": {
         "North": "Parking East 1"
       },
-      "Items": ["Attendant"]
+      "Items": ["Attendant"],
+      "Note": "none"
     },
     {
       "Name": "Parking East 1",
@@ -23,7 +25,8 @@
         "West": "Parking West 1",
         "South": "Parking East 2"
       },
-      "Items": ["Tesla", "Puddle", "Light"]
+      "Items": ["Tesla", "Puddle", "Light"],
+      "Note": "none"
     },
     {
       "Name": "Parking East 2",
@@ -33,7 +36,8 @@
         "South": "Parking East 3",
         "West": "Parking West 2"
       },
-      "Items": ["Creepy Man", "Lollipop", "Newspaper"]
+      "Items": ["Creepy Man", "Lollipop", "Newspaper"],
+      "Note": "none"
     },
     {
       "Name": "Parking East 3",
@@ -42,7 +46,8 @@
         "North": "Parking East 2",
         "South": "Parking Exit",
         "West": "Parking West 3"
-      }
+      },
+      "Note": "none"
     },
     {
       "Name": "Parking West 1",
@@ -51,7 +56,8 @@
         "North": "Elevator",
         "East": "Parking East 1",
         "South": "Parking West 2"
-      }
+      },
+      "Note": "none"
     },
     {
       "Name": "Parking West 2",
@@ -61,7 +67,8 @@
         "East": "Parking East 2",
         "South": "Parking West 3"
       },
-      "Items": ["Mazda", "Mouse"]
+      "Items": ["Mazda", "Mouse"],
+      "Note": "none"
     },
     {
       "Name": "Parking West 3",
@@ -69,8 +76,8 @@
       "Directions": {
         "North": "Parking West 2",
         "East": "Parking East 3"
-      }
+      },
+      "Note": "none"
     }
   ]
 }
-
