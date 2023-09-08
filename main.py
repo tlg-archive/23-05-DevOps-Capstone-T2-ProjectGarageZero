@@ -11,6 +11,9 @@ with open('locations.json', 'r') as f:
 with open('items.json', 'r') as f:
     items_data = json.load(f)
 
+with open('npcs.json', 'r') as f:
+    npcs_data = json.load(f)
+
 # Define your classes here
 class Location:
     def __init__(self, name, description, directions, items):
