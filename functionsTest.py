@@ -21,7 +21,7 @@ current_location = 'Elevator'
 
 while True:
 	# Print the current location
-	print(f"LOCATION: {current_location}")
+	print(f"LOCATION: {current_location}\n")
 
 	# Get and print the current location's description
 	current_location_data = None
@@ -31,7 +31,7 @@ while True:
 			break
 
 	if current_location_data:
-		print(f"(Location Description Prints Here) {current_location_data['DescriptionID']}") 
+		print(f"{current_location_data['Description']}\n") 
 
 	# Print the available directions
 	print(f"EXITS:")
@@ -42,10 +42,10 @@ while True:
 			break
 
 	for direction_data in available_directions:
-		print(f"{direction_data['Direction']} - {direction_data['Destination']}")
+		print(f"{direction_data['Direction']} - {direction_data['Destination']}\n")
 
 	# Get user input for the direction
-	user_input = input("Enter a direction to move (or 'quit' to exit): ").strip().lower()
+	user_input = input("Enter a direction to move (or 'quit' to exit):\n\n").strip().lower()
 
 	# Check if the user wants to quit
 	if user_input == 'quit':
