@@ -6,7 +6,8 @@
       "Location": "Mazda",
       "Use": "none",
       "Type": "none",
-      "Note": "none"
+      "Note": "none",
+      "Description": "A dark grey cupholder."
     },
     {
       "Name": "elevator",
@@ -14,7 +15,8 @@
       "Location": "Elevator",
       "Use": "none",
       "Type": "none",
-      "Note": "none"
+      "Note": "none",
+      "Description": "Walking out of the elevator you see the first floor of the underground garage was well-lit with fluorescent lights hanging from the ceiling. Crisp white lines painted on the smooth concrete floor delineated parking spaces for cars, while directional signs point the way to the nearest exit. Pedestrian walkways with yellow safety stripes ensured safe passage for those on foot."
     },
     {
       "Name": "garbage can",
@@ -22,7 +24,8 @@
       "Location": "Elevator",
       "Use": "none",
       "Type": "none",
-      "Note": "Items can be found here that may be useful in the future. It can dispose of and save items like a chest."
+      "Note": "Items can be found here that may be useful in the future. It can dispose of and save items like a chest.",
+      "Description": "A grayish green garbage bag with a black garbage bag placed in it. The garbage can is only about half full."
     },
     {
       "Name": "gum",
@@ -30,7 +33,8 @@
       "Location": "Elevator",
       "Use": "none",
       "Type": "none",
-      "Note": "Unlocks secret ending."
+      "Note": "Unlocks secret ending.",
+      "Description": "A black and blue package of gum, almost completely full. The blue is shiny and metallic, so you notice the reflection on the floor."
     },
     {
       "Name": "ignition",
@@ -38,7 +42,8 @@
       "Location": "In car near steering wheel",
       "Use": "none",
       "Type": "none",
-      "Note": "If key is left in keyhole, car will not start."
+      "Note": "If key is left in keyhole, car will not start.",
+      "Description": "A push-start engine that will only function if the key is within range. If the key is left in the keyhole, the car will not start."
     },
     {
       "Name": "key",
@@ -46,7 +51,8 @@
       "Location": "inventory",
       "Use": "none",
       "Type": "none",
-      "Note": "If too far away from car, car will not start or may stop functioning."
+      "Note": "If too far away from car, car will not start or may stop functioning.",
+      "Description": "A key used to unlock and start the car. If it's too far away from the car, the car will not start or may stop functioning."
     },
     {
       "Name": "mazda",
@@ -54,7 +60,8 @@
       "Location": "Parking West 2",
       "Use": "none",
       "Type": "none",
-      "Note": "Navigate parking lot. Leave Parking lot."
+      "Note": "Navigate parking lot. Leave Parking lot.",
+      "Description": "Dark grey Mazda with a black leather interior. It can be used to navigate the parking lot and leave the parking lot."
     },
     {
       "Name": "puddle",
@@ -62,7 +69,8 @@
       "Location": "Parking East 1",
       "Use": "none",
       "Type": "none",
-      "Note": "Detour player or can function as a trap or obstacle."
+      "Note": "Detour player or can function as a trap or obstacle.",
+      "Description": "A large puddle that blocks your way and can function as a detour or a trap/obstacle if you're not careful."
     },
     {
       "Name": "ticket",
@@ -70,8 +78,8 @@
       "Location": "Varies throughout game",
       "Use": "none",
       "Type": "none",
-      "Note": "Exit parking lot. Exchange with parking employee."
+      "Note": "Exit parking lot. Exchange with parking employee.",
+      "Description": "A key game item needed to exit the parking lot. It can be exchanged with a parking employee for exit."
     }
   ]
 }
-
