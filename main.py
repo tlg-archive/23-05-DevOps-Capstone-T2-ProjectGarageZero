@@ -61,7 +61,7 @@ for item_data in items_data['Items']:
 display_splash_screen()
 main_game_loop()
 new_game()
-move_player(directions_data)
+#move_player(directions_data)
 
 
 
@@ -84,4 +84,6 @@ if __name__ == '__main__':
             pass
 
 # ticket 89 end
+
+move_player(directions_data)
 
