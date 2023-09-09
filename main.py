@@ -37,8 +37,8 @@ if __name__ == '__main__':
         # Implement your text parser to process user commands
         # Check if the user wants to quit and break the loop if needed
         if user_input.lower() == "quit":
-            print("Thanks for playing!")
-            break
+            print("Thanks for playing!\n")
+            sys.exit() #SAMMY: FULL EXIT FROM PROGRAM
         else:
             # Process other user commands based on game logic
             # You can access the player's location, items, and more

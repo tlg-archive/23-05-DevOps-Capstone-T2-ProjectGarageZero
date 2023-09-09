@@ -1,4 +1,6 @@
 import os
+#SAMMY: IMPORTING SYS FOR SYS.EXIT() TO QUIT
+import sys
 #SAMMY: CHANGING SO ONLY FUNCTION IMPORTED
 from functionsTest import start_game
 #from functionsTest import *
@@ -54,8 +56,8 @@ def main_game_loop():
             start_game()
         elif choice == '2':
             clear_screen()
-            print("Goodbye!")
-            break
+            print("Goodbye!\n")
+            sys.exit()
         else:
             input("Invalid choice. Press Enter to continue...")
 
