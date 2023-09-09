@@ -11,9 +11,6 @@ with open('locations.json', 'r') as f:
 with open('items.json', 'r') as f:
     items_data = json.load(f)
 
-with open('npcs.json', 'r') as f:
-    npcs_data = json.load(f)
-
 # Define your classes here
 class Location:
     def __init__(self, name, description, directions, items):
@@ -31,6 +28,21 @@ class Item:
         self.item_type = item_type
 
 # Define your functions for game logic here
+# SAMMY: MOVING UP FOR CODE EXECUTION TO KEEP IT FIRST
+if __name__ == '__main__':
+    display_splash_screen()
+    main_game_loop()
+    while True:
+        user_input = input("Enter your command: ")
+        # Implement your text parser to process user commands
+        # Check if the user wants to quit and break the loop if needed
+        if user_input.lower() == "quit":
+            print("Thanks for playing!")
+            break
+        else:
+            # Process other user commands based on game logic
+            # You can access the player's location, items, and more
+            pass
 
 # Create instances of your classes based on the loaded data
 locations = []
@@ -59,34 +71,35 @@ for item_data in items_data['Items']:
     )
     items.append(item)
 
-
+#SAMMY: REMARKING OUT BELOW TO SEE IF NEW __MAIN__ WORKS
 #this is importing the start screen that maria created. 
-display_splash_screen()
-main_game_loop()
-new_game()
+#display_splash_screen()
+#main_game_loop()
+#new_game()
 #move_player(directions_data)
 
 
 
 #ticket 89
-# Implement your game logic and text parser here
 
-
-# Example game loop
-if __name__ == '__main__':
-    while True:
-        user_input = input("Enter your command: ")
+# SAMMY: REMARKING OUT BELOW TO SEE IF NEW __MAIN__ LOCATION WORKS
+# Call display_splash_screen() and main_game_loop() here
+#if __name__ == '__main__':
+    #display_splash_screen()
+    #main_game_loop()
+    #while True:
+        #user_input = input("Enter your command: ")
         # Implement your text parser to process user commands
         # Check if the user wants to quit and break the loop if needed
-        if user_input.lower() == "quit":
-            print("Thanks for playing!")
-            break
-        else:
+        #if user_input.lower() == "quit":
+            #print("Thanks for playing!")
+            #break
+        #else:
             # Process other user commands based on game logic
             # You can access the player's location, items, and more
-            pass
+            #pass
 
 # ticket 89 end
 
-move_player(directions_data)
-
+# SAMMY: I DON'T KNOW IF THIS IS NEEDED OR NOT BECAUSE IT WAS REMARKED EARLIER IN CODE BUT IS ACTIVE AT END OF CODE
+move_player(directions_data) 

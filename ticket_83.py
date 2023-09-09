@@ -1,5 +1,7 @@
 import os
-from functionsTest import *
+#SAMMY: CHANGING SO ONLY FUNCTION IMPORTED
+from functionsTest import start_game
+#from functionsTest import *
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -48,8 +50,8 @@ def main_game_loop():
         print("2. Quit")
         choice = input("> ")
         if choice == '1':
-            # Start a new game
-            new_game()
+            # SAMMY: CALLING FUNCTION I MADE FROM FUNCTIONSTEST
+            start_game()
         elif choice == '2':
             clear_screen()
             print("Goodbye!")
@@ -57,15 +59,16 @@ def main_game_loop():
         else:
             input("Invalid choice. Press Enter to continue...")
 
-def new_game():
-    clear_screen()
-    print("Game has started!")
+# SAMMY: REMARKING OUT SINCE I NOW REFER TO START_GAME() IF 1 IS CHOSEN
+#def new_game():
+    #clear_screen()
+    #print("Game has started!")
     # Game logic will go here
-    while True:
-        action = input("> ").strip()
-        move_player(action)
-        if action.lower() == "quit":
-            break
+    #while True:
+        #action = input("> ").strip()
+        #move_player(action)
+        #if action.lower() == "quit":
+            #break
         # Handle game-specific commands and logic here
 
 if __name__ == "__main__":
