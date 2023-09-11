@@ -1,18 +1,19 @@
 import json
 
+# Load direction data from the JSON file
+with open('directions.json', 'r') as f:
+    directions_data = json.load(f)
+
+# Load location data from the JSON file
+with open('locations.json', 'r') as f:
+    locations_data = json.load(f)
+
+# Load description data from the JSON file
+with open('descriptions.json', 'r') as f:
+    descriptions_data = json.load(f)
+
 # start game function defined but not auto-run when file imports
 def start_game():
-    # Load direction data from the JSON file
-    with open('directions.json', 'r') as f:
-        directions_data = json.load(f)
-
-    # Load location data from the JSON file
-    with open('locations.json', 'r') as f:
-        locations_data = json.load(f)
-
-    # Load description data from the JSON file
-    with open('descriptions.json', 'r') as f:
-        descriptions_data = json.load(f)
 
     # Set initial location
     current_location = 'Elevator'
@@ -49,17 +50,26 @@ def start_game():
             print(f"{direction_data['Direction']} - {direction_data['Destination']}\n")
 
         # Get user input for the direction
-        user_input = input("Enter a direction to move (or 'quit' to exit):\n\n").strip().lower()
+        user_input = input("Enter a direction to move (e.g., 'go north') or 'quit' to exit:\n\n").strip().lower()
 
         # Check if the user wants to quit
         if user_input == 'quit':
             print("Exiting the game. Goodbye!")
             break
 
+        # Split the user input into words
+        words = user_input.split()
+
+        if len(words) < 2:
+            print("Please include both a verb and a direction (e.g., 'go north').")
+            continue
+
+        verb, direction = words[0], " ".join(words[1:])
+
         # Check if the entered direction is valid
         valid_direction = False
         for direction_data in available_directions:
-            if user_input == direction_data['Direction'].lower():
+            if direction == direction_data['Direction'].lower() and verb == 'go':
                 current_location = direction_data['Destination']
                 valid_direction = True
                 # SAMMY: Remarked out because redundant with Location Header
@@ -73,4 +83,3 @@ def start_game():
 # this script is run as the main program
 if __name__ == "__main__":
     start_game()
-
