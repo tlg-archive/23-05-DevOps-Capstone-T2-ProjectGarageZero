@@ -14,12 +14,18 @@ def start_game():
     with open('descriptions.json', 'r') as f:
         descriptions_data = json.load(f)
 
-    # Initial location
+    # Set initial location
     current_location = 'Elevator'
+    # Set initial counter -- CHANGE TO COUNTDOWN EVENTUALLY
+    counter = 0
 
     while True:
         # Print the current location
-        print(f"LOCATION: {current_location}\n")
+        print(f"LOCATION: {current_location}")
+
+        # Print current # of moves made, increment up for next loop -- CHANGE TO COUNTDOWN EVENTUALLY
+        print(f"MOVES MADE: {counter}\n")
+        counter += 1
 
         # Get and print the current location's description
         current_location_data = None
@@ -56,7 +62,8 @@ def start_game():
             if user_input == direction_data['Direction'].lower():
                 current_location = direction_data['Destination']
                 valid_direction = True
-                print(f"You are now in {current_location}")
+                # SAMMY: Remarked out because redundant with Location Header
+                #print(f"You are now in {current_location}")
                 break
 
         if not valid_direction:
