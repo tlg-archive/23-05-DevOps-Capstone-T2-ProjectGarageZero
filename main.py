@@ -32,17 +32,7 @@ class Item:
 if __name__ == '__main__':
     display_splash_screen()
     main_game_loop()
-    while True:
-        user_input = input("Enter your command: ")
-        # Implement your text parser to process user commands
-        # Check if the user wants to quit and break the loop if needed
-        if user_input.lower() == "quit":
-            print("Thanks for playing!\n")
-            sys.exit() #SAMMY: FULL EXIT FROM PROGRAM
-        else:
-            # Process other user commands based on game logic
-            # You can access the player's location, items, and more
-            pass
+    
 
 # Create instances of your classes based on the loaded data
 locations = []
@@ -71,35 +61,3 @@ for item_data in items_data['Items']:
     )
     items.append(item)
 
-#SAMMY: REMARKING OUT BELOW TO SEE IF NEW __MAIN__ WORKS
-#this is importing the start screen that maria created. 
-#display_splash_screen()
-#main_game_loop()
-#new_game()
-#move_player(directions_data)
-
-
-
-#ticket 89
-
-# SAMMY: REMARKING OUT BELOW TO SEE IF NEW __MAIN__ LOCATION WORKS
-# Call display_splash_screen() and main_game_loop() here
-#if __name__ == '__main__':
-    #display_splash_screen()
-    #main_game_loop()
-    #while True:
-        #user_input = input("Enter your command: ")
-        # Implement your text parser to process user commands
-        # Check if the user wants to quit and break the loop if needed
-        #if user_input.lower() == "quit":
-            #print("Thanks for playing!")
-            #break
-        #else:
-            # Process other user commands based on game logic
-            # You can access the player's location, items, and more
-            #pass
-
-# ticket 89 end
-
-# SAMMY: I DON'T KNOW IF THIS IS NEEDED OR NOT BECAUSE IT WAS REMARKED EARLIER IN CODE BUT IS ACTIVE AT END OF CODE
-move_player(directions_data) 
