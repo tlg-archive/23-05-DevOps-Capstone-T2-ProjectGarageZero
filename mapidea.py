@@ -19,6 +19,15 @@ map_visual = [
     "                               Exit [X]"
 ]
 
+# Function to display the map
+def display_map():
+    print("Map:")
+    for line in map_visual:
+        print(line)
+
+
+
+
 # Dictionary to store items in each section
 section_items = {
     "elevator": ["Garbage can", "Pack of gum"],
