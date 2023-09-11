@@ -1,5 +1,10 @@
 import json
 from mapidea import display_map
+import os
+
+# Function to clear the screen (you can define this function if not already defined)
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 # Load direction data from the JSON file
 with open('directions.json', 'r') as f:
@@ -59,7 +64,8 @@ def start_game():
             break
 
         if user_input == 'help':
-            print("\n------HELP SCREEN------")
+            clear_screen()
+            print("\n___________HELP SCREEN___________")
             print("\nTo move, type a valid command. For example, 'go south' will move you one place south.")
             print("Game Layout")
             print("_____________________________________")
@@ -70,6 +76,16 @@ def start_game():
             print("_____________________________________")
             print("Below is a map of the game:")
             display_map()  # Call the display_map() function to show the map
+            #added this to check for the return command
+            print("\nType 'return' to return to the game loop.")
+            while True:
+                return_input = input("\n> ").strip().lower()
+                if return_input == 'return':
+                    clear_screen()
+                    break
+                else:
+                    print("Invalid input. Type 'return' to return to the game loop.")
+
             continue
 
         # Check if the user requests the map directly
