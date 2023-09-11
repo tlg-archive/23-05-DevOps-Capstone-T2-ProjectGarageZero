@@ -1,4 +1,5 @@
 import json
+from mapidea import display_map
 
 # Load direction data from the JSON file
 with open('directions.json', 'r') as f:
@@ -56,6 +57,25 @@ def start_game():
         if user_input == 'quit':
             print("Exiting the game. Goodbye!")
             break
+
+        if user_input == 'help':
+            print("\n------HELP SCREEN------")
+            print("\nTo move, type a valid command. For example, 'go south' will move you one place south.")
+            print("Game Layout")
+            print("_____________________________________")
+            print(f"Current Location: Displayed in the top left")
+            print(f"Moves you've taken: Displayed below")
+            print(f"Description of your location: You will see the description of your current location")
+            print("Your nearest exits: The places you can move to")
+            print("_____________________________________")
+            print("Below is a map of the game:")
+            display_map()  # Call the display_map() function to show the map
+            continue
+
+        # Check if the user requests the map directly
+        if user_input == 'map':
+            display_map()
+            continue
 
         # Split the user input into words
         words = user_input.split()
