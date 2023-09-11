@@ -1,0 +1,69 @@
+{
+	"NPCs": [
+		{
+			"Name": "Attendant",
+			"Description": "The parking lot attendant looks old and grumpy, with a scowl on his face.",
+			"Greetings": [
+				"Hello, do you have your ticket?",
+				"Hey there, ticket please.",
+				"Ticket's up! You got it?",
+				"Afternoon, show me your ticket."
+			],
+			"PlayerChoices": [
+				{
+					"Choice": "yes",
+					"Response": "The attendant scans the ticket.",
+					"Outcome": {
+						"Condition": "TicketValid",
+						"Result": "You are free to leave."
+					}
+				},
+				{
+					"Choice": "no",
+					"Response": "I guess you are stuck here.",
+					"GameOver": true
+				},
+				{
+					"Choice": "I cannot find it",
+					"Response": "You better find it if you want to leave.",
+					"FollowUp": "Hello, do you have your ticket?"
+				}
+			]
+		},
+		{
+			"Name": "Creepy Man",
+			"Description": "John is a creepy character you encounter in the parking lot.",
+			"InitialDialogue": "I'm looking for my car. Can you give me directions?",
+			"PlayerChoices": [
+				{
+					"Choice": "Hello, have you seen a grey Mazda?",
+					"ResponseOptions": [
+						"MAZDA MAZDA MAZDA! LOST LOST LOST!",
+						"CARS CARS CARS! GONE EVERYTHING GONE!"
+					],
+					"FollowUp": "I have lost something too.",
+					"PlayerResponse": "Maybe we can help each other?",
+					"CreepyManResponses": [
+						"HELP YOU? HELP ME! I have lost things too.",
+						"No one helps me. No one ever helps. I have lost things too."
+					],
+					"FollowUpChoice": {
+						"Choice": "What have you lost?",
+						"Response": "My black box."
+					}
+				},
+				{
+					"Choice": "Offer pack of gum",
+					"Response": "MY BLACK BOX! MY BOX! Thank you so much!",
+					"Reward": "Lollipop"
+				},
+				{
+					"Choice": "Offer nothing",
+					"Response": "Go away!",
+					"Action": "Throws a newspaper at the player"
+				}
+			]
+		}
+	]
+}
+
