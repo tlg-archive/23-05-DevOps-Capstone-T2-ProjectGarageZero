@@ -141,9 +141,22 @@ def start_game():
                     print("Invalid input. Type 'return' to return to the game loop.")
 
             continue
-
+        
+        elif user_input == 'inventory':
+            clear_screen()
+            display_inventory() 
+            print("\nType 'return' to return to the game.")
+            while True:
+                return_input = input("\n> ").strip().lower()
+                if return_input == 'return':
+                    clear_screen()
+                    break
+                else:
+                    print("Invalid input. Type 'return' to return to the game loop.")
+        
         # Check if the user requests the map directly
-        if user_input == 'map':
+        elif user_input == 'map':
+            clear_screen()
             display_map()
             continue
 
