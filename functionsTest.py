@@ -18,6 +18,16 @@ with open('locations.json', 'r') as f:
 with open('descriptions.json', 'r') as f:
     descriptions_data = json.load(f)
 
+####inventory work here######
+inventory = []
+
+# Function to display player's inventory
+def display_inventory():
+    print("Inventory:")
+    for item in inventory:
+        print(item)
+
+
 # start game function defined but not auto-run when file imports
 def start_game():
 

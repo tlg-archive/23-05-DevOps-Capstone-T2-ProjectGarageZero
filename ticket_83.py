@@ -61,17 +61,7 @@ def main_game_loop():
         else:
             input("Invalid choice. Press Enter to continue...")
 
-# SAMMY: REMARKING OUT SINCE I NOW REFER TO START_GAME() IF 1 IS CHOSEN
-#def new_game():
-    #clear_screen()
-    #print("Game has started!")
-    # Game logic will go here
-    #while True:
-        #action = input("> ").strip()
-        #move_player(action)
-        #if action.lower() == "quit":
-            #break
-        # Handle game-specific commands and logic here
+
 
 if __name__ == "__main__":
     main_game_loop()
