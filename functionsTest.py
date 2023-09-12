@@ -18,7 +18,12 @@ with open('locations.json', 'r') as f:
 with open('descriptions.json', 'r') as f:
     descriptions_data = json.load(f)
 
+# Load items data from the JSON file
+with open('items.json', 'r') as f:
+    items_data = json.load(f)
+
 ####inventory work here######
+# Set initial inventory
 inventory = []
 
 # Function to display player's inventory
@@ -27,6 +32,15 @@ def display_inventory():
     for item in inventory:
         print(item)
 
+# Get item
+def get_item(item_name, current_location):
+    # Check if the item is in the current location
+    for item_data in items_data['Items']:
+        if item_data['Name'].lower() == item_name and item_data['Location'] == current_location:
+            inventory.append(item_data['Name'])
+            print(f"You now have {item_data['Name']}.")
+            return
+        print("That's not here")
 
 # start game function defined but not auto-run when file imports
 def start_game():
@@ -35,6 +49,7 @@ def start_game():
     current_location = 'Elevator'
     # Set initial counter -- CHANGE TO COUNTDOWN EVENTUALLY
     counter = 0
+ 
 
     while True:
         # Print the current location
@@ -54,8 +69,20 @@ def start_game():
         if current_location_data:
             print(f"{current_location_data['Description']}\n") 
 
+        # Get items in room
+        available_items = []
+        for item_data in items_data['Items']:
+            if item_data['Location'] == current_location:
+                available_items.append(item_data['Name'])
+
+        # List items
+        if available_items:
+            print("ITEMS:")
+            for item in available_items:
+                print(item)
+
         # Print the available directions
-        print(f"EXITS:")
+        print(f"\nEXITS:")
         available_directions = []
         for location_data in directions_data['Directions']:
             if location_data['Location'] == current_location:
@@ -72,6 +99,23 @@ def start_game():
         if user_input == 'quit':
             print("Exiting the game. Goodbye!")
             break
+
+         # Check if the user wants to get an item
+        if user_input.startswith('get '):
+            # Extract the item name from the input
+            item_to_get = user_input[4:]  # Remove "get " from the input
+
+            # Check if the item is in the current room
+            if item_to_get in available_items:
+                # Remove the item from the current room
+                available_items.remove(item_to_get)
+
+                # Add the item to the player's inventory
+                inventory.append(item_to_get)
+
+                print(f"You picked up {item_to_get}.")
+            else:
+                print("That's not here! (hint: type the name exactly)")
 
         if user_input == 'help':
             clear_screen()
