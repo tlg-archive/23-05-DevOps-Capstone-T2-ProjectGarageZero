@@ -116,7 +116,7 @@ def start_game():
             print(f"{direction_data['Direction']} - {direction_data['Destination']}\n")
 
         # Get user input for the direction
-        user_input = input("Enter a direction to move (e.g., 'go north') or 'quit' to exit:\n").strip().lower()
+        user_input = input("What would you like to do next? (type 'help' to see valid commands or 'quit' to exit):\n").strip().lower()
 
         # Check if the user wants to quit
         if user_input == 'quit':
