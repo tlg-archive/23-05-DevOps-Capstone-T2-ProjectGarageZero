@@ -40,7 +40,6 @@ def display_splash_screen():
     input("Press Enter to continue...")
     clear_screen()
 
-    print("Player is presented with the option to play a New Game.")
     input("Press Enter to start a New Game...")
 
 def main_game_loop():
