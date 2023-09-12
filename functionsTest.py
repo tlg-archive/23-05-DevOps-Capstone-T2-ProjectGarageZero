@@ -43,6 +43,29 @@ def get_item(item_name, current_location):
             return
     print("That's not here! (hint: type name exactly!)")
 
+# Drop item
+def drop_item(item_name, current_location):
+    # Check if the item is in the player's inventory
+    if item_name in inventory:
+        # Dictionary for item data
+        item_to_drop = {
+            "Name": item_name,
+            "Location": current_location,
+            "Use": "none",
+            "Type": "none",
+            "Note": "none",
+            "Description": f"A {item_name} on the ground."
+        }
+
+        # Add the item to the current location's items
+        items_data['Items'].append(item_to_drop)
+        # Remove the item from the player's inventory
+        inventory.remove(item_name)
+        print(f"You dropped {item_name}.")
+    else:
+        print("You don't have that on you!")
+
+
 # start game function defined but not auto-run when file imports
 def start_game():
 
@@ -51,7 +74,6 @@ def start_game():
     # Set initial counter -- CHANGE TO COUNTDOWN EVENTUALLY
     counter = 0
  
-
     while True:
         # Print the current location
         print(f"LOCATION: {current_location}")
@@ -103,7 +125,7 @@ def start_game():
 
         # If the user wants to get an item
         if user_input.startswith('get '):
-            # Extract the item name from the input
+            # Get item name from the input
             item_to_get = user_input[4:]  # Remove "get " from the input
 
             # Check if the item is in the current room
@@ -112,6 +134,13 @@ def start_game():
                 get_item(item_to_get, current_location)
             else:
                 print("That's not here! (hint: type the name exactly)")
+
+        # If the user wants to drop an item
+        if user_input.startswith('drop '):
+            # Get item name from the input
+            item_to_drop = user_input[5:]  # Remove "drop " from the input
+            # Call the drop_item function to drop the item
+            drop_item(item_to_drop, current_location)
 
         if user_input == 'help':
             clear_screen()
