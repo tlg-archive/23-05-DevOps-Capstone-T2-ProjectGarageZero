@@ -76,11 +76,15 @@ def start_game():
  
     while True:
         # Print the current location
-        print(f"LOCATION: {current_location}")
+        location_head = f"LOCATION: {current_location}"
 
         # Print current # of moves made, increment up for next loop -- CHANGE TO COUNTDOWN EVENTUALLY
-        print(f"MOVES MADE: {counter}\n")
+        move_head = f"MOVES MADE: {counter}"
+
         counter += 1
+
+        # Printing header
+        print(f"{location_head : <25} {move_head : >25}\n")
 
         # Get and print the current location's description
         current_location_data = None
