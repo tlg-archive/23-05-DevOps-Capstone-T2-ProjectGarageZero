@@ -22,7 +22,6 @@ with open('descriptions.json', 'r') as f:
 with open('items.json', 'r') as f:
     items_data = json.load(f)
 
-####inventory work here######
 # Set initial inventory
 inventory = []
 
@@ -38,9 +37,11 @@ def get_item(item_name, current_location):
     for item_data in items_data['Items']:
         if item_data['Name'].lower() == item_name and item_data['Location'] == current_location:
             inventory.append(item_data['Name'])
+            # Remove the item from the current location
+            items_data['Items'].remove(item_data)
             print(f"You now have {item_data['Name']}.")
             return
-        print("That's not here")
+    print("That's not here! (hint: type name exactly!)")
 
 # start game function defined but not auto-run when file imports
 def start_game():
@@ -93,27 +94,22 @@ def start_game():
             print(f"{direction_data['Direction']} - {direction_data['Destination']}\n")
 
         # Get user input for the direction
-        user_input = input("Enter a direction to move (e.g., 'go north') or 'quit' to exit:\n\n").strip().lower()
+        user_input = input("Enter a direction to move (e.g., 'go north') or 'quit' to exit:\n").strip().lower()
 
         # Check if the user wants to quit
         if user_input == 'quit':
             print("Exiting the game. Goodbye!")
             break
 
-         # Check if the user wants to get an item
+        # If the user wants to get an item
         if user_input.startswith('get '):
             # Extract the item name from the input
             item_to_get = user_input[4:]  # Remove "get " from the input
 
             # Check if the item is in the current room
             if item_to_get in available_items:
-                # Remove the item from the current room
-                available_items.remove(item_to_get)
-
-                # Add the item to the player's inventory
-                inventory.append(item_to_get)
-
-                print(f"You picked up {item_to_get}.")
+                # Call the get_item function to pick up the item
+                get_item(item_to_get, current_location)
             else:
                 print("That's not here! (hint: type the name exactly)")
 
@@ -175,14 +171,10 @@ def start_game():
             if direction == direction_data['Direction'].lower() and verb == 'go':
                 current_location = direction_data['Destination']
                 valid_direction = True
-                # SAMMY: Remarked out because redundant with Location Header
-                #print(f"You are now in {current_location}")
                 break
 
         if not valid_direction:
             print("Invalid direction. Please choose a valid direction.")
 
-# This block ensures that the code inside start_game() is only executed when
-# this script is run as the main program
 if __name__ == "__main__":
     start_game()
