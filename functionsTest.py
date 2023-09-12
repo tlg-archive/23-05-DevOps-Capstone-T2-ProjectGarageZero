@@ -144,19 +144,24 @@ def start_game():
 
         if user_input == 'help':
             clear_screen()
-            print("\n___________HELP SCREEN___________")
-            print("\nTo move, type a valid command. For example, 'go south' will move you one place south.")
-            print("Game Layout")
+            print("\n-------------HELP SCREEN-------------")
+            print("At any point throughout this game, you can:")
+            print("-type 'inventory' to see your inventory")
+            print("-type 'map' to see a map of the game")
             print("_____________________________________")
+            print("\nValid Commands:")            
+            print("type 'get' followed by an item to retrieve the item")
+            print("type 'drop' followed by an item to drop the item")
+            print("some commands that are coming soon: 'talk' will allow you to talk to the characters")
+            print("_____________________________________")
+            print("\nGame Layout:")
             print(f"Current Location: Displayed in the top left")
             print(f"Moves you've taken: Displayed below")
             print(f"Description of your location: You will see the description of your current location")
             print("Your nearest exits: The places you can move to")
             print("_____________________________________")
-            print("Below is a map of the game:")
-            display_map()  # Call the display_map() function to show the map
             #added this to check for the return command
-            print("\nType 'return' to return to the game loop.")
+            print("\nType 'return' to return to the game.")
             while True:
                 return_input = input("\n> ").strip().lower()
                 if return_input == 'return':
@@ -166,7 +171,8 @@ def start_game():
                     print("Invalid input. Type 'return' to return to the game loop.")
 
             continue
-        
+
+
         elif user_input == 'inventory':
             clear_screen()
             display_inventory() 
@@ -183,6 +189,14 @@ def start_game():
         elif user_input == 'map':
             clear_screen()
             display_map()
+            print("\nType 'return' to return to the game.")
+            while True:
+                return_input = input("\n> ").strip().lower()
+                if return_input == 'return':
+                    clear_screen()
+                    break
+                else:
+                    print("Invalid input. Type 'return' to return to the game.")
             continue
 
         # Split the user input into words
