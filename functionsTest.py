@@ -49,7 +49,7 @@ def press_enter_to_return():
                 
 ## MUSIC AND FX ##
 # Setting current volume value
-current_volume=.7
+current_volume=.4
 
 # Function to set up and play background music
 def background_music():
@@ -207,6 +207,8 @@ def start_game():
             if item_to_get in available_items:
                 # Call the get_item function to pick up the item
                 get_item(item_to_get, current_location)
+                # play a sound on channel 0 with a max time of 1250 milliseconds
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
             else:
                 print("That's not here! (hint: type the name exactly)")
 
@@ -216,6 +218,8 @@ def start_game():
             item_to_drop = user_input[5:]  # Remove "drop " from the input
             # Call the drop_item function to drop the item
             drop_item(item_to_drop, current_location)
+            # play a sound on channel 0 with a max time of 1000 milliseconds
+            pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=1000)
 
         if user_input == 'help':
             clear_screen()
@@ -241,19 +245,25 @@ def start_game():
             print("Your nearest exits: The places you can move to")
             print("_____________________________________")
             #added this to check for the return command
+            # play a sound on channel 0 with a max time of 2000 milliseconds
+            pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/help.mp3'), maxtime=2000)
             press_enter_to_return()
 
             continue
 
         elif user_input == 'inventory':
             clear_screen()
-            display_inventory() 
+            display_inventory()
+            # play a sound on channel 0 with a max time of 1000 milliseconds
+            pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/inventory.mp3'), maxtime=1000) 
             press_enter_to_return()
         
         # Check if the user requests the map directly
         elif user_input == 'map':
             clear_screen()
             display_map()
+            # play a sound on channel 0 with a max time of 1000 milliseconds
+            pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/map.mp3'), maxtime=1000)
             press_enter_to_return()
             continue
 
@@ -296,6 +306,8 @@ def start_game():
             if direction == direction_data['Direction'].lower() and verb == 'go':
                 current_location = direction_data['Destination']
                 valid_direction = True
+                # play a sound on channel 0 with a max time of 2000 milliseconds
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=2000)
                 break
 
         if not valid_direction:
