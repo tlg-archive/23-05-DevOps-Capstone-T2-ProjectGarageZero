@@ -37,6 +37,10 @@ def display_inventory():
     for item in inventory:
         print(item)
 
+## MUSIC AND FX ##
+# Setting current volume value
+current_volume=.7
+
 # Function to set up and play background music
 def background_music():
     pygame.init()
@@ -45,10 +49,22 @@ def background_music():
     music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
     pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
     pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(current_volume)
 
 # Function to stop background music
 def stop_background_music():
     pygame.mixer.music.stop()
+
+# Functions to alter volume
+def volume_up():
+    global current_volume
+    current_volume += 0.1 
+    pygame.mixer.music.set_volume(current_volume)
+    
+def volume_down():
+    global current_volume
+    current_volume -= 0.1
+    pygame.mixer.music.set_volume(current_volume)
 
 # Get item
 def get_item(item_name, current_location):
@@ -158,9 +174,19 @@ def start_game():
         if user_input == 'musicoff':
             stop_background_music()
 
-        # Check if the user wants to stop music
+        # Check if the user wants to start music
         if user_input == 'musicon':
             background_music()
+
+        # Check if the user wants to increase volume
+        if user_input == 'musicup':
+            volume_up()
+            print(f"Your volume is now {int(current_volume * 10)} of 10")
+
+        # Check if the user wants to decrease volume
+        if user_input == 'musicdown':
+            volume_down()
+            print(f"Your volume is now {int(current_volume * 10)} of 10")
 
         # If the user wants to get an item
         if user_input.startswith('get '):
@@ -214,7 +240,6 @@ def start_game():
                     print("Invalid input. Type 'return' to return to the game loop.")
 
             continue
-
 
         elif user_input == 'inventory':
             clear_screen()
