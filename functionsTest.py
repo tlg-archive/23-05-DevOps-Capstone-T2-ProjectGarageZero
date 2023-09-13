@@ -37,6 +37,16 @@ def display_inventory():
     for item in inventory:
         print(item)
 
+def press_enter_to_return():
+    print("\nPress Enter to return to the game.")
+    while True:
+        return_input = input("\n> ").strip().lower()
+        if return_input == '':
+            clear_screen()
+            break
+        else:
+            print("Invalid input. Press Enter to return to the game.")
+
 # Function to set up and play background music
 def background_music():
     pygame.init()
@@ -204,14 +214,7 @@ def start_game():
             print("Your nearest exits: The places you can move to")
             print("_____________________________________")
             #added this to check for the return command
-            print("\nType 'return' to return to the game.")
-            while True:
-                return_input = input("\n> ").strip().lower()
-                if return_input == 'return':
-                    clear_screen()
-                    break
-                else:
-                    print("Invalid input. Type 'return' to return to the game loop.")
+            press_enter_to_return()
 
             continue
 
@@ -219,47 +222,37 @@ def start_game():
         elif user_input == 'inventory':
             clear_screen()
             display_inventory() 
-            print("\nType 'return' to return to the game.")
-            while True:
-                return_input = input("\n> ").strip().lower()
-                if return_input == 'return':
-                    clear_screen()
-                    break
-                else:
-                    print("Invalid input. Type 'return' to return to the game loop.")
+            press_enter_to_return()
         
         # Check if the user requests the map directly
         elif user_input == 'map':
             clear_screen()
             display_map()
-            print("\nType 'return' to return to the game.")
-            while True:
-                return_input = input("\n> ").strip().lower()
-                if return_input == 'return':
-                    clear_screen()
-                    break
-                else:
-                    print("Invalid input. Type 'return' to return to the game.")
+            press_enter_to_return()
             continue
 
-    # Check if the user wants to display command and location history
+# Check if the user wants to display command and location history
         if user_input == 'history':
             clear_screen()
-            print("\n--------")
-            print("Previous commands:")
-            for command in previous_commands:
-                print(command)
-            print("Previous locations:")
-            for location in previous_locations:
-                print(location)
-            print("\nPress Enter to return to the game.")
-            while True:
-                return_input = input("\n> ").strip().lower()
-                if return_input == '':
-                    clear_screen()
-                    break
-            else:
-                print("Invalid input. Press Enter to return to the game.")
+            print("History:")
+            for i in range(min(len(previous_locations), len(previous_commands))):
+                print(f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'")
+            press_enter_to_return()
+
+
+
+    # Check if the user wants to display command and location history
+        #if user_input == 'history':
+         #   clear_screen()
+          #  print("Previous locations:")
+           # for location in previous_locations:
+            #    print(location)
+            #print("\n--------")
+            #print("\n--------")
+          #  print("Previous commands:")
+           # for command in previous_commands:
+           #     print(command)
+           # press_enter_to_return()
 
 
         # Split the user input into words
