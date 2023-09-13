@@ -1,6 +1,8 @@
 import json
 from mapidea import display_map
 import os
+import pygame
+from pygame import mixer # for music and FX
 
 # Function to clear the screen (you can define this function if not already defined)
 def clear_screen():
@@ -70,8 +72,17 @@ def drop_item(item_name, current_location):
         print("You don't have that on you!")
 
 
+
 # start game function defined but not auto-run when file imports
 def start_game():
+
+    # Starting the pygame sound mixer and music
+    pygame.init()
+    pygame.mixer.init()
+    s = 'sound'  # folder for music and FX
+    music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
+    pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
+    pygame.mixer.music.play(-1)
 
     # Set initial location
     current_location = 'Elevator'
