@@ -1,5 +1,7 @@
 import json
 import os
+#Suppressing Pygame support prompt that was displaying pre-splash screen
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import sys
 from ticket_83 import *
 from functionsTest import *
