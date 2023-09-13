@@ -37,6 +37,19 @@ def display_inventory():
     for item in inventory:
         print(item)
 
+# Function to set up and play background music
+def background_music():
+    pygame.init()
+    pygame.mixer.init()
+    s = 'sound'  # folder for music and FX
+    music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
+    pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
+    pygame.mixer.music.play(-1)
+
+# Function to stop background music
+def stop_background_music():
+    pygame.mixer.music.stop()
+
 # Get item
 def get_item(item_name, current_location):
     # Check if the item is in the current location
@@ -71,18 +84,11 @@ def drop_item(item_name, current_location):
     else:
         print("You don't have that on you!")
 
-
-
 # start game function defined but not auto-run when file imports
 def start_game():
 
-    # Starting the pygame sound mixer and music
-    pygame.init()
-    pygame.mixer.init()
-    s = 'sound'  # folder for music and FX
-    music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
-    pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
-    pygame.mixer.music.play(-1)
+    #Play background music
+    background_music()
 
     # Set initial location
     current_location = 'Elevator'
@@ -148,6 +154,14 @@ def start_game():
             print("Exiting the game. Goodbye!")
             break
 
+        # Check if the user wants to stop music
+        if user_input == 'musicoff':
+            stop_background_music()
+
+        # Check if the user wants to stop music
+        if user_input == 'musicon':
+            background_music()
+
         # If the user wants to get an item
         if user_input.startswith('get '):
             # Get item name from the input
@@ -175,10 +189,11 @@ def start_game():
             print("-type 'map' to see a map of the game")
             print("_____________________________________")
             print("\nValid Commands:")            
-            print("type 'go' followed by a direction to to move")
-            print("type 'quit' to exit the game")
+            print("type 'drop' followed by an item to drop the item") 
             print("type 'get' followed by an item to retrieve the item")
-            print("type 'drop' followed by an item to drop the item")
+            print("type 'go' followed by a direction to to move")
+            print("type 'musicon' or 'musicoff' to toggle music")
+            print("type 'quit' to exit the game")
             print("\nCommands Coming Soon:")
             print("'talk' will allow you to talk to the characters")
             print("_____________________________________")
