@@ -2,7 +2,7 @@ import json
 from mapidea import display_map
 import os
 import pygame
-from pygame import mixer # for music and FX
+from pygame import mixer # for music and SFX
 
 # Function to clear the screen (you can define this function if not already defined)
 def clear_screen():
@@ -47,7 +47,7 @@ def press_enter_to_return():
         else:
             print("Invalid input. Press Enter to return to the game.")
                 
-## MUSIC AND FX ##
+## MUSIC AND SFX ##
 # Setting current music volume value
 current_music_volume=.3
 # Setting current SFX volume value
