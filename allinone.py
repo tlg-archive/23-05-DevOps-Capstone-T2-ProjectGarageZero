@@ -1,6 +1,6 @@
 import json
-from mapidea import display_map
 import os
+import sys
 
 # Function to clear the screen (you can define this function if not already defined)
 def clear_screen():
@@ -24,10 +24,6 @@ with open('items.json', 'r') as f:
 
 # Set initial inventory
 inventory = []
-
-# Initialize empty lists for storing previous commands and locations
-previous_commands = []
-previous_locations = []
 
 # Function to display player's inventory
 def display_inventory():
@@ -69,7 +65,6 @@ def drop_item(item_name, current_location):
     else:
         print("You don't have that on you!")
 
-
 # start game function defined but not auto-run when file imports
 def start_game():
 
@@ -82,7 +77,7 @@ def start_game():
         # Print the current location
         location_head = f"LOCATION: {current_location}"
 
-        # Print current # of moves made, increment up for next loop -- CHANGE TO COUNTDOWN EVENTUALLY
+        # Print current # of moves made, increment up for the next loop -- CHANGE TO COUNTDOWN EVENTUALLY
         move_head = f"MOVES MADE: {counter}"
 
         counter += 1
@@ -125,12 +120,6 @@ def start_game():
 
         # Get user input for the direction
         user_input = input("What would you like to do next? (type 'help' to see valid commands or 'quit' to exit):\n").strip().lower()
-
-        # Add the user input to the commands list
-        previous_commands.append(user_input)
-
-        # Add the current location to the locations list
-        previous_locations.append(current_location)
 
         # Check if the user wants to quit
         if user_input == 'quit':
@@ -216,26 +205,6 @@ def start_game():
                     print("Invalid input. Type 'return' to return to the game.")
             continue
 
-    # Check if the user wants to display command and location history
-        if user_input == 'history':
-            clear_screen()
-            print("\n--------")
-            print("Previous commands:")
-            for command in previous_commands:
-                print(command)
-            print("Previous locations:")
-            for location in previous_locations:
-                print(location)
-            print("\nPress Enter to return to the game.")
-            while True:
-                return_input = input("\n> ").strip().lower()
-                if return_input == '':
-                    clear_screen()
-                    break
-            else:
-                print("Invalid input. Press Enter to return to the game.")
-
-
         # Split the user input into words
         words = user_input.split()
 
@@ -257,4 +226,68 @@ def start_game():
             print("Invalid direction. Please choose a valid direction.")
 
 if __name__ == "__main__":
-    start_game()
+    #SAMMY: IMPORTING SYS FOR SYS.EXIT() TO QUIT
+    import sys
+    #SAMMY: CHANGING SO ONLY FUNCTION IMPORTED
+    from functionsTest import start_game
+    #from functionsTest import *
+
+    def clear_screen():
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+    def display_splash_screen():
+        clear_screen()
+        print("============================================")
+        print("          Project Garage Zero:               ")
+        print("       The Apprentice's Dilemma             ")
+        print("============================================")
+        input("Press Enter to continue...")
+        clear_screen()
+
+        print("Story:")
+        print("\nYou are trying to become an apprentice for MSM and you have just left your interview.")
+        print("But there's one problem: you can't remember where you parked your car!")
+        print("You have a validated ticket but there's limited time before you have to pay extra for parking.")
+        input("Press Enter to continue...")
+        clear_screen()
+
+        print("Objective:")
+        print("\nBefore the step counter runs out, you need to find your car and leave the garage.")
+        print("Face different obstacles on your quest to exit and avoid paying the additional parking fee.")
+        input("Press Enter to continue...")
+        clear_screen()
+
+        print("Player:")
+        print("\nYou are a young, bright-eyed individual, striving to become the next DevOps Engineer at MSM.")
+        input("Press Enter to continue...")
+        clear_screen()
+
+        print("How to Win:")
+        print("\nReach the garage exit and locate your car before the step counter runs out.")
+        input("Press Enter to continue...")
+        clear_screen()
+
+        input("Press Enter to start a New Game...")
+
+    def main_game_loop():
+        #display_splash_screen()
+        while True:
+            clear_screen()
+            print("Welcome to Project Garage Zero: The Apprentice's Dilemma!")
+            print("1. Start a New Game")
+            print("2. Quit")
+            choice = input("> ")
+            if choice == '1':
+                # SAMMY: CALLING FUNCTION I MADE FROM FUNCTIONSTEST
+                start_game()
+            elif choice == '2':
+                clear_screen()
+                print("Goodbye!\n")
+                sys.exit()
+            else:
+                input("Invalid choice. Press Enter to continue...")
+
+    if __name__ == "__main__":
+        main_game_loop()
+
+
