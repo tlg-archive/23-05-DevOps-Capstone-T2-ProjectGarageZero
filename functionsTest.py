@@ -48,8 +48,10 @@ def press_enter_to_return():
             print("Invalid input. Press Enter to return to the game.")
                 
 ## MUSIC AND FX ##
-# Setting current volume value
-current_volume=.4
+# Setting current music volume value
+current_music_volume=.3
+# Setting current SFX volume value
+current_sfx_volume = 0.7
 
 # Function to set up and play background music
 def background_music():
@@ -59,22 +61,44 @@ def background_music():
     music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
     pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
     pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(current_volume)
+    pygame.mixer.music.set_volume(current_music_volume)
 
 # Function to stop background music
 def stop_background_music():
     pygame.mixer.music.stop()
 
-# Functions to alter volume
+# Functions to alter music volume
 def volume_up():
-    global current_volume
-    current_volume += 0.1 
-    pygame.mixer.music.set_volume(current_volume)
+    global current_music_volume
+    current_music_volume += 0.1 
+    pygame.mixer.music.set_volume(current_music_volume)
     
 def volume_down():
-    global current_volume
-    current_volume -= 0.1
-    pygame.mixer.music.set_volume(current_volume)
+    global current_music_volume
+    current_music_volume -= 0.1
+    pygame.mixer.music.set_volume(current_music_volume)
+
+# Function to set up SFX channels
+def setup_sfx():
+    pygame.mixer.set_num_channels(8)  
+
+# Function to start / stop SFX
+def sfx_on():
+    pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+
+def sfx_off():
+    pygame.mixer.Channel(0).set_volume(0.0)
+
+# Function to alter SFX volume
+def sfx_volume_up():
+    global current_sfx_volume
+    current_sfx_volume += 0.1
+    pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+
+def sfx_volume_down():
+    global current_sfx_volume
+    current_sfx_volume -= 0.1
+    pygame.mixer.Channel(0).set_volume(current_sfx_volume)
 
 # Get item
 def get_item(item_name, current_location):
@@ -110,11 +134,13 @@ def drop_item(item_name, current_location):
     else:
         print("You don't have that on you!")
 
+## START GAME ##
 # start game function defined but not auto-run when file imports
 def start_game():
 
-    #Play background music
+    #Play background music and set up SFX
     background_music()
+    setup_sfx()
 
     # Set initial location
     current_location = 'Elevator'
@@ -188,15 +214,33 @@ def start_game():
         if user_input == 'musicon':
             background_music()
 
-        # Check if the user wants to increase volume
+        # Check if the user wants to increase music volume
         if user_input == 'musicup':
             volume_up()
-            print(f"Your volume is now {int(current_volume * 10)} of 10")
+            print(f"Your music volume is now {int(current_music_volume * 10)} of 10")
 
-        # Check if the user wants to decrease volume
+        # Check if the user wants to decrease music volume
         if user_input == 'musicdown':
             volume_down()
-            print(f"Your volume is now {int(current_volume * 10)} of 10")
+            print(f"Your music volume is now {int(current_music_volume * 10)} of 10")
+        
+        # Check if the user wants to stop SFX
+        if user_input == 'sfxoff':
+            sfx_off()
+
+        # Check if the user wants to start SFX
+        if user_input == 'sfxon':
+            sfx_on()
+
+        # Check if the user wants to increase SFX volume
+        if user_input == 'sfxup':
+            sfx_volume_up()
+            print(f"Your sound effects volume is now {int(current_sfx_volume * 10)} of 10")
+
+        # Check if the user wants to decrease SFX volume
+        if user_input == 'sfxdown':
+            sfx_volume_down()
+            print(f"Your sound effects volume is now {int(current_sfx_volume * 10)} of 10")
 
         # If the user wants to get an item
         if user_input.startswith('get '):
@@ -228,21 +272,25 @@ def start_game():
             print("-type 'inventory' to see your inventory")
             print("-type 'map' to see a map of the game")
             print("_____________________________________")
-            print("\nValid Commands:")            
-            print("type 'drop' followed by an item to drop the item") 
-            print("type 'get' followed by an item to retrieve the item")
-            print("type 'go' followed by a direction to to move")
-            print("type 'musicon' or 'musicoff' to toggle music")
-            print("type 'musicup' or 'musicdown' to adjust volume")
-            print("type 'quit' to exit the game")
-            print("\nCommands Coming Soon:")
-            print("'talk' will allow you to talk to the characters")
-            print("_____________________________________")
             print("\nGame Layout:")
             print(f"Current Location: Displayed in the top left")
             print(f"Moves you've taken: Displayed below")
             print(f"Description of your location: You will see the description of your current location")
             print("Your nearest exits: The places you can move to")
+            print("_____________________________________")
+            print("\nGame Commands:")            
+            print("type 'drop' followed by an item to drop the item") 
+            print("type 'get' followed by an item to retrieve the item")
+            print("type 'go' followed by a direction to to move")
+            print("type 'quit' to exit the game")
+            print("\nCommands Coming Soon:")
+            print("'talk' will allow you to talk to the characters")
+            print("_____________________________________")
+            print("\nSound Commands:")
+            print("type 'musicon' or 'musicoff' to toggle music")
+            print("type 'musicup' or 'musicdown' to adjust music volume")
+            print("type 'sfxon' or 'sfxoff' to toggle sound effects")
+            print("type 'sfxup' or 'sfxdown' to adjust sound effects volume")
             print("_____________________________________")
             #added this to check for the return command
             # play a sound on channel 0 with a max time of 2000 milliseconds
