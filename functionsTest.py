@@ -219,6 +219,7 @@ def start_game():
             print("type 'get' followed by an item to retrieve the item")
             print("type 'go' followed by a direction to to move")
             print("type 'musicon' or 'musicoff' to toggle music")
+            print("type 'musicup' or 'musicdown' to adjust volume")
             print("type 'quit' to exit the game")
             print("\nCommands Coming Soon:")
             print("'talk' will allow you to talk to the characters")
