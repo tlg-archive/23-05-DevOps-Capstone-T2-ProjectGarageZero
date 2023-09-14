@@ -1,0 +1,23 @@
+{
+    "current_location": "Elevator",
+    "counter": 5,
+    "inventory": [
+        "gum"
+    ],
+    "previous_commands": [
+        "get gum",
+        "music off",
+        "musicoff",
+        "history",
+        "save"
+    ],
+    "previous_locations": [
+        "Elevator",
+        "Elevator",
+        "Elevator",
+        "Elevator",
+        "Elevator"
+    ],
+    "current_music_volume": 0.3,
+    "current_sfx_volume": 0.7
+}
