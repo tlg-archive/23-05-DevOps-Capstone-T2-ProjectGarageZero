@@ -100,10 +100,12 @@ def look_command(input_text):
         else:
             print(f"You don't see {item_name} here.")
 
-# Test
-display_map_with_items("elevator")
 
-# Test the "Look" command
-look_command("Look Garbage can")
-look_command("Look Tesla")
-look_command("Look Nonexistent Item")
+## SAMMY: WRAPPING THIS TEST CODE IN A FUNCTION BECAUSE IT WAS RUNNING ON IMPORT
+if __name__ == "__main__":
+    # Test
+    display_map_with_items("elevator")
+    # Test the "Look" command
+    look_command("Look Garbage can")
+    look_command("Look Tesla")
+    look_command("Look Nonexistent Item")
