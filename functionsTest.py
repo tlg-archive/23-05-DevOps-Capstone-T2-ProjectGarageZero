@@ -78,11 +78,11 @@ def save_game():
 #verbs:
 go = ["go", "move", "travel", "proceed", "journey", "advance"]
 get = ["take", "get", "grab", "obtain", "acquire", "fetch", "procure", "attain"]
-look = ["gaze", "stare", "observe", "peer", "examine"]
+look = ["look at", "gaze at", "stare at", "observe", "peer at", "examine"]
 use = ["utilize", "employ", "apply", "utilise", "exploit"]
 drop = ["drop", "leave", "discard", "abandon", "dump", "release"]
 drive = ["drive", "navigate", "steer", "pilot", "operate", "motor"]
-exit = ["exit", "leave", "depart", "vacate", "quit", "withdraw"]
+exit = ["exit", "leave", "depart"]
 start = ["start", "initiate", "commence", "launch", "begin", "ignite"]
 talk = ["converse with", "communicate with", "speak to", "engage with", "interact with"]
 
@@ -172,6 +172,16 @@ def drop_item(item_name, current_location):
         print(f"You dropped {item_name}.")
     else:
         print("You don't have that on you!")
+
+def look_at_item(item_name, current_location):
+    # Check if the item is in the current location
+    for item_data in items_data['Items']:
+        if item_data['Name'].lower() == item_name and item_data['Location'] == current_location:
+            print(item_data['Description'])
+            return
+    print("That item is not here or cannot be examined.")
+
+
 
 ## START GAME ##
 # start game function defined but not auto-run when file imports
@@ -401,6 +411,15 @@ def start_game():
         if any(user_input.startswith(verb) for verb in go):
             # Treat it as a "go" command
             verb = "go"
+
+        if any(user_input.startswith(verb) for verb in look):
+            verb = "look at"
+
+        if verb == 'look at':
+            # Get item name from the input
+            item_to_look_at = " ".join(words[2:])  # Remove the "look at" part from the input
+            # Call the look_at_item function to show the item's description
+            look_at_item(item_to_look_at, current_location)
 
 
         for direction_data in available_directions:
