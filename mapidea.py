@@ -86,6 +86,24 @@ def display_map_with_items(current_location):
                 print(" " + line)
         else:
             print(" " + line)
+    
+def display_map_with_position(current_location):
+    location_symbols = {
+        "elevator": "[E]",
+        "parking_west_1": "[PW1]",
+        "parking_west_2": "[PW2]",
+        "parking_west_3": "[PW3]",
+        "parking_east_1": "[PE1]",
+        "parking_east_2": "[PE2]",
+        "parking_east_3": "[PE3]",
+        "exit": "[X]"
+    }
+    
+    for line in map_visual:
+        if location_symbols.get(current_location, "") in line:
+            print(">" + line)
+        else:
+            print(" " + line)
 
 # Function to look at an item, location, or NPC and display its description
 def look_command(input_text):
