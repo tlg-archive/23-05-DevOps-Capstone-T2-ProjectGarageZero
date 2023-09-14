@@ -5,9 +5,7 @@ import pygame
 from pygame import mixer # for music and SFX
 import datetime
 
-# Function to clear the screen (you can define this function if not already defined)
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+## LOADING JSON ##
 
 # Load direction data from the JSON file
 with open('directions.json', 'r') as f:
@@ -25,6 +23,8 @@ with open('descriptions.json', 'r') as f:
 with open('items.json', 'r') as f:
     items_data = json.load(f)
 
+## INITIAL GAME STATE ##
+
 # Set initial inventory
 inventory = []
 # Initialize empty lists for storing previous commands and locations
@@ -34,6 +34,12 @@ previous_locations = []
 current_location= 'Elevator'
 # Set initial counter
 counter = 0
+
+## FUNCTIONS ##
+
+# Function to clear the screen (you can define this function if not already defined)
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 # Function to display player's inventory
 def display_inventory():
@@ -58,6 +64,7 @@ def save_game():
         "current_location": current_location,
         "counter": counter,
         "inventory": inventory,
+        "items_data": items_data,
         "previous_commands": previous_commands,
         "previous_locations": previous_locations,
         "current_music_volume": current_music_volume,
@@ -67,7 +74,6 @@ def save_game():
         with open(f'save_{timestamp}.json', 'w') as save_file:
             json.dump(save_data, save_file, indent=4)
             print(f"Game saved as save_{timestamp}.json!")
-
 
 #verbs:
 go = ["go", "move", "travel", "proceed", "journey", "advance"]
@@ -79,10 +85,6 @@ drive = ["drive", "navigate", "steer", "pilot", "operate", "motor"]
 exit = ["exit", "leave", "depart", "vacate", "quit", "withdraw"]
 start = ["start", "initiate", "commence", "launch", "begin", "ignite"]
 talk = ["converse with", "communicate with", "speak to", "engage with", "interact with"]
-
-
-
-
 
 ## MUSIC AND SFX ##
 # Setting current music volume value
@@ -196,7 +198,7 @@ def start_game():
         counter += 1
 
         # Printing header
-        print(f"{location_head : <25} {move_head : >25}\n")
+        print(f"\n\n{location_head : <25} {move_head : >25}\n")
 
         # Get and print the current location's description
         current_location_data = None
@@ -366,9 +368,6 @@ def start_game():
             for i in range(min(len(previous_locations), len(previous_commands))):
                 print(f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'")
             press_enter_to_return()
-
-
-
 
         # Split the user input into words
         words = user_input.split()
