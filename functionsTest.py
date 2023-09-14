@@ -46,7 +46,22 @@ def press_enter_to_return():
             break
         else:
             print("Invalid input. Press Enter to return to the game.")
-                
+
+#verbs:
+go = ["go", "move", "travel", "proceed", "journey", "advance"]
+get = ["take", "get", "grab", "obtain", "acquire", "fetch", "procure", "attain"]
+look = ["gaze", "stare", "observe", "peer", "examine"]
+use = ["utilize", "employ", "apply", "utilise", "exploit"]
+drop = ["drop", "leave", "discard", "abandon", "dump", "release"]
+drive = ["drive", "navigate", "steer", "pilot", "operate", "motor"]
+exit = ["exit", "leave", "depart", "vacate", "quit", "withdraw"]
+start = ["start", "initiate", "commence", "launch", "begin", "ignite"]
+talk = ["converse with", "communicate with", "speak to", "engage with", "interact with"]
+
+
+
+
+
 ## MUSIC AND SFX ##
 # Setting current music volume value
 current_music_volume=.3
@@ -325,19 +340,6 @@ def start_game():
 
 
 
-    # Check if the user wants to display command and location history
-        #if user_input == 'history':
-         #   clear_screen()
-          #  print("Previous locations:")
-           # for location in previous_locations:
-            #    print(location)
-            #print("\n--------")
-            #print("\n--------")
-          #  print("Previous commands:")
-           # for command in previous_commands:
-           #     print(command)
-           # press_enter_to_return()
-
 
         # Split the user input into words
         words = user_input.split()
@@ -350,6 +352,13 @@ def start_game():
 
         # Check if the entered direction is valid
         valid_direction = False
+
+        # Check if the user input matches "go" or its synonyms
+        if any(user_input.startswith(verb) for verb in go):
+            # Treat it as a "go" command
+            verb = "go"
+
+
         for direction_data in available_directions:
             if direction == direction_data['Direction'].lower() and verb == 'go':
                 current_location = direction_data['Destination']
