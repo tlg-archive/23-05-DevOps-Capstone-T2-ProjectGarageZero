@@ -289,9 +289,23 @@ def start_game():
             print(f"Your sound effects volume is now {int(current_sfx_volume * 10)} of 10")
 
         # If the user wants to get an item
-        if user_input.startswith('get '):
+        #if user_input.startswith('get '):
             # Get item name from the input
-            item_to_get = user_input[4:]  # Remove "get " from the input
+            #item_to_get = user_input[4:]  # Remove "get " from the input
+
+            # Check if the item is in the current room
+            #if item_to_get in available_items:
+                # Call the get_item function to pick up the item
+                #get_item(item_to_get, current_location)
+                # play a sound on channel 0 with a max time of 1250 milliseconds
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
+            #else:
+                #print("That's not here! (hint: type the name exactly)")
+
+        # If the user wants to get an item
+        if any(user_input.startswith(verb) for verb in get):
+            # Get item name from the input
+            item_to_get = user_input.split(maxsplit=1)[1]  # Remove the verb from the input
 
             # Check if the item is in the current room
             if item_to_get in available_items:
@@ -301,6 +315,8 @@ def start_game():
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
             else:
                 print("That's not here! (hint: type the name exactly)")
+
+
 
         # If the user wants to drop an item
         if user_input.startswith('drop '):
