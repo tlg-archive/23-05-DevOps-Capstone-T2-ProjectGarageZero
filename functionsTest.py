@@ -335,20 +335,6 @@ def start_game():
             print(f"Your sound effects volume is now {int(current_sfx_volume * 10)} of 10")
 
         # If the user wants to get an item
-        #if user_input.startswith('get '):
-            # Get item name from the input
-            #item_to_get = user_input[4:]  # Remove "get " from the input
-
-            # Check if the item is in the current room
-            #if item_to_get in available_items:
-                # Call the get_item function to pick up the item
-                #get_item(item_to_get, current_location)
-                # play a sound on channel 0 with a max time of 1250 milliseconds
-                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
-            #else:
-                #print("That's not here! (hint: type the name exactly)")
-
-        # If the user wants to get an item
         if any(user_input.startswith(verb) for verb in get):
             # Get item name from the input
             item_to_get = user_input.split(maxsplit=1)[1]  # Remove the verb from the input
@@ -361,8 +347,6 @@ def start_game():
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
             else:
                 print("That's not here! (hint: type the name exactly)")
-
-
 
         # If the user wants to drop an item
         if any(user_input.startswith(verb) for verb in drop):
@@ -377,20 +361,23 @@ def start_game():
             clear_screen()
             print("\n-------------HELP SCREEN-------------")
             print("At any point throughout this game, you can:")
-            print("-type 'inventory' to see your inventory")
-            print("-type 'map' to see a map of the game")
+            print("-type 'inventory' to list your inventory")
+            print("-type 'map' to view a map of the game")
             print("_____________________________________")
             print("\nGame Layout:")
-            print(f"Current Location: Displayed in the top left")
-            print(f"Moves you've taken: Displayed below")
-            print(f"Description of your location: You will see the description of your current location")
-            print("Your nearest exits: The places you can move to")
+            print(f"LOCATION: Where you are")
+            print(f"MOVES MADE: Number of commands since you started")
+            print(f"(Description of your location): What you see around you")
+            print("ITEMS: Things in the location you can interact with")
+            print("EXITS: The places you can move to")
             print("_____________________________________")
             print("\nGame Commands:")            
-            print("type 'drop' followed by an item to drop the item") 
-            print("type 'get' followed by an item to retrieve the item")
-            print("type 'go' followed by a direction to to move")
+            print("type 'drop' (item name) to drop the item on the ground") 
+            print("type 'get' (item name) to retrieve the item")
+            print("type 'go' (direction) to move")
             print("type 'quit' to exit the game")
+            print("type 'save' to save your progress--note: you only get 1 save slot!")
+            print("type 'load' to load your last save")
             print("\nCommands Coming Soon:")
             print("'talk' will allow you to talk to the characters")
             print("_____________________________________")
