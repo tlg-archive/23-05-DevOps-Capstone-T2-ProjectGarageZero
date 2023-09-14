@@ -3,6 +3,7 @@ from mapidea import display_map
 import os
 import pygame
 from pygame import mixer # for music and SFX
+import datetime
 
 # Function to clear the screen (you can define this function if not already defined)
 def clear_screen():
@@ -26,10 +27,13 @@ with open('items.json', 'r') as f:
 
 # Set initial inventory
 inventory = []
-
 # Initialize empty lists for storing previous commands and locations
 previous_commands = []
 previous_locations = []
+# Set initial location
+current_location= 'Elevator'
+# Set initial counter
+counter = 0
 
 # Function to display player's inventory
 def display_inventory():
@@ -46,6 +50,24 @@ def press_enter_to_return():
             break
         else:
             print("Invalid input. Press Enter to return to the game.")
+
+# Save game functionality
+def save_game():
+        global current_location, counter, inventory, previous_commands, previous_locations, current_music_volume, current_sfx_volume
+        save_data = {
+        "current_location": current_location,
+        "counter": counter,
+        "inventory": inventory,
+        "previous_commands": previous_commands,
+        "previous_locations": previous_locations,
+        "current_music_volume": current_music_volume,
+        "current_sfx_volume": current_sfx_volume
+    }
+        timestamp = datetime.datetime.now().strftime('%m-%d_%H-%M')
+        with open(f'save_{timestamp}.json', 'w') as save_file:
+            json.dump(save_data, save_file, indent=4)
+            print(f"Game saved as save_{timestamp}.json!")
+
 
 #verbs:
 go = ["go", "move", "travel", "proceed", "journey", "advance"]
@@ -152,6 +174,8 @@ def drop_item(item_name, current_location):
 ## START GAME ##
 # start game function defined but not auto-run when file imports
 def start_game():
+    #global variables
+    global current_location, counter
 
     #Play background music and set up SFX
     background_music()
@@ -220,6 +244,11 @@ def start_game():
         if user_input == 'quit':
             print("Exiting the game. Goodbye!")
             break
+
+        # Check if user want to save game
+        if user_input == "save":
+            save_game()
+            continue
 
         # Check if the user wants to stop music
         if user_input == 'musicoff':
