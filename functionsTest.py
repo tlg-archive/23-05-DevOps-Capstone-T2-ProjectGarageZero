@@ -4,8 +4,11 @@ import os
 import pygame
 from pygame import mixer # for music and SFX
 import datetime
+import pickle
 
+##################
 ## LOADING JSON ##
+##################
 
 # Load direction data from the JSON file
 with open('directions.json', 'r') as f:
@@ -35,7 +38,9 @@ current_location= 'Elevator'
 # Set initial counter
 counter = 0
 
+###############
 ## FUNCTIONS ##
+###############
 
 # Function to clear the screen (you can define this function if not already defined)
 def clear_screen():
@@ -59,8 +64,7 @@ def press_enter_to_return():
 
 # Save game functionality
 def save_game():
-        global current_location, counter, inventory, previous_commands, previous_locations, current_music_volume, current_sfx_volume
-        save_data = {
+    game_state = {
         "current_location": current_location,
         "counter": counter,
         "inventory": inventory,
@@ -70,10 +74,33 @@ def save_game():
         "current_music_volume": current_music_volume,
         "current_sfx_volume": current_sfx_volume
     }
-        timestamp = datetime.datetime.now().strftime('%m-%d_%H-%M')
-        with open(f'save_{timestamp}.json', 'w') as save_file:
-            json.dump(save_data, save_file, indent=4)
-            print(f"Game saved as save_{timestamp}.json!")
+    
+    with open('saved_game.pkl', 'wb') as file:
+        pickle.dump(game_state, file)
+
+    print("Game saved!")
+
+# Load game functionality
+def load_game():
+    global current_location, counter, inventory, items_data, previous_commands, previous_locations, current_music_volume, current_sfx_volume
+  
+    try:
+        with open('saved_game.pkl', 'rb') as file:
+            game_state = pickle.load(file)
+
+        current_location = game_state['current_location']
+        counter = game_state['counter']
+        inventory = game_state['inventory']
+        items_data = game_state['items_data']
+        previous_commands = game_state['previous_commands']
+        previous_locations = game_state['previous_locations']
+        current_music_volume = game_state['current_music_volume']
+        current_sfx_volume = game_state['current_sfx_volume']
+
+        print("Game successfully loaded!")
+    except FileNotFoundError:
+        print("No saved game found!")
+
 
 #verbs:
 go = ["go", "move", "travel", "proceed", "journey", "advance"]
@@ -86,7 +113,10 @@ exit = ["exit", "leave", "depart"]
 start = ["start", "initiate", "commence", "launch", "begin", "ignite"]
 talk = ["converse with", "communicate with", "speak to", "engage with", "interact with"]
 
+###################
 ## MUSIC AND SFX ##
+###################
+
 # Setting current music volume value
 current_music_volume=.3
 # Setting current SFX volume value
@@ -181,9 +211,10 @@ def look_at_item(item_name, current_location):
             return
     print("That item is not here or cannot be examined.")
 
-
-
+################
 ## START GAME ##
+################
+
 # start game function defined but not auto-run when file imports
 def start_game():
     #global variables
@@ -245,6 +276,11 @@ def start_game():
 
         # Get user input for the direction
         user_input = input("What would you like to do next? (type 'help' to see valid commands or 'quit' to exit):\n").strip().lower()
+
+        # Check if user wants to load a saved game
+        if user_input == 'load':
+            load_game()
+            continue
 
         # Add the user input to the commands list
         previous_commands.append(user_input)
@@ -387,7 +423,7 @@ def start_game():
             press_enter_to_return()
             continue
 
-# Check if the user wants to display command and location history
+        # Check if the user wants to display command and location history
         if user_input == 'history':
             clear_screen()
             print("History:")
