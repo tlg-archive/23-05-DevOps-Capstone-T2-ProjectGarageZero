@@ -319,9 +319,9 @@ def start_game():
 
 
         # If the user wants to drop an item
-        if user_input.startswith('drop '):
+        if any(user_input.startswith(verb) for verb in drop):
             # Get item name from the input
-            item_to_drop = user_input[5:]  # Remove "drop " from the input
+            item_to_drop = user_input.split(maxsplit=1)[1]  # Remove "drop " from the input
             # Call the drop_item function to drop the item
             drop_item(item_to_drop, current_location)
             # play a sound on channel 0 with a max time of 1000 milliseconds
