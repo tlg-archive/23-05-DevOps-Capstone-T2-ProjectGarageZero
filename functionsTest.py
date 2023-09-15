@@ -373,6 +373,7 @@ def start_game():
             print("At any point throughout this game, you can:")
             print("-type 'inventory' to list your inventory")
             print("-type 'map' to view a map of the game")
+            print("-type 'history' to view a log of your previous commands")
             print("_____________________________________")
             print("\nGame Layout:")
             print(f"LOCATION: Where you are")
