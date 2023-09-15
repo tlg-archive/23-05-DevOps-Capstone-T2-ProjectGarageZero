@@ -38,6 +38,9 @@ current_location= 'Elevator'
 # Set initial counter
 counter = 0
 
+inside_mazda = False
+
+
 ###############
 ## FUNCTIONS ##
 ###############
@@ -109,9 +112,10 @@ look = ["look at", "gaze at", "stare at", "observe", "peer at", "examine"]
 use = ["utilize", "employ", "apply", "utilise", "exploit"]
 drop = ["drop", "leave", "discard", "abandon", "dump", "release"]
 drive = ["drive", "navigate", "steer", "pilot", "operate", "motor"]
-exit = ["exit", "leave", "depart"]
+exit = ["exit", "leave", "depart", "get out of"]
 start = ["start", "initiate", "commence", "launch", "begin", "ignite"]
 talk = ["converse with", "communicate with", "speak to", "engage with", "interact with"]
+enter = ["enter", "get inside", "get in", "sit in", "use"]
 
 ###################
 ## MUSIC AND SFX ##
@@ -444,6 +448,52 @@ def start_game():
             # Call the look_at_item function to show the item's description
             look_at_item(item_to_look_at, current_location)
 
+
+###############################
+##############mazda############
+##############################
+        # If the user wants to get an item
+        if any(user_input.startswith(verb) for verb in enter):
+            # Get item name from the input
+            item_to_get = user_input.split(maxsplit=1)[1]  # Remove the verb from the input
+
+            # Check if the item is the "mazda"
+            if item_to_get.lower() == 'mazda':
+                # Check if the player is already in the "mazda"
+                if current_location == 'Parking West 2' and 'mazda' not in inventory:
+                    # Add the "mazda" to the inventory
+                    inventory.append('mazda')
+                    print("You have entered the Mazda.")
+                    continue
+                elif 'mazda' in inventory:
+                    print("You are already in the Mazda.")
+                    continue
+
+            # Check if the item is in the current room
+            if item_to_get in available_items:
+                # Call the get_item function to pick up the item
+                get_item(item_to_get, current_location)
+                # play a sound on channel 0 with a max time of 1250 milliseconds
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
+            else:
+                print("That's not here! (hint: type the name exactly)")
+
+        # If the user wants to exit
+        if any(user_input.startswith(verb) for verb in exit):
+            # Check if the player is in the Mazda
+            if 'mazda' in inventory:
+                # Remove the Mazda from the inventory
+                inventory.remove('mazda')
+                print("You have exited the Mazda.")
+            else:
+                print("You are not inside the Mazda.")
+            continue
+
+
+
+###############################
+##############mazda############
+##############################
 
         for direction_data in available_directions:
             if direction == direction_data['Direction'].lower() and verb == 'go':

@@ -29,12 +29,14 @@ class Item:
         self.use = use
         self.item_type = item_type
 
+
+
 # Define your functions for game logic here
 # SAMMY: MOVING UP FOR CODE EXECUTION TO KEEP IT FIRST
 if __name__ == '__main__':
     display_splash_screen()
     main_game_loop()
-    
+
 
 # Create instances of your classes based on the loaded data
 locations = []
