@@ -23,7 +23,7 @@
         "Attendant"
       ],
       "Note": "none",
-      "Description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you."
+      "Description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you. (You can type TALK ATTENDANT to interact with them.)"
     },
     {
       "Name": "Parking East 1",
@@ -54,7 +54,7 @@
         "Newspaper"
       ],
       "Note": "none",
-      "Description": "In a dimly lit parking lot, cars were parked with considerable space between them, creating an atmosphere of isolation and desolation. Amidst this eerie setting, there was a man who seemed out of place. He wore a long, worn leather jacket that reached down to his ankles, and a wide-brimmed hat pulled low, obscuring most of his face. The shadow cast by his hat concealed his eyes, adding an air of mystery and unease. The man's movements were peculiar and unsettling. He stood between the parked cars, swaying his head from side to side, as if he were carefully examining the area. His head moved in a slow, deliberate manner, almost as if he were 'scooping out' the surroundings. His actions were so deliberate that they gave the impression of someone on the lookout, or perhaps even someone with malicious intent. The man's presence created an uneasy tension in the otherwise still night. His hidden gaze and unsettling movements left an indelible mark on the otherwise vacant and quiet space, leaving those who observed him with an unsettling sense of curiosity and apprehension."
+      "Description": "In a dimly lit parking lot, cars were parked with considerable space between them, creating an atmosphere of isolation and desolation. Amidst this eerie setting, there was a man who seemed out of place. He wore a long, worn leather jacket that reached down to his ankles, and a wide-brimmed hat pulled low, obscuring most of his face. The shadow cast by his hat concealed his eyes, adding an air of mystery and unease. The man's movements were peculiar and unsettling. He stood between the parked cars, swaying his head from side to side, as if he were carefully examining the area. His head moved in a slow, deliberate manner, almost as if he were 'scooping out' the surroundings. His actions were so deliberate that they gave the impression of someone on the lookout, or perhaps even someone with malicious intent. The man's presence created an uneasy tension in the otherwise still night. His hidden gaze and unsettling movements left an indelible mark on the otherwise vacant and quiet space, leaving those who observed him with an unsettling sense of curiosity and apprehension. (You can type TALK CREEPY MAN to interact with them.)"
     },
     {
       "Name": "Parking East 3",
