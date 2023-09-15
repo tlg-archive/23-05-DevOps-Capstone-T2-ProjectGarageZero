@@ -109,12 +109,10 @@ def load_game():
 go = ["go", "move", "travel", "proceed", "journey", "advance"]
 get = ["take", "get", "grab", "obtain", "acquire", "fetch", "procure", "attain"]
 look = ["look at", "gaze at", "stare at", "observe", "peer at", "examine"]
-use = ["utilize", "employ", "apply", "utilise", "exploit"]
 drop = ["drop", "leave", "discard", "abandon", "dump", "release"]
-drive = ["drive", "navigate", "steer", "pilot", "operate", "motor"]
 exit = ["exit", "leave", "depart", "get out of"]
-start = ["start", "initiate", "commence", "launch", "begin", "ignite"]
-talk = ["converse with", "communicate with", "speak to", "engage with", "interact with"]
+start = ["start", "turn on", "ignite"]
+talk = ["converse with", "communicate with", "speak to", "engage with", "interact with", "talk to"]
 enter = ["enter", "get inside", "get in", "sit in", "use"]
 
 ###################
@@ -222,7 +220,10 @@ def look_at_item(item_name, current_location):
 # start game function defined but not auto-run when file imports
 def start_game():
     #global variables
-    global current_location, counter
+    global current_location, counter, car_started
+
+    car_started = False
+
 
     #Play background music and set up SFX
     background_music()
@@ -477,6 +478,20 @@ def start_game():
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
             else:
                 print("That's not here! (hint: type the name exactly)")
+
+        if 'mazda' in inventory:
+            # Check if the user wants to start the car
+            if any(user_input.startswith(verb) for verb in start):
+                # Add a flag to indicate that the car has been started
+                car_started = True
+                print("You have started the car.")
+                continue
+            
+            # Check if the car has been started before allowing "go" command
+            if not car_started:
+                print("You need to start the car before you can go anywhere.")
+                continue
+
 
         # If the user wants to exit
         if any(user_input.startswith(verb) for verb in exit):
