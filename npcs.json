@@ -3,6 +3,7 @@
     {
       "Name": "Attendant",
       "Description": "The parking lot attendant looks old and grumpy, with a scowl on his face.",
+      "Location": "Parking Exit",
       "Dialogue": [
         "What do you want, kid?",
         "I've been working in this garage for 40 years. Seen it all.",
@@ -15,6 +16,7 @@
     {
       "Name": "Creepy Man",
       "Description": "John is a creepy character you encounter in the parking lot.",
+      "Location": "Parking East 2",
       "Dialogue": [
         "I'm looking for my car. Can you give me directions?",
         "It's a dark grey Mazda.",
