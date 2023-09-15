@@ -2,7 +2,7 @@
 	"NPCs": [
 		{
 			"Name": "Attendant",
-			"Location": "exit",
+			"Location": "Parking Exit",
 			"Description": "The parking lot attendant looks old and grumpy, with a scowl on his face.",
 			"Greetings": [
 				"Hello, do you have your ticket?",
@@ -35,7 +35,7 @@
 		},
 		{
 			"Name": "Creepy Man",
-			"Location": "parking east 2",
+			"Location": "Parking East 2",
 			"Description": "John is a creepy character you encounter in the parking lot.",
 			"Greetings": [
 				"I've been waiting for you.",

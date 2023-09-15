@@ -58,8 +58,8 @@
       "Name": "mazda",
       "DescriptionID": "mazda_description",
       "Location": "Parking West 2",
-      "Use": "none",
-      "Type": "none",
+      "Use": "drive",
+      "Type": "car",
       "Note": "Navigate parking lot. Leave Parking lot.",
       "Description": "Dark grey Mazda with a black leather interior. It can be used to navigate the parking lot and leave the parking lot."
     },
