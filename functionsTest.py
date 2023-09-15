@@ -3,8 +3,10 @@ from mapidea import display_map
 import os
 import pygame
 from pygame import mixer # for music and SFX
-import datetime
-import pickle
+import datetime #for save games
+import pickle #for save games
+from textwrap import wrap #to help limit description width
+import shutil #dynamic line creation for section breaks
 
 ##################
 ## LOADING JSON ##
@@ -243,7 +245,7 @@ def start_game():
         counter += 1
 
         # Printing header
-        print(f"\n\n{location_head : <25} {move_head : >25}\n")
+        print(f"\n{location_head : <25} {move_head : >25}\n")
 
         # Get and print the current location's description
         current_location_data = None
@@ -253,7 +255,10 @@ def start_game():
                 break
 
         if current_location_data:
-            print(f"{current_location_data['Description']}\n") 
+            wrapped_description = wrap(current_location_data['Description'], width=60)
+            for line in wrapped_description:
+                print(line)
+            print("\n") 
 
         # Get items in room
         available_items = []
@@ -382,8 +387,8 @@ def start_game():
             print("type 'quit' to exit the game")
             print("type 'save' to save your progress--note: you only get 1 save slot!")
             print("type 'load' to load your last save")
-            print("\nCommands Coming Soon:")
-            print("'talk' will allow you to talk to the characters")
+            print("\nComing Soon:")
+            print("type 'talk' (NPC name) to speak to NPC ")
             print("_____________________________________")
             print("\nSound Commands:")
             print("type 'musicon' or 'musicoff' to toggle music")
@@ -489,8 +494,6 @@ def start_game():
                 print("You are not inside the Mazda.")
             continue
 
-
-
 ###############################
 ##############mazda############
 ##############################
@@ -505,6 +508,10 @@ def start_game():
 
         if not valid_direction:
             print("Invalid direction. Please choose a valid direction.")
+
+        terminal_width, _ = shutil.get_terminal_size()
+        print("-" * terminal_width)
+
 
 if __name__ == "__main__":
     start_game()
