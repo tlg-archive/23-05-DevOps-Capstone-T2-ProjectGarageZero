@@ -110,7 +110,7 @@ def load_game():
 #verbs:
 go = ["go", "move", "travel", "proceed", "journey", "advance"]
 get = ["take", "get", "grab", "obtain", "acquire", "fetch", "procure", "attain"]
-look = ["look at", "gaze at", "stare at", "observe", "peer at", "examine"]
+look = ["look at", "gaze at", "stare at", "observe", "peer at", "examine", "look"]
 drop = ["drop", "leave", "discard", "abandon", "dump", "release"]
 exit = ["exit", "leave", "depart", "get out of"]
 start = ["start", "turn on", "ignite"]
@@ -386,6 +386,7 @@ def start_game():
             print("type 'drop' (item name) to drop the item on the ground") 
             print("type 'get' (item name) to retrieve the item")
             print("type 'go' (direction) to move")
+            print("type 'look at' to view an item description")
             print("type 'quit' to exit the game")
             print("type 'save' to save your progress--note: you only get 1 save slot!")
             print("type 'load' to load your last save")
