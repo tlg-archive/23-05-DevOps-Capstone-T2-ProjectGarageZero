@@ -368,7 +368,7 @@ def start_game():
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=1000)
 
         if user_input == 'help':
-            clear_screen()
+            #clear_screen()
             print("\n-------------HELP SCREEN-------------")
             print("At any point throughout this game, you can:")
             print("-type 'inventory' to list your inventory")
@@ -402,7 +402,7 @@ def start_game():
             #added this to check for the return command
             # play a sound on channel 0 with a max time of 2000 milliseconds
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/help.mp3'), maxtime=2000)
-            press_enter_to_return()
+            #press_enter_to_return()
 
             continue
 
