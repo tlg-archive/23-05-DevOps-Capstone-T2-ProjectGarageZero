@@ -414,11 +414,11 @@ def start_game():
         
         # Check if the user requests the map directly
         elif user_input == 'map':
-            clear_screen()
+            #clear_screen()
             display_map()
             # play a sound on channel 0 with a max time of 1000 milliseconds
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/map.mp3'), maxtime=1000)
-            press_enter_to_return()
+            #press_enter_to_return()
             continue
 
         # Check if the user wants to display command and location history
