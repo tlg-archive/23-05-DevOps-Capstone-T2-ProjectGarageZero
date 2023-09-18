@@ -243,7 +243,7 @@ def start_game():
         # Print current # of moves made, increment up for next loop -- CHANGE TO COUNTDOWN EVENTUALLY
         move_head = f"MOVES MADE: {counter}"
 
-        counter += 1
+        #counter += 1
 
         # Printing header
         print(f"\n{location_head : <25} {move_head : >25}\n")
@@ -527,6 +527,7 @@ def start_game():
             if direction == direction_data['Direction'].lower() and verb == 'go':
                 current_location = direction_data['Destination']
                 valid_direction = True
+                counter += 1
                 # play a sound on channel 0 with a max time of 2000 milliseconds
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=2000)
                 break
