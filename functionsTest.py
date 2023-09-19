@@ -3,7 +3,6 @@ from mapidea import display_map
 import os
 import pygame
 from pygame import mixer # for music and SFX
-import datetime #for save games
 import pickle #for save games
 from textwrap import wrap #to help limit description width
 import shutil #dynamic line creation for section breaks
@@ -13,19 +12,19 @@ import shutil #dynamic line creation for section breaks
 ##################
 
 # Load direction data from the JSON file
-with open('directions.json', 'r') as f:
+with open('data/directions.json', 'r') as f:
     directions_data = json.load(f)
 
 # Load location data from the JSON file
-with open('locations.json', 'r') as f:
+with open('data/locations.json', 'r') as f:
     locations_data = json.load(f)
 
 # Load description data from the JSON file
-with open('descriptions.json', 'r') as f:
+with open('data/descriptions.json', 'r') as f:
     descriptions_data = json.load(f)
 
 # Load items data from the JSON file
-with open('items.json', 'r') as f:
+with open('data/items.json', 'r') as f:
     items_data = json.load(f)
 
 ## INITIAL GAME STATE ##
@@ -56,7 +55,9 @@ def display_inventory():
     print("Inventory:")
     for item in inventory:
         print(item)
-        
+
+
+#DELETE LATER MAYBE       
 def press_enter_to_return():
     print("\nPress Enter to return to the game.")
     while True:
