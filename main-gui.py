@@ -6,7 +6,7 @@ class ProjectZeroGUI:
         #initilize the tkinter window and size
         self.root = tk.Tk()
         self.root.geometry("500x500")
-
+        self.label = tk.Label(self.root, text="Hello World")
         self.label.pack()
         self.root.mainloop()
 
