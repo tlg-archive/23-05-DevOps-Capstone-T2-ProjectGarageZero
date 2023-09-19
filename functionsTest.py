@@ -407,11 +407,11 @@ def start_game():
             continue
 
         elif user_input == 'inventory':
-            clear_screen()
+            #clear_screen()
             display_inventory()
             # play a sound on channel 0 with a max time of 1000 milliseconds
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/inventory.mp3'), maxtime=1000) 
-            press_enter_to_return()
+            #press_enter_to_return()
         
         # Check if the user requests the map directly
         elif user_input == 'map':
