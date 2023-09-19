@@ -15,6 +15,10 @@ class ProjectZeroGUI:
         self.start_button = tk.Button(self.root, text="Start Game")
         self.start_button.pack()
 
+        #example text input
+        self.command_line = tk.Entry(self.root)
+        self.command_line.pack()
+
         #display the window
         self.root.mainloop()
 
