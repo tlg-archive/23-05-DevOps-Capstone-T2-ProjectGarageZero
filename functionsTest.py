@@ -16,6 +16,12 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 text_file = os.path.join(script_dir, 'data', 'game-text.json')
 directions_file = os.path.join(script_dir, 'data', 'directions.json')
 
+def convert_json():
+    with open(text_file) as json_file:
+        game_text = json.load(json_file)
+    return game_text
+game_text = convert_json()
+
 with open(directions_file, 'r') as f:
     directions_data = json.load(f)
 
@@ -501,36 +507,7 @@ def start_game():
 
         if user_input == 'help':
             #clear_screen()
-            print("\n-------------HELP SCREEN-------------")
-            print("At any point throughout this game, you can:")
-            print("-type 'inventory' to list your inventory")
-            print("-type 'map' to view a map of the game")
-            print("-type 'history' to view a log of your previous commands")
-            print("_____________________________________")
-            print("\nGame Layout:")
-            print(f"LOCATION: Where you are")
-            print(f"MOVES MADE: Number of commands since you started")
-            print(f"(Description of your location): What you see around you")
-            print("ITEMS: Things in the location you can interact with")
-            print("EXITS: The places you can move to")
-            print("_____________________________________")
-            print("\nGame Commands:")            
-            print("type 'drop' (item name) to drop the item on the ground") 
-            print("type 'get' (item name) to retrieve the item")
-            print("type 'go' (direction) to move")
-            print("type 'look at' to view an item description")
-            print("type 'quit' to exit the game")
-            print("type 'save' to save your progress--note: you only get 1 save slot!")
-            print("type 'load' to load your last save")
-            print("\nComing Soon:")
-            print("type 'talk' (NPC name) to speak to NPC ")
-            print("_____________________________________")
-            print("\nSound Commands:")
-            print("type 'musicon' or 'musicoff' to toggle music")
-            print("type 'musicup' or 'musicdown' to adjust music volume")
-            print("type 'sfxon' or 'sfxoff' to toggle sound effects")
-            print("type 'sfxup' or 'sfxdown' to adjust sound effects volume")
-            print("_____________________________________")
+            print(game_text['help'])
             #added this to check for the return command
             # play a sound on channel 0 with a max time of 2000 milliseconds
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/help.mp3'), maxtime=2000)
