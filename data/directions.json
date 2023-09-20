@@ -48,7 +48,7 @@
       "Location": "Parking East 3",
       "Directions": [
         { "Direction": "North", "Destination": "Parking East 2" },
-        { "Direction": "South", "Destination": "Parking Exit" },
+        { "Direction": "South", "Destination": "Parking Exit" } , 
         { "Direction": "West", "Destination": "Parking West 3" }
       ]
     },
