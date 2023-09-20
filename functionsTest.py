@@ -6,6 +6,7 @@ from pygame import mixer # for music and SFX
 import pickle #for save games
 from textwrap import wrap #to help limit description width
 import shutil #dynamic line creation for section breaks
+from interaction import get_npc, interact_with_npc, data
 
 ##################
 ## LOADING JSON ##
@@ -457,6 +458,14 @@ def start_game():
             # Call the look_at_item function to show the item's description
             look_at_item(item_to_look_at, current_location)
 
+        if user_input.startswith('talk'):
+            npc_name = user_input.split(maxsplit=1)[1]  
+            npc = get_npc(npc_name)  
+            if npc:
+                interact_with_npc(npc)  
+            else:
+                print(f"No NPC named {npc_name} found.")
+            continue 
 
 ###############################
 ##############mazda############

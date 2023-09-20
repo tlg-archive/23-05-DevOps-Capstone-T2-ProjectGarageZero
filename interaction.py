@@ -4,7 +4,7 @@ import random
 # Load data from the external file 'npcdata.json'
 def load_data():
     try:
-        with open('npcdata.json', 'r') as file:
+        with open('data/npcdata.json', 'r') as file:
             return json.load(file)
     except Exception as e:
         print(f"Error loading JSON data: {e}")
@@ -76,5 +76,6 @@ def main():
         else:
             print("Invalid command.")
 
-main()
+if __name__ == "__interaction__":
+    main()
 
