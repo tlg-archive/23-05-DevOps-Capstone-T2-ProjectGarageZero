@@ -1,7 +1,7 @@
 import tkinter as tk
 import os
 import json
-from tkinter import Frame, BooleanVar
+from tkinter import Frame, BooleanVar, messagebox
 from functionsTest import directions_data, locations_data, items_data, descriptions_data
 
 #helper functions
@@ -15,15 +15,31 @@ def convert_json():
 game_text = convert_json()
 
 #initilize the tkinter window and size
-root = tk.Tk()
-#root.geometry("500x500")
+gui_window = tk.Tk()
+#gui_window.geometry("500x500")
+
+#HELP TEXT
+def display_help():
+    print("YEY")
+    messagebox.showinfo("showinfo", game_text["help"])
+
+
+#MENUBAR
+menubar = tk.Menu(gui_window)
+gui_window.config(menu=menubar)
+
+#HELP
+help_menu = tk.Menu(menubar, tearoff=0)
+help_menu.add_command(label="Help", command=display_help)
+
+menubar.add_cascade(menu=help_menu, label="Help")
 
 #title frame
-title_frame = Frame(root)
+title_frame = Frame(gui_window)
 title_frame.pack()
 
 #all frames
-game_frame = Frame(root)
+game_frame = Frame(gui_window)
 
 #general label settings
 title_label = tk.Label(title_frame, text=game_text["title"])
@@ -56,7 +72,7 @@ start_button.pack()
 
 #Game Frame Stuff
 def start_game():
-    #game_frame = Frame(root)
+    #game_frame = Frame(gui_window)
     #game_frame.pack()
     game_frame.tkraise()
     game_frame.pack()
@@ -99,7 +115,7 @@ while counter < 1000:
     location_description.pack()
 
     for direction_data in available_directions:
-            tk.Label(game_frame,text=f"{direction_data['Direction']} - {direction_data['Destination']}")
+            tk.Label(game_frame,text=f"{direction_data['Direction']} - {direction_data['Destination']}").pack()
     #tk.Label.config(text=("\n".join(available_directions)))
             
     game_command = tk.Entry(game_frame)
@@ -111,4 +127,4 @@ while counter < 1000:
     counter += 1
 
 if __name__ == "__main__":
-    root.mainloop()
+    gui_window.mainloop()
