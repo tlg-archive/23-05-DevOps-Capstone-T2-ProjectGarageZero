@@ -1,28 +1,48 @@
 import tkinter as tk
+import os
+import json
 
-class ProjectZeroGUI:
-    def __init__(self):
+#helper functions
+script_dir = os.path.dirname(os.path.realpath(__file__))
+text_file = os.path.join(script_dir, 'data', 'game-text.json')
 
-        #initilize the tkinter window and size
-        self.root = tk.Tk()
-        self.root.geometry("500x500")
+def convert_json():
+    with open(text_file) as json_file:
+        game_text = json.load(json_file)
+    return game_text
+game_text = convert_json()
 
-        #general label settings
-        self.label = tk.Label(self.root, text="Hello World")
-        self.label.pack()
+#initilize the tkinter window and size
+root = tk.Tk()
+#root.geometry("500x500")
 
-        #example button
-        self.start_button = tk.Button(self.root, text="Start Game")
-        self.start_button.pack()
+#general label settings
+title_label = tk.Label(root, text=game_text["title"])
+title_label.pack()
 
-        #example text input
-        self.command_line = tk.Entry(self.root)
-        self.command_line.pack()
+#display the window
+#root.mainloop()
 
-        #display the window
-        self.root.mainloop()
+def choose_start():
+    command = command_line.get()
+    if command in ['1', 'start', 'start game']:
+        #start_game()
+        print('Start Game')
+    elif command in ['2', 'quit', 'exit']:
+        #clear_screen()
+        print("Goodbye!\n")
+        #sys.exit()
+    else:
+        print("Invalid choice. Press Enter to continue...")
 
-    #define functions below
+
+#example text input
+command_line = tk.Entry(root)
+command_line.pack()
+
+#example button
+start_button = tk.Button(root, text="Start Game", command = choose_start)
+start_button.pack()
 
 if __name__ == "__main__":
-    ProjectZeroGUI()
+    root.mainloop()
