@@ -643,6 +643,10 @@ def start_game():
 
         for direction_data in available_directions:
             if direction == direction_data['Direction'].lower() and verb == 'go':
+                if direction_data['Destination'] == "Elevator" and 'mazda' in inventory:
+                    print("You can't take the Mazda into the elevator!")
+                    continue                
+
                 current_location = direction_data['Destination']
                 valid_direction = True
                 counter += 1
