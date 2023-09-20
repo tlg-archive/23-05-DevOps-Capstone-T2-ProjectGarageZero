@@ -1,7 +1,7 @@
 {
 	"NPCs": [
 		{
-			"Name": "Attendant",
+			"Name": "attendant",
 			"Location": "Parking Exit",
 			"Description": "The parking lot attendant looks old and grumpy, with a scowl on his face.",
 			"Greetings": [
