@@ -1,5 +1,4 @@
 import json
-from mapidea import display_map
 import os
 import pygame
 from pygame import mixer # for music and SFX
