@@ -12,19 +12,29 @@ from interaction import get_npc, interact_with_npc, data
 ##################
 
 # Load direction data from the JSON file
-with open('data/directions.json', 'r') as f:
+script_dir = os.path.dirname(os.path.realpath(__file__))
+text_file = os.path.join(script_dir, 'data', 'game-text.json')
+directions_file = os.path.join(script_dir, 'data', 'directions.json')
+
+with open(directions_file, 'r') as f:
     directions_data = json.load(f)
 
 # Load location data from the JSON file
-with open('data/locations.json', 'r') as f:
+locations_file = os.path.join(script_dir, 'data', 'locations.json')
+
+with open(locations_file, 'r') as f:
     locations_data = json.load(f)
 
 # Load description data from the JSON file
-with open('data/descriptions.json', 'r') as f:
+descriptions_file = os.path.join(script_dir, 'data', 'descriptions.json')
+
+with open(descriptions_file, 'r') as f:
     descriptions_data = json.load(f)
 
 # Load items data from the JSON file
-with open('data/items.json', 'r') as f:
+items_file = os.path.join(script_dir, 'data', 'items.json')
+
+with open(items_file, 'r') as f:
     items_data = json.load(f)
 
 ## INITIAL GAME STATE ##
