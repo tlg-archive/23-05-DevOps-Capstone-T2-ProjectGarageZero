@@ -11,7 +11,7 @@
         "Gum"
       ],
       "Note": "none",
-      "Description": "Walking out of the elevator you see the first floor of the underground garage was well-lit with fluorescent lights hanging from the ceiling. Crisp white lines painted on the smooth concrete floor delineated parking spaces for cars, while directional signs point the way to the nearest exit. Pedestrian walkways with yellow safety stripes ensured safe passage for those on foot."
+      "Description": "Exiting the elevator, you enter a well-lit underground garage with marked parking spaces, exit signs, and pedestrian walkways with safety stripes."
     },
     {
       "Name": "Parking Exit",
@@ -23,7 +23,7 @@
         "Attendant"
       ],
       "Note": "none",
-      "Description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you."
+      "Description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you. You can TALK to the ATTENDANT"
     },
     {
       "Name": "Parking East 1",
@@ -38,7 +38,7 @@
         "Light"
       ],
       "Note": "none",
-      "Description": "A sleek blue Tesla sat confidently in its parking spot, its polished exterior reflecting the ambient light in the underground garage. Behind the Tesla, an unusually large puddle had formed, its surface shimmering with rainbow-like patterns under the garage's fluorescent lights. This puddle had become quite the obstacle, blocking the path to the adjacent parking spaces. Upon closer inspection, it was clear that a rusty pipe overhead was the culprit behind this watery inconvenience. The leak from the pipe steadily dripped down into the puddle, creating a rhythmic plinking sound as it hit the water's surface. The leaky pipe had created a makeshift waterfall, with each drop contributing to the growing pool."
+      "Description": "A shiny blue Tesla was parked, and a big puddle from a rusty pipe behind it blocked nearby parking spaces. Dripping water created a rhythmic sound, making the puddle grow."
     },
     {
       "Name": "Parking East 2",
@@ -54,7 +54,7 @@
         "Newspaper"
       ],
       "Note": "none",
-      "Description": "In a dimly lit parking lot, cars were parked with considerable space between them, creating an atmosphere of isolation and desolation. Amidst this eerie setting, there was a man who seemed out of place. He wore a long, worn leather jacket that reached down to his ankles, and a wide-brimmed hat pulled low, obscuring most of his face. The shadow cast by his hat concealed his eyes, adding an air of mystery and unease. The man's movements were peculiar and unsettling. He stood between the parked cars, swaying his head from side to side, as if he were carefully examining the area. His head moved in a slow, deliberate manner, almost as if he were 'scooping out' the surroundings. His actions were so deliberate that they gave the impression of someone on the lookout, or perhaps even someone with malicious intent. The man's presence created an uneasy tension in the otherwise still night. His hidden gaze and unsettling movements left an indelible mark on the otherwise vacant and quiet space, leaving those who observed him with an unsettling sense of curiosity and apprehension."
+      "Description": "In a dimly lit parking lot with spaced cars, a mysterious man in a long leather jacket and wide hat moved strangely, making people curious and uneasy in the quiet night."
     },
     {
       "Name": "Parking East 3",
@@ -65,7 +65,7 @@
         "West": "Parking West 3"
       },
       "Note": "none",
-      "Description": "The vehicles were parked close to the exit, as if the proximity offered a comforting assurance of a swift departure from the garage's confines. As you approached this area, a faint but refreshing breeze wafted in from the direction of the garage exit. It carried with it the scent of exhaust fumes and the promise of the outside world, providing a contrast to the stale and enclosed atmosphere of the garage's interior. A conspicuous and unsightly hazard stood out. A large pool of dark, viscous oil had formed on the ground, as if a car had been leaking its vital fluids. The oil had spread into an irregular shape, resembling a dark, foreboding stain on the garage floor. The oily pool presented a potential disaster for anyone not paying attention to their step. It seemed to beckon danger, poised to ruin any outfit it came into contact with. The reflection of the fluorescent lights above created an unsettling, shimmering effect on its surface, making it appear even more treacherous. The pool of oil stood as a cautionary symbol, a reminder that even in the rush to escape, hazards could lie in wait to disrupt the journey. It served as a stark contrast to the anticipation of freedom offered by the distant exit, a reminder that navigating the path to relief sometimes required a careful watchful eye."
+      "Description": "Cars near the exit promised a quick getaway. A breeze from outside contrasted with the garage's stale air. A big oil spill on the ground looked menacing, reminding you to stay alert, even as you headed for the distant exit."
     },
     {
       "Name": "Parking West 1",
@@ -76,7 +76,7 @@
         "South": "Parking West 2"
       },
       "Note": "none",
-      "Description": "The bright overhead lights illuminated rows of cars neatly lined up next to one another, their polished exteriors reflecting the artificial glow. The vehicles sat in an orderly fashion, as if carefully arranged by an invisible hand, creating a sense of symmetry and organization in the otherwise mundane surroundings. The parking lot was fully occupied, every available space claimed by a vehicle. This lack of vacancies added an element of frustration to the otherwise ordinary scene, as drivers circled in search of the elusive empty spot, all while maintaining a façade of patience."
+      "Description": "Bright lights illuminated parked cars, their shiny exteriors reflecting the artificial glow. The lot was full, and drivers searched for spots with strained patience."
     },
     {
       "Name": "Parking West 2",
@@ -91,7 +91,7 @@
         "Mouse"
       ],
       "Note": "none",
-      "Description": "There it was, nestled in its parking spot, a dark grey Mazda. The car had clearly seen its share of road adventures, evident from the dust and grime that had accumulated on its sleek exterior. Despite being overdue for a wash, the Mazda was a comforting sight at the end of a long day. The area around the car in the parking spot was a mix of concrete and faded yellow parking lines. Overhead, the garage's fluorescent lights cast a pale, somewhat clinical glow, emphasizing the car's dusky hue. A few flickering bulbs added a subtle, almost cinematic ambiance to the scene. To the left of the Mazda, a concrete support pillar stood tall and sturdy, partially blocking the view of the neighboring parking space. On the right, a row of cars occupied nearby spots. A faint echo of footsteps and distant car engines filled the air, hinting at the comings and goings of other garage patrons. The low hum of the ventilation system provided a constant background noise, contributing to the sense of quietude and solitude in this corner of the underground parking facility."
+      "Description": "A dusty grey Mazda was parked there, offering comfort after a long day. The parking area had faded lines and dim lights, with faint sounds of others nearby, creating a quiet atmosphere in this underground corner."
     },
     {
       "Name": "Parking West 3",
@@ -101,7 +101,7 @@
         "East": "Parking East 3"
       },
       "Note": "none",
-      "Description": "In a relatively secluded section of the parking lot, only a few cars were parked, creating an unusual sense of openness amidst the usually crowded garage. Here, the ground was littered with an assortment of discarded items. Empty coffee cups, crumpled paper, and fast-food wrappers were scattered haphazardly, as if they had been casually abandoned by passersby. The concrete floor bore the scuff marks and stains of countless shoes, hinting at the transient nature of this corner of the garage."
+      "Description": "In a quieter parking area with a few cars, there was litter on the ground like cups, paper, and wrappers. The concrete floor showed signs of wear from shoes, indicating it was a temporary spot."
     }
   ]
 }
