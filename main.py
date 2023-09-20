@@ -1,87 +1,61 @@
-import json
 import os
 import sys
-from ticket_83 import *
+#Suppressing Pygame support prompt that was displaying pre-splash screen
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+import textwrap
+#from ticket_83 import *
 from functionsTest import *
 
-# Load data from JSON files
-with open('locations.json', 'r') as f:
-    locations_data = json.load(f)
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-with open('items.json', 'r') as f:
-    items_data = json.load(f)
+def print_centered(text, width=50):
+    wrapped_text = textwrap.fill(text, width=30)  # Setting width to 30 characters as per your request
+    for line in wrapped_text.split('\n'):
+        print(line.center(width))
+    print()  # Print an additional newline for spacing
 
-# Define your classes here
-class Location:
-    def __init__(self, name, description, directions, items):
-        self.name = name
-        self.description = description
-        self.directions = directions
-        self.items = items
+def display_splash_screen():
+    clear_screen()
+    print_centered("==============================")
+    print_centered("Project Garage Zero:")
+    print_centered("The Apprentice's Dilemma")
+    print_centered("==============================")
+    input("\n\nPress Enter to continue...")
+    clear_screen()
 
-class Item:
-    def __init__(self, name, description, location, use, item_type):
-        self.name = name
-        self.description = description
-        self.location = location
-        self.use = use
-        self.item_type = item_type
+    print_centered("STORY:")
+    print_centered("You are a young, bright-eyed individual, striving to become the next DevOps Engineer at MSM. You have just left your interview...")
+    print_centered("...and you can't remember where you parked your car!")
+    print_centered("You have a validated ticket but there's limited time before you have to pay extra for parking.")
+    input("\n\nPress Enter to continue...")
+    clear_screen()
+
+    print_centered("OBJECTIVE:")
+    print_centered("Find your car and leave the garage without paying an additional fee.")
+    print_centered("HOW TO WIN:")
+    print_centered("Locate your car and reach the garage exit before the step counter runs out.")
+    input("\n\nPress Enter to continue...")
+    clear_screen()
+
+def main_game_loop():
+    while True:
+        clear_screen()
+        print("Welcome to Project Garage Zero: The Apprentice's Dilemma!\n")
+        print("1. Start a New Game")
+        print("2. Quit")
+        choice = input("\n> ")
+        if choice == '1':
+            start_game()
+        elif choice == '2':
+            clear_screen()
+            print("Goodbye!\n")
+            sys.exit()
+        else:
+            input("Invalid choice. Press Enter to continue...")
 
 # Define your functions for game logic here
-
-# Create instances of your classes based on the loaded data
-locations = []
-for loc_data in locations_data['Locations']:
-    # Check if 'Items' key exists in loc_data
-    if 'Items' in loc_data:
-        items = loc_data['Items']
-    else:
-        items = []  # If 'Items' key is missing, initialize it as an empty list
-    location = Location(
-        loc_data['Name'],
-        loc_data['DescriptionID'],
-        loc_data['Directions'],
-        items  # Use the items list
-    )
-    locations.append(location)
-
-items = []
-for item_data in items_data['Items']:
-    item = Item(
-        item_data['Name'],
-        item_data['DescriptionID'],
-        item_data['Location'],
-        item_data['Use'],
-        item_data['Type']
-    )
-    items.append(item)
-
-
-#this is importing the start screen that maria created. 
-display_splash_screen()
-main_game_loop()
-new_game()
-move_player(directions_data)
-
-
-
-#ticket 89
-# Implement your game logic and text parser here
-
-
-# Example game loop
+# SAMMY: MOVING UP FOR CODE EXECUTION TO KEEP IT FIRST
 if __name__ == '__main__':
-    while True:
-        user_input = input("Enter your command: ")
-        # Implement your text parser to process user commands
-        # Check if the user wants to quit and break the loop if needed
-        if user_input.lower() == "quit":
-            print("Thanks for playing!")
-            break
-        else:
-            # Process other user commands based on game logic
-            # You can access the player's location, items, and more
-            pass
-
-# ticket 89 end
-
+    display_splash_screen()
+    main_game_loop()

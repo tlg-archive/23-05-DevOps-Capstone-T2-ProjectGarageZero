@@ -1,0 +1,108 @@
+{
+  "Locations": [
+    {
+      "Name": "Elevator",
+      "DescriptionID": "elevator_description",
+      "Directions": {
+        "South": "Parking West 1"
+      },
+      "Items": [
+        "Garbage Can",
+        "Gum"
+      ],
+      "Note": "none",
+      "Description": "Exiting the elevator, you enter a well-lit underground garage with marked parking spaces, exit signs, and pedestrian walkways with safety stripes."
+    },
+    {
+      "Name": "Parking Exit",
+      "DescriptionID": "parking_exit_description",
+      "Directions": {
+        "North": "Parking East 1"
+      },
+      "Items": [
+        "Attendant"
+      ],
+      "Note": "none",
+      "Description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you. You can TALK to the ATTENDANT"
+    },
+    {
+      "Name": "Parking East 1",
+      "DescriptionID": "parking_east_1_description",
+      "Directions": {
+        "West": "Parking West 1",
+        "South": "Parking East 2"
+      },
+      "Items": [
+        "Tesla",
+        "Puddle",
+        "Light"
+      ],
+      "Note": "none",
+      "Description": "A shiny blue Tesla was parked, and a big puddle from a rusty pipe behind it blocked nearby parking spaces. Dripping water created a rhythmic sound, making the puddle grow."
+    },
+    {
+      "Name": "Parking East 2",
+      "DescriptionID": "parking_east_2_description",
+      "Directions": {
+        "North": "Parking East 1",
+        "South": "Parking East 3",
+        "West": "Parking West 2"
+      },
+      "Items": [
+        "Creepy Man",
+        "Lollipop",
+        "Newspaper"
+      ],
+      "Note": "none",
+      "Description": "In a dimly lit parking lot with spaced cars, a mysterious man in a long leather jacket and wide hat moved strangely, making people curious and uneasy in the quiet night."
+    },
+    {
+      "Name": "Parking East 3",
+      "DescriptionID": "parking_east_3_description",
+      "Directions": {
+        "North": "Parking East 2",
+        "South": "Parking Exit",
+        "West": "Parking West 3"
+      },
+      "Note": "none",
+      "Description": "Cars near the exit promised a quick getaway. A breeze from outside contrasted with the garage's stale air. A big oil spill on the ground looked menacing, reminding you to stay alert, even as you headed for the distant exit."
+    },
+    {
+      "Name": "Parking West 1",
+      "DescriptionID": "parking_west_1_description",
+      "Directions": {
+        "North": "Elevator",
+        "East": "Parking East 1",
+        "South": "Parking West 2"
+      },
+      "Note": "none",
+      "Description": "Bright lights illuminated parked cars, their shiny exteriors reflecting the artificial glow. The lot was full, and drivers searched for spots with strained patience."
+    },
+    {
+      "Name": "Parking West 2",
+      "DescriptionID": "parking_west_2_description",
+      "Directions": {
+        "North": "Parking West 1",
+        "East": "Parking East 2",
+        "South": "Parking West 3"
+      },
+      "Items": [
+        "Mazda",
+        "Mouse"
+      ],
+      "Note": "none",
+      "Description": "A dusty grey Mazda was parked there, offering comfort after a long day. The parking area had faded lines and dim lights, with faint sounds of others nearby, creating a quiet atmosphere in this underground corner."
+    },
+    {
+      "Name": "Parking West 3",
+      "DescriptionID": "parking_west_3_description",
+      "Directions": {
+        "North": "Parking West 2",
+        "East": "Parking East 3"
+      },
+      "Note": "none",
+      "Description": "In a quieter parking area with a few cars, there was litter on the ground like cups, paper, and wrappers. The concrete floor showed signs of wear from shoes, indicating it was a temporary spot."
+    }
+  ]
+}
+

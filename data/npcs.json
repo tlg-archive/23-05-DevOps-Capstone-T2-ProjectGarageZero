@@ -1,0 +1,27 @@
+{
+  "NPCs": [
+    {
+      "Name": "Attendant",
+      "Description": "The parking lot attendant looks old and grumpy, with a scowl on his face.",
+      "Dialogue": [
+        "What do you want, kid?",
+        "I've been working in this garage for 40 years. Seen it all.",
+        "People these days, always in a hurry. No patience.",
+        "You know, this place used to be different. Peaceful.",
+        "Now it's all cars, noise, and nonsense.",
+        "If you're here to park, just take a ticket and move along."
+      ]
+    },
+    {
+      "Name": "Creepy Man",
+      "Description": "John is a creepy character you encounter in the parking lot.",
+      "Dialogue": [
+        "I'm looking for my car. Can you give me directions?",
+        "It's a dark grey Mazda.",
+        "Thanks, John!",
+        "You're welcome. Have a safe trip!"
+      ]
+    }
+  ]
+}
+

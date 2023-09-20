@@ -1,0 +1,66 @@
+{
+	"NPCs": [
+		{
+			"Name": "attendant",
+			"Location": "Parking Exit",
+			"Description": "The parking lot attendant looks old and grumpy, with a scowl on his face.",
+			"Greetings": [
+				"Hello, do you have your ticket?",
+				"Hey there, ticket please.",
+				"Ticket's up! You got it?",
+				"Afternoon, show me your ticket."
+			],
+			"PlayerChoices": [
+				{
+					"Choice": "yes",
+					"Response": "The attendant scans the ticket."
+				},
+				{
+					"Choice": "no",
+					"Response": "I guess you are stuck here."
+				},
+				{
+					"Choice": "I cannot find it",
+					"Response": "You better find it if you want to leave."
+				},
+				{
+					"Choice": "Offer lollipop",
+					"Response": "Oh, a lollipop? That sweetens my day! You can leave now.",
+					"Outcome": {
+						"Condition": "HasLollipop",
+						"Result": "You are free to leave without showing the ticket."
+					}
+				}
+			]
+		},
+		{
+			"Name": "Creepy Man",
+			"Location": "Parking East 2",
+			"Description": "John is a creepy character you encounter in the parking lot.",
+			"Greetings": [
+				"I've been waiting for you.",
+				"You look lost, just like me.",
+				"Why are you here?"
+			],
+			"PlayerChoices": [
+				{
+					"Choice": "Hello, have you seen a grey Mazda?",
+					"ResponseOptions": [
+						"MAZDA MAZDA MAZDA! LOST LOST LOST!",
+						"CARS CARS CARS! GONE EVERYTHING GONE!"
+					]
+				},
+				{
+					"Choice": "Offer pack of gum",
+					"Response": "MY BLACK BOX! MY BOX! Thank you so much!",
+					"Reward": "Lollipop"
+				},
+				{
+					"Choice": "Offer nothing",
+					"Response": "Go away!"
+				}
+			]
+		}
+	]
+}
+

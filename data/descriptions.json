@@ -1,0 +1,35 @@
+{
+  "Descriptions": {
+    "elevator_description": "Exiting the elevator, you enter a well-lit underground garage with marked parking spots, directional signs for the exit, and safe pedestrian walkways.",
+
+    "parking_exit_description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you.",
+
+    "parking_east_1_description": "A blue Tesla was parked, and a leaking pipe made a big puddle, blocking nearby parking spots. The dripping water sounded like a beat, making the puddle grow.",
+
+    "parking_east_2_description": "In a dark parking lot, a man in an old leather jacket and wide hat looked odd as he moved between cars, making people curious and uneasy.",
+
+    "parking_east_3_description": "Cars parked near the exit for a quick getaway. As you approached, a breeze from the exit carried the smell of car fumes and fresh air. However, there was a problem: a big oil spill on the ground that could be slippery. It reminded you to be cautious.",
+
+    "parking_west_1_description": "Bright lights illuminated rows of neatly parked cars, creating an organized scene in the full parking lot. Drivers searched for empty spots with patience wearing thin.",
+
+    "parking_west_2_description": "A dusty dark grey Mazda parked under flickering garage lights with concrete surroundings. Other cars nearby, faint sounds of footsteps, and the ventilation hum adding to the solitude in this underground spot.",
+
+    "parking_west_3_description": "In a quiet parking spot with a few cars, littered with cups and wrappers, the floor showed shoe marks, hinting at its temporary nature.",
+
+    "cupholder_description": "A dark grey cupholder.",
+
+    "garbage_can_description": "A grayish green garbage bag with a black garbage bag placed in it. The garbage can is only about half full.",
+    
+    "gum_description": "A black and blue package of gum, almost completely full. The blue is shiny and metallic, so you notice the reflection on the floor.",
+    
+    "ignition_description": "A push-start engine that will only function if the key is within range. If the key is left in the keyhole, the car will not start.",
+    
+    "key_description": "A key used to unlock and start the car. If it's too far away from the car, the car will not start or may stop functioning.",
+    
+    "mazda_description": "Dark grey Mazda with a black leather interior. It can be used to navigate the parking lot and leave the parking lot.",
+    
+    "puddle_description": "A large puddle that blocks your way and can function as a detour or a trap/obstacle if you're not careful.",
+    
+    "ticket_description": "A key game item needed to exit the parking lot. It can be exchanged with a parking employee for exit."
+  }
+}

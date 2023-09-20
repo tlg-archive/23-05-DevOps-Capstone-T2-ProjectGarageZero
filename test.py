@@ -1,49 +1,41 @@
 import json
+from mapidea import display_map
 import os
 import pygame
 from pygame import mixer # for music and SFX
 import pickle #for save games
 from textwrap import wrap #to help limit description width
 import shutil #dynamic line creation for section breaks
-from interaction import get_npc, interact_with_npc, data
 
 ##################
 ## LOADING JSON ##
 ##################
-
-# Load direction data from the JSON file
+#helper functions
 script_dir = os.path.dirname(os.path.realpath(__file__))
 text_file = os.path.join(script_dir, 'data', 'game-text.json')
-directions_file = os.path.join(script_dir, 'data', 'directions.json')
 
+# Load direction data from the JSON file
+with open('data/directions.json', 'r') as f:
+    directions_data = json.load(f)
+
+# Load location data from the JSON file
+with open('data/locations.json', 'r') as f:
+    locations_data = json.load(f)
+
+# Load description data from the JSON file
+with open('data/descriptions.json', 'r') as f:
+    descriptions_data = json.load(f)
+
+# Load items data from the JSON file
+with open('data/items.json', 'r') as f:
+    items_data = json.load(f)
+
+## INITIAL GAME STATE ##
 def convert_json():
     with open(text_file) as json_file:
         game_text = json.load(json_file)
     return game_text
 game_text = convert_json()
-
-with open(directions_file, 'r') as f:
-    directions_data = json.load(f)
-
-# Load location data from the JSON file
-locations_file = os.path.join(script_dir, 'data', 'locations.json')
-
-with open(locations_file, 'r') as f:
-    locations_data = json.load(f)
-
-# Load description data from the JSON file
-descriptions_file = os.path.join(script_dir, 'data', 'descriptions.json')
-
-with open(descriptions_file, 'r') as f:
-    descriptions_data = json.load(f)
-
-# Load items data from the JSON file
-items_file = os.path.join(script_dir, 'data', 'items.json')
-
-with open(items_file, 'r') as f:
-    items_data = json.load(f)
-
-## INITIAL GAME STATE ##
 
 # Set initial inventory
 inventory = []
@@ -56,55 +48,6 @@ current_location= 'Elevator'
 counter = 0
 
 inside_mazda = False
-
-# Updated map_visual with items in each SECTION
-map_visual = [
-    "Elevator [E]",
-    "   |",
-    "   |",
-    "   V",
-    "Parking West 1 [PW1] <--- > Parking East 1 [PE1]",
-    "   ^                         ^",
-    "   |                         |",
-    "   V                         V",
-    "Parking West 2 [PW2] <--- > Parking East 2 [PE2]",
-    "   ^                         ^",
-    "   |                         |",
-    "   V                         V",
-    "Parking West 3 [PW3] <--- > Parking East 3 [PE3]",
-    "                                  ^",
-    "                                  |",
-    "                                  V",
-    "                               Exit [X]"
-]
-
-# Dictionary to store items in each section
-section_items = {
-    "elevator": ["Garbage can", "Pack of gum"],
-    "parking_west_1": [],
-    "parking_west_2": ["Mazda", "Mouse"],
-    "parking_west_3": [],
-    "parking_east_1": ["Tesla", "Puddle", "Light"],
-    "parking_east_2": ["Creepy Man", "Lollipop", "Newspaper"],
-    "parking_east_3": [],
-    "exit": ["Attendant"]
-}
-
-# Dictionary to store descriptions for items, locations, and NPCs
-descriptions = {
-    "Garbage can": "A greyidh greem garabage can placed near the elevstor, it id only hlaf full but mostly filled with reciepts.",
-    "Pack of gum": "A black snf blue metsllic psck of gum rest on the floor prctically new and untouched.",
-    "Mazda": "A dark grey Mazda CX-3 clearly in need of a good wash.",
-    "Mouse": "A small brown mouse is perched ontop of the side mirror stopping you from entering the car.",
-    "Tesla": "A blue tesla psrked nicely in its own spot slowly being consumed by the puddle next to it.",
-    "Puddle": "A puddle slowly growing in size from a leaking pipe. With every drop of water from the leak the puddle consumes more of the parking area.",
-    "Light": "A bright light fixture over the parking area reflexing off the puddle and the tesla, the light highlighting what you can afford one day if you are successful at this apprenticeship",
-    "Creepy Man": "He wore a long, worn leather jacket that reached down to his ankles, and a wide-brimmed hat pulled low, obscuring most of his face. The shadow cast by his hat concealed his eyes, adding an air of mystery and unease..",
-    "Lollipop": "The loolipop has a bright yellow ans pink wrapping, you cannot tell the flavor based purely on the wrapper.",
-    "Newspaper": "A newspaper has smeared ink, you cannot tell how old the paper is. It is clearly just garbage.",
-    "Attendant": "A young women sitting in a parking booth was scrolling on her phone to pass the time as she waits for people to leave the parking lot."
-}
-
 
 
 ###############
@@ -120,18 +63,6 @@ def display_inventory():
     print("Inventory:")
     for item in inventory:
         print(item)
-
-
-#DELETE LATER MAYBE       
-def press_enter_to_return():
-    print("\nPress Enter to return to the game.")
-    while True:
-        return_input = input("\n> ").strip().lower()
-        if return_input == '':
-            clear_screen()
-            break
-        else:
-            print("Invalid input. Press Enter to return to the game.")
 
 # Save game functionality
 def save_game():
@@ -172,78 +103,6 @@ def load_game():
     except FileNotFoundError:
         print("No saved game found!")
 
-###################
-###Map Functions###
-###################
-
-# Function to display the map
-def display_map():
-    print("Map:")
-    for line in map_visual:
-        print(line)
-
-# Example function to display the map with items and the current location highlighted
-def display_map_with_items(current_location):
-    location_symbols = {
-        "elevator": "[E]",
-        "parking_west_1": "[PW1]",
-        "parking_west_2": "[PW2]",
-        "parking_west_3": "[PW3]",
-        "parking_east_1": "[PE1]",
-        "parking_east_2": "[PE2]",
-        "parking_east_3": "[PE3]",
-        "exit": "[X]"
-    }
-    
-    current_section = None
-    for section, symbol in location_symbols.items():
-        if symbol in current_location:
-            current_section = section
-            break
-    
-    for line in map_visual:
-        if location_symbols[current_location] in line:
-            print(">" + line)
-        elif current_section and location_symbols[current_section] in line:
-            item_list = section_items[current_section]
-            if item_list:
-                items = ", ".join(item_list)
-                print(" " + line + f" ({items})")
-            else:
-                print(" " + line)
-        else:
-            print(" " + line)
-
-def display_map_with_position(current_location):
-    location_symbols = {
-        "elevator": "[E]",
-        "parking_west_1": "[PW1]",
-        "parking_west_2": "[PW2]",
-        "parking_west_3": "[PW3]",
-        "parking_east_1": "[PE1]",
-        "parking_east_2": "[PE2]",
-        "parking_east_3": "[PE3]",
-        "exit": "[X]"
-    }
-    
-    for line in map_visual:
-        if location_symbols.get(current_location, "") in line:
-            print(">" + line)
-        else:
-            print(" " + line)
-
-# Function to look at an item, location, or NPC and display its description
-def look_command(input_text):
-    parts = input_text.split()
-    
-    if len(parts) < 2:
-        print("Please specify what you want to look at.")
-    else:
-        item_name = " ".join(parts[1:])
-        if item_name in descriptions:
-            print(descriptions[item_name])
-        else:
-            print(f"You don't see {item_name} here.")
 
 #verbs:
 go = ["go", "move", "travel", "proceed", "journey", "advance"]
@@ -507,7 +366,7 @@ def start_game():
 
         if user_input == 'help':
             #clear_screen()
-            print(game_text['help'])
+            print(game_text["help"])
             #added this to check for the return command
             # play a sound on channel 0 with a max time of 2000 milliseconds
             pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/help.mp3'), maxtime=2000)
@@ -537,7 +396,7 @@ def start_game():
             print("History:")
             for i in range(min(len(previous_locations), len(previous_commands))):
                 print(f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'")
-            press_enter_to_return()
+            #press_enter_to_return()
 
         # Split the user input into words
         words = user_input.split()
@@ -565,14 +424,6 @@ def start_game():
             # Call the look_at_item function to show the item's description
             look_at_item(item_to_look_at, current_location)
 
-        if user_input.startswith('talk'):
-            npc_name = user_input.split(maxsplit=1)[1]  
-            npc = get_npc(npc_name)  
-            if npc:
-                interact_with_npc(npc)  
-            else:
-                print(f"No NPC named {npc_name} found.")
-            continue 
 
 ###############################
 ##############mazda############
@@ -590,7 +441,7 @@ def start_game():
                     inventory.append('mazda')
                     # play a sound on channel 0 with a max time of 1500 milliseconds
                     pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
-                    press_enter_to_return()
+                    #press_enter_to_return()
                     print("You have entered the Mazda.")
                     continue
                 elif 'mazda' in inventory:
@@ -613,7 +464,7 @@ def start_game():
                 car_started = True
                 # play a sound on channel 0 with a max time of 50000 milliseconds
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/carstart.mp3'), maxtime=5000)
-                press_enter_to_return()
+                #press_enter_to_return()
                 print("You have started the car.")
                 continue
             
@@ -631,7 +482,7 @@ def start_game():
                 inventory.remove('mazda')
                 # play a sound on channel 0 with a max time of 1500 milliseconds
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
-                press_enter_to_return()
+                #press_enter_to_return()
                 print("You have exited the Mazda.")
             else:
                 print("You are not inside the Mazda.")
@@ -643,10 +494,6 @@ def start_game():
 
         for direction_data in available_directions:
             if direction == direction_data['Direction'].lower() and verb == 'go':
-                if direction_data['Destination'] == "Elevator" and 'mazda' in inventory:
-                    print("You can't take the Mazda into the elevator!")
-                    continue                
-
                 current_location = direction_data['Destination']
                 valid_direction = True
                 counter += 1
@@ -662,9 +509,4 @@ def start_game():
 
 
 if __name__ == "__main__":
-    display_map_with_items("elevator")
-    # Test the "Look" command
-    look_command("Look Garbage can")
-    look_command("Look Tesla")
-    look_command("Look Nonexistent Item")    
     start_game()
