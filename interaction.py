@@ -1,10 +1,14 @@
 import json
 import random
+import os
 
 # Load data from the external file 'npcdata.json'
+script_dir = os.path.dirname(os.path.realpath(__file__))
+npcdata_file = os.path.join(script_dir, 'data', 'npcdata.json')
+
 def load_data():
     try:
-        with open('data/npcdata.json', 'r') as file:
+        with open(npcdata_file, 'r') as file:
             return json.load(file)
     except Exception as e:
         print(f"Error loading JSON data: {e}")
