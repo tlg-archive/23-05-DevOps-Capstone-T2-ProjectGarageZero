@@ -1,6 +1,7 @@
 import tkinter as tk
 import os
 import json
+from tkinter import Frame
 
 #helper functions
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -16,18 +17,21 @@ game_text = convert_json()
 root = tk.Tk()
 #root.geometry("500x500")
 
+#title frame
+title_frame = Frame(root)
+title_frame.pack()
+
 #general label settings
-title_label = tk.Label(root, text=game_text["title"])
+title_label = tk.Label(title_frame, text=game_text["title"])
 title_label.pack()
 
-#display the window
-#root.mainloop()
-
-def choose_start():
+def choose_start(event=None):
     command = command_line.get()
     if command in ['1', 'start', 'start game']:
         #start_game()
         print('Start Game')
+        title_frame.destroy()
+        start_game()
     elif command in ['2', 'quit', 'exit']:
         #clear_screen()
         print("Goodbye!\n")
@@ -35,13 +39,18 @@ def choose_start():
     else:
         print("Invalid choice. Press Enter to continue...")
 
+def start_game():
+    game_frame = Frame(root)
+    print("yey")
+
 
 #example text input
-command_line = tk.Entry(root)
+command_line = tk.Entry(title_frame)
+command_line.bind('<Return>', choose_start)
 command_line.pack()
 
 #example button
-start_button = tk.Button(root, text="Start Game", command = choose_start)
+start_button = tk.Button(title_frame, text="Start Game", command = choose_start)
 start_button.pack()
 
 if __name__ == "__main__":
