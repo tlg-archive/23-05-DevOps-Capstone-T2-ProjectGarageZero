@@ -320,6 +320,7 @@ class TextParser():
             if car_started == False:
                 car_started = True
                 print('You started car your car')
+                messagebox.showinfo("showinfo", "You started car your car. You can drive around the parking lot now.")
             else:
                 messagebox.showinfo("showinfo", 'Your car is already started')
                 print('Your car is already started')
@@ -337,6 +338,7 @@ class TextParser():
             tk.Label(desc_frame,text=f"You have entered the Mazda.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
             update_game_text()
             print("You have entered the Mazda.")
+            messagebox.showinfo("showinfo", "You have entered the Mazda.")
         elif 'mazda' in inventory:
             print("You are already in the Mazda.")
             messagebox.showinfo("showinfo", "You are already in the Mazda.")
@@ -345,13 +347,11 @@ class TextParser():
             print(f'You cannot enter {noun}')
 
     def handle_go_mazda(self, noun):
-        print('I HAVE A CAR!!!!!')
         global car_started
         if car_started == False:
             messagebox.showinfo("showinfo", 'Please start your car to continue on')
             print('Please start your car to continue on')
         else:
-            print('vroom vroom')
             self.handle_go_norm(noun)
 
     def handle_get(self, noun):
