@@ -55,6 +55,7 @@ help_menu = tk.Menu(menubar, tearoff=0)
 help_menu.add_command(label="Help", command=display_help)
 
 game_options_menu = tk.Menu(menubar, tearoff=0)
+game_options_menu.add_command(label="Show Map", command=func_placeholder)
 game_options_menu.add_command(label="Save Game", command=func_placeholder)
 game_options_menu.add_command(label="Load Game", command=func_placeholder)
 
@@ -253,7 +254,7 @@ class TextParser():
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
         print(f"verb {verb} noun {noun}")
 
-        if verb == 'save':
+        """ if verb == 'save':
             self.save_game()
             print(game_text["save_game"])
             return
@@ -261,7 +262,7 @@ class TextParser():
         if verb == 'load':
             self.load_game()
             print(game_text["load_game"])
-            return
+            return """
 
         synonyms = {
             'go' : ["go", "move", "travel", "proceed", "journey", "advance"],
