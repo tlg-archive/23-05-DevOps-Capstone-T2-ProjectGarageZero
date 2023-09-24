@@ -117,6 +117,19 @@ def load_game():
         print("No saved game found!")
         messagebox.showinfo("showinfo", "No saved game found!")
 
+def display_history():
+    #print("History:")
+    command_history = ["COMMAND HISTORY"]
+    for i in range(min(len(previous_locations), len(previous_commands))):
+        line = f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'"
+        #print(line)
+        command_history.append(line)
+
+    if len(command_history) == 0:
+        messagebox.showinfo("showinfo", "You don't have any saved commands. Play the game to get some!")
+    else:
+        messagebox.showinfo('Command History', '\n\n'.join(''.join(command) for command in command_history))
+
 def func_placeholder():
     messagebox.showinfo("showinfo", "Still in Development!")
 
@@ -129,7 +142,7 @@ help_menu.add_command(label="Help", command=display_help)
 
 game_options_menu = tk.Menu(menubar, tearoff=0)
 game_options_menu.add_command(label="Show Map", command=display_map)
-game_options_menu.add_command(label="Show Input History", command=display_map)
+game_options_menu.add_command(label="Show Input History", command=display_history)
 game_options_menu.add_command(label="Save Game", command=save_game)
 game_options_menu.add_command(label="Load Game", command=load_game)
 
@@ -379,6 +392,9 @@ class TextParser():
             current_location = current_location_data["Directions"][choice]
             #print(f'CURRENT LOCATION: {current_location}')
             #test_location()
+            if 'mazda' in inventory and current_location == 'Elevator':
+                messagebox.showinfo("showinfo", "You can't bring your car on the elevator.")
+                return
             counter += 1
             clear_choices()
             update_game_text()
@@ -404,19 +420,14 @@ class TextParser():
             print("You can't start anything right now. Have you found your car yet?")
 
     def handle_enter(self, noun):
-        if current_location == 'Parking West 2' and 'mazda' not in inventory:
-            # Add the "mazda" to the inventory
-            inventory.append('mazda')
-            # play a sound on channel 0 with a max time of 1500 milliseconds
-            #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
-            clear_choices()
-            tk.Label(desc_frame,text=f"You have entered the Mazda.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
-            update_game_text()
-            print("You have entered the Mazda.")
-            messagebox.showinfo("showinfo", "You have entered the Mazda.")
-        elif 'mazda' in inventory:
-            print("You are already in the Mazda.")
-            messagebox.showinfo("showinfo", "You are already in the Mazda.")
+        global current_location
+        if noun == 'mazda':
+            if current_location == 'Parking West 2' and 'mazda' not in inventory:
+                # Add the "mazda" to the inventory
+                self.handle_get(noun)
+            elif 'mazda' in inventory:
+                print("You are already in the Mazda.")
+                messagebox.showinfo("showinfo", "You are already in the Mazda.")
         else:
             messagebox.showinfo("showinfo", f'You cannot enter {noun}')
             print(f'You cannot enter {noun}')
