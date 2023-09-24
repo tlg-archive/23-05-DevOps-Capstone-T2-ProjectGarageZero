@@ -6,6 +6,7 @@ from functools import partial
 from tkinter import Frame, messagebox
 from functionsTest import directions_data, locations_data, items_data, descriptions_data, map_visual
 from interaction import data as npc_data
+import pickle
 
 #helper functions
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -40,6 +41,12 @@ dialogue_frame.place(in_=gui_window, x=0, y=0, relwidth=1, relheight=1)
 
 show_frame(title_frame)
 
+#MUSIC FUNCTIONALITY
+# Setting current music volume value
+current_music_volume=.3
+# Setting current SFX volume value
+current_sfx_volume = 0.7
+
 #HELP TEXT
 def display_help():
     messagebox.showinfo("showinfo", game_text['help'])
@@ -62,6 +69,54 @@ def display_map():
     print(game_map)
     messagebox.showinfo("showinfo", game_map)
 
+def display_history():
+    for i in range(min(len(previous_locations), len(previous_commands))):
+        print(f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'")
+
+# Save game functionality
+previous_commands = []
+previous_locations = []
+def save_game():
+    game_state = {
+        "current_location": current_location,
+        "counter": counter,
+        "inventory": inventory,
+        "items_data": items_data,
+        "previous_commands": previous_commands,
+        "previous_locations": previous_locations,
+        "current_music_volume": current_music_volume,
+        "current_sfx_volume": current_sfx_volume
+    }
+    
+    with open('saved_game.pkl', 'wb') as file:
+        pickle.dump(game_state, file)
+
+    messagebox.showinfo("showinfo", "Your game has been saved!")
+    print("Game saved!")
+
+def load_game():
+    global current_location, counter, inventory, items_data, previous_commands, previous_locations, current_music_volume, current_sfx_volume
+  
+    try:
+        with open('saved_game.pkl', 'rb') as file:
+            game_state = pickle.load(file)
+
+        current_location = game_state['current_location']
+        counter = game_state['counter']
+        inventory = game_state['inventory']
+        items_data = game_state['items_data']
+        previous_commands = game_state['previous_commands']
+        previous_locations = game_state['previous_locations']
+        current_music_volume = game_state['current_music_volume']
+        current_sfx_volume = game_state['current_sfx_volume']
+
+        print("Game successfully loaded!")
+        messagebox.showinfo("showinfo", "Game successfully loaded!")
+        start_game()
+    except FileNotFoundError:
+        print("No saved game found!")
+        messagebox.showinfo("showinfo", "No saved game found!")
+
 def func_placeholder():
     messagebox.showinfo("showinfo", "Still in Development!")
 
@@ -74,8 +129,9 @@ help_menu.add_command(label="Help", command=display_help)
 
 game_options_menu = tk.Menu(menubar, tearoff=0)
 game_options_menu.add_command(label="Show Map", command=display_map)
-game_options_menu.add_command(label="Save Game", command=func_placeholder)
-game_options_menu.add_command(label="Load Game", command=func_placeholder)
+game_options_menu.add_command(label="Show Input History", command=display_map)
+game_options_menu.add_command(label="Save Game", command=save_game)
+game_options_menu.add_command(label="Load Game", command=load_game)
 
 sound_menu = tk.Menu(menubar, tearoff=0)
 sound_menu.add_command(label="Music Settings", command=func_placeholder)
@@ -101,7 +157,7 @@ title_label.pack()
 start_button = tk.Button(title_frame, text="Start Game", command = start_game)
 start_button.pack()
 
-load_button = tk.Button(title_frame, text="Load Game", command = func_placeholder)
+load_button = tk.Button(title_frame, text="Load Game", command = load_game)
 load_button.pack()
 
 quit_button = tk.Button(title_frame, text="Quit Game", command = display_quit)
@@ -454,9 +510,15 @@ class TextParser():
 # Function to handle user input
 text_parser = TextParser()
 def process_input(event=None):
+    global previous_commands
+    global previous_locations
+    global current_location
+    
     user_input = game_command.get().strip()
     game_command.delete(0, tk.END)
     text_parser.parse_command(user_input)
+    previous_commands.append(user_input)
+    previous_locations.append(current_location)
 
 game_command = tk.Entry(game_frame)
 game_command.bind('<Return>', process_input)
