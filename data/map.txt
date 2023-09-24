@@ -1,0 +1,19 @@
+.                     GAME MAP
+.                                          
+. Elevator [E]                  
+.    |         
+.    |
+.    V
+. Parking West 1 [PW1] <--- > Parking East 1 [PE1]
+.    ^                         ^
+.    |                         |
+.    V                         V
+. Parking West 2 [PW2] <--- > Parking East 2 [PE2]
+.    ^                         ^
+.    |                         |
+.    V                         V
+. Parking West 3 [PW3] <--- > Parking East 3 [PE3]
+.                                   ^
+.                                   |
+.                                   V
+.                                Exit [X]

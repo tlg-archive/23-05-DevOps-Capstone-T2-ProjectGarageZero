@@ -4,18 +4,23 @@ import json
 import random
 from functools import partial
 from tkinter import Frame, messagebox
-from functionsTest import directions_data, locations_data, items_data, descriptions_data
+from functionsTest import directions_data, locations_data, items_data, descriptions_data, map_visual
 from interaction import data as npc_data
 
 #helper functions
 script_dir = os.path.dirname(os.path.realpath(__file__))
 text_file = os.path.join(script_dir, 'data', 'game-text.json')
-
+map_file = os.path.join(script_dir, 'data', 'map.txt')
 def convert_json():
     with open(text_file) as json_file:
         game_text = json.load(json_file)
     return game_text
 game_text = convert_json()
+
+def gen_map():
+    with open(map_file, "r") as file:
+        map_list = file.readlines()
+    return map_list
 
 #initilize the tkinter window and size
 gui_window = tk.Tk()
@@ -37,12 +42,25 @@ show_frame(title_frame)
 
 #HELP TEXT
 def display_help():
-    messagebox.showinfo("showinfo", game_text["help"])
+    messagebox.showinfo("showinfo", game_text['help'])
 
 def display_quit():
     answer = messagebox.askyesno("askyesno", game_text["quit"])
     if answer:
         gui_window.destroy()
+
+def show_map(map_list):
+    map_array = []
+    for line in map_list:
+        map_array.append(line)
+    return map_array
+
+def display_map():
+    map_list = gen_map()
+    game_map_array = show_map(map_list)
+    game_map = ''.join(game_map_array)
+    print(game_map)
+    messagebox.showinfo("showinfo", game_map)
 
 def func_placeholder():
     messagebox.showinfo("showinfo", "Still in Development!")
@@ -55,7 +73,7 @@ help_menu = tk.Menu(menubar, tearoff=0)
 help_menu.add_command(label="Help", command=display_help)
 
 game_options_menu = tk.Menu(menubar, tearoff=0)
-game_options_menu.add_command(label="Show Map", command=func_placeholder)
+game_options_menu.add_command(label="Show Map", command=display_map)
 game_options_menu.add_command(label="Save Game", command=func_placeholder)
 game_options_menu.add_command(label="Load Game", command=func_placeholder)
 
@@ -75,7 +93,6 @@ menubar.add_cascade(menu=help_menu, label="Help")
 def start_game():
     show_frame(game_frame)
     update_game_text()
-
 
 #Title Frame Items
 title_label = tk.Label(title_frame, text=game_text["title"], wraplength=500)
@@ -317,14 +334,15 @@ class TextParser():
     def handle_start(self, noun):
         #set car start == true
         global car_started
-        if 'mazda' in inventory:
-            if car_started == False:
-                car_started = True
-                print('You started car your car')
-                messagebox.showinfo("showinfo", "You started car your car. You can drive around the parking lot now.")
-            else:
-                messagebox.showinfo("showinfo", 'Your car is already started')
-                print('Your car is already started')
+        if noun == 'mazda':
+            if 'mazda' in inventory:
+                if car_started == False:
+                    car_started = True
+                    print('You started car your car')
+                    messagebox.showinfo("showinfo", "You started car your car. You can drive around the parking lot now.")
+                else:
+                    messagebox.showinfo("showinfo", 'Your car is already started')
+                    print('Your car is already started')
         else:
             messagebox.showinfo("showinfo", "You can't start anything right now. Have you found your car yet?")
             print("You can't start anything right now. Have you found your car yet?")
