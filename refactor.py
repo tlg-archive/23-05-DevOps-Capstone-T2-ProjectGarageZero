@@ -6,7 +6,11 @@ import pickle #for save games
 from textwrap import wrap #to help limit description width
 import shutil #dynamic line creation for section breaks
 from interaction import get_npc, interact_with_npc, data
+import random
+import sys
 
+#Suppressing Pygame support prompt that was displaying pre-splash screen
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 ##################
 ## LOADING JSON ##
 ##################
@@ -14,13 +18,15 @@ from interaction import get_npc, interact_with_npc, data
 # Load direction data from the JSON file
 script_dir = os.path.dirname(os.path.realpath(__file__))
 text_file = os.path.join(script_dir, 'data', 'game-text.json')
-directions_file = os.path.join(script_dir, 'data', 'directions.json')
 
+#LOAD BASIC GAME TEXT JSON
 def convert_json():
     with open(text_file) as json_file:
         game_text = json.load(json_file)
     return game_text
 game_text = convert_json()
+
+directions_file = os.path.join(script_dir, 'data', 'directions.json')
 
 with open(directions_file, 'r') as f:
     directions_data = json.load(f)
@@ -42,6 +48,11 @@ items_file = os.path.join(script_dir, 'data', 'items.json')
 
 with open(items_file, 'r') as f:
     items_data = json.load(f)
+
+# Load NPC Data from JSON file
+npcdata_file = os.path.join(script_dir, 'data', 'npcdata.json')
+with open(npcdata_file, 'r') as file:
+    npc_data = json.load(file)
 
 # Updated map_visual with items in each SECTION
 map_visual = [
@@ -74,6 +85,12 @@ def clear_screen():
 ################
 ## GAME INFO ##
 ################
+"""
+SoundController CLASS HAS
+- Background Music Settings
+- SFX Sound Settings
+"""
+
 class SoundController:
     def __init__(self):
         # Setting current music volume value
@@ -108,16 +125,35 @@ class SoundController:
     def sfx_volume_down():
         pass
 
+"""
+Player CLASS HAS
+- Inventory
+- get item function
+- drop item function
+"""
 class Player:
     def __init__(self):
         self.inventory = []
-    def get_item():
-        pass
-    def drop_item():
-        pass
-    def look_at_item():
+    
+    def get_item(self, item_name):
+        for item_data in items_data['Items']:
+            if item_data['Name'].lower() == item_name and item_data['Location'] == new_game.current_location:
+                self.inventory.append(item_data['Name'])
+                # Remove the item from the current location
+                items_data['Items'].remove(item_data)
+                print(f"You now have {item_data['Name']}.")
+                return
+        print("That's not here! (hint: type name exactly!)")
+    
+    def drop_item(self):
         pass
 
+"""
+LocationData CLASS HAS
+- Load location data
+- Show Location Data
+- Look at items in location data
+"""
 class LocationData:
     def __init__(self):
         self.current_location = ''
@@ -126,7 +162,7 @@ class LocationData:
         self.available_items = []
 
     def load_location_data(self):
-        print(f"current location in load data: {new_game.current_location}\n\n")
+        #print(f"current location in load data: {new_game.current_location}\n\n")
         self.current_location = new_game.current_location
         for location in locations_data['Locations']:
             if location['Name'] == self.current_location:
@@ -150,7 +186,7 @@ class LocationData:
         new_game.location_data.load_location_data()
         location_head = f"LOCATION: {self.current_location}"
         # Print current # of moves made, increment up for next loop -- CHANGE TO COUNTDOWN EVENTUALLY
-        move_head = f"MOVES MADE: {new_game.counter}"
+        move_head = f"MOVES LEFT: {new_game.counter}"
         print("------------------------------")
         print(f"\n{location_head : <25} {move_head : >25}\n")
         if self.current_location_data:
@@ -171,24 +207,76 @@ class LocationData:
             print(f"{direction_data['Direction']} - {direction_data['Destination']}\n")
         print("------------------------------")
 
+    def look_at_item(self, noun):
+        print(f'I LOOK AT {noun}')
+        pass
+
+"""
+NPCData CLASS HAS
+- NPC data
+- get npc function
+- greet npc function
+- interact with npc function
+"""
+class NPCData:
+    def __init__(self) -> None:
+        pass
+    
+    def get_npc(self, npc_name):
+        for npc in npc_data['NPCs']:
+            if npc['Name'] == npc_name:
+                return npc
+        return None
+    
+    def greet_npc(self,npc):
+        if 'Greetings' in npc:
+            return random.choice(npc['Greetings'])
+        return None
+
+    def interact_with_npc(self, npc):
+        print(self.greet_npc(npc))
+        
+        if 'PlayerChoices' in npc:
+            while True:  # This loop allows the player to keep choosing until they decide to exit
+                for idx, choice in enumerate(npc['PlayerChoices']):
+                    print(f"{idx + 1}. {choice['Choice']}")
+
+                # Add an option to exit the conversation
+                exit_option_index = len(npc['PlayerChoices']) + 1
+                print(f"{exit_option_index}. Exit conversation")
+
+                player_choice = input("Choose an option (type the number): ")
+
+                try:
+                    choice_index = int(player_choice) - 1
+                    if 0 <= choice_index < len(npc['PlayerChoices']):
+                        if 'Response' in npc['PlayerChoices'][choice_index]:
+                            response = npc['PlayerChoices'][choice_index]['Response']
+                        elif 'ResponseOptions' in npc['PlayerChoices'][choice_index]:
+                            response = random.choice(npc['PlayerChoices'][choice_index]['ResponseOptions'])
+                        else:
+                            response = "No response found."
+                        print(response)
+                    elif choice_index + 1 == exit_option_index:  # Exit conversation
+                        print("Exiting conversation.")
+                        return  # This returns the player to the main command input
+                    else:
+                        print("Invalid choice.")
+                except ValueError:
+                    print("Invalid choice.")
+
+"""
+TextParser CLASS HAS
+- all multiple word command logic
+"""
 class TextParser:
     def parse_command(self, command):
         #global inventory
         command_words = command.split(' ')
-        print(command_words)
+        #print(command_words)
         verb = command_words[0]
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
-        print(f"verb {verb} noun {noun}")
-
-        """ if verb == 'save':
-            self.save_game()
-            print(game_text["save_game"])
-            return
-
-        if verb == 'load':
-            self.load_game()
-            print(game_text["load_game"])
-            return """
+        #print(f"verb {verb} noun {noun}")
 
         synonyms = {
             'go' : ["go", "move", "travel", "proceed", "journey", "advance"],
@@ -221,49 +309,114 @@ class TextParser:
     def handle_go_norm(self, noun):
         print(f"Handling GO command for {noun}")
         direction = noun.title()
-        print(f"available directions: {new_game.location_data.available_directions}")
+        #print(f"available directions: {new_game.location_data.available_directions}")
+        if new_game.counter == 1:
+            print("OH NO! Time is up and you did not leave the parking lot before you had to pay the extra parking fee. Try again and see if you can get your car and leave!")
+            sys.exit()
+
         if direction in new_game.location_data.current_location_data['Directions']:
+            if new_game.location_data.current_location_data['Directions'][direction] == "Elevator" and 'mazda' in new_game.player.inventory:
+                print("You can't take the Mazda into the elevator!")
+                return
             new_game.current_location = new_game.location_data.current_location_data['Directions'][direction]
             print(f"current location in handle go: {new_game.current_location}")
             # play a sound on channel 0 with a max time of 2000 milliseconds
             #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=2000)
-            new_game.counter += 1
-            new_game.location_data.show_location_data()
+            new_game.counter -= 1
         else:
             print(f"Invalid choice. You cannot go {noun} Try again")
-        
+    
+    #UNCOMMENT SOUND COMMAND  
     def handle_start(self, noun):
         print(f"Handling START command for {noun}")
+        if 'mazda' in new_game.player.inventory:
+            if new_game.car_started == False:
+                new_game.car_started = True
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/carstart.mp3'), maxtime=5000)
+                print('You started car your car.')
+            else:
+                print('Your car is already started.')
+        else:
+            print("You can't start anything right now. Have you found your car yet?")
 
+    #UNCOMMENT SOUND COMMAND
     def handle_enter(self, noun):
         print(f"Handling ENTER command for {noun}")
+        if noun.lower() == 'mazda':
+            if new_game.current_location == 'Parking West 2' and 'mazda' not in new_game.player.inventory:
+                # Add the "mazda" to the inventory
+                #new_game.player.inventory.append('mazda')
+                new_game.player.get_item('mazda')
+                # play a sound on channel 0 with a max time of 1500 milliseconds
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+                print("You have entered the Mazda.")
+                return
+            elif 'mazda' in new_game.player.inventory:
+                print("You are already in the Mazda.")
+                return
+        else:
+            print(f'You cannot enter {noun}')
+
+    #UNCOMMENT SOUND COMMANDS
+    #UPDATE THIS WHEN THE DROP ITEM COMMAND IS IMPLEMENTED
+    def handle_exit(self, noun):
+        print(f"Handling EXIT command for {noun}")
+        if noun.lower() == 'mazda':
+            if 'mazda' in new_game.player.inventory:
+                # Remove the Mazda from the inventory
+                new_game.player.inventory.remove('mazda')
+                # play a sound on channel 0 with a max time of 1500 milliseconds
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+                print("You have exited the Mazda.")
+            else:
+                print("You are not inside the Mazda.")
+        else:
+            print(f'You cannot EXIT {noun}')
 
     def handle_go_mazda(self, noun):
-        global car_started
-        if car_started == False:
-            messagebox.showinfo("showinfo", 'Please start your car to continue on')
-            print('Please start your car to continue on')
+        if new_game.car_started == False:
+            print('Please START your MAZDA to in order to move to a new room.')
         else:
             self.handle_go_norm(noun)
 
     def handle_get(self, noun):
         print(f"Handling GET command for {noun}")
+        new_game.player.get_item(noun)
 
     def handle_drop(self, noun):
         print(f"Handling DROP command for {noun}")
+        new_game.player.drop_item(noun)
 
     def handle_look(self, noun):
         print(f"Handling LOOK command for {noun}")
+        new_game.location_data.look_at_item(noun)
 
     def handle_talk(self, noun):
+        npc_name = noun
         print(f"Handling TALK command for {noun}")
+        npc = new_game.npcs.get_npc(npc_name)
+        if npc:
+            interact_with_npc(npc)
+        else:
+            print(f"No NPC named {npc_name} found.")
 
+"""
+GameCommand CLASS HAS
+- Base input logic
+- Show history function
+- Display Map function
+"""
 class GameCommand:   
     def __init__(self):
         self.previous_commands = []
         self.previous_locations = []
+        #USE THIS TO CALL THE SOUND CONTROLLER FUNCTIONS
+        self.sound_settings = SoundController()
 
     def show_history(self):
+        pass
+
+    def display_map(self):
         pass
 
     def handle_input(self, command):
@@ -300,27 +453,47 @@ class GameCommand:
         else:
             new_game.text_parser.parse_command(command)
 
+"""
+GameEngine CLASS HAS
+- Create a player class
+- track location data via LocationData class
+- TextParser
+- Step Counter
+- Current Location tracker
+- Inside Mazda flag
+- Car Started flag
+- Play Game function
+- Save Game function
+- Load Game function
+"""
 class GameEngine:
     def __init__(self):
         self.player = Player()
         self.location_data = LocationData()
-        self.counter = 0
+        self.counter = 15 #SETS MAX NUMBER OF STEPS FOR THE GAME
         self.insideMazda = False
         self.car_started = False
         self.current_location = 'Elevator'
         self.commander = GameCommand()
         self.text_parser = TextParser()
+        self.npcs = NPCData()
 
+    def save_game(self):
+        pass
+
+    def load_game(self):
+        pass
+
+    #ADD START BACKGROUND MUSIC AND SFX COMMAND WHEN THEY ARE BUILT IN
     def play_game(self):
         self.current_location = 'Elevator'
-        self.location_data.show_location_data()
+        #self.location_data.show_location_data()
         while True:
+            self.location_data.show_location_data()
             user_input = input("What would you like to do next? (type 'help' to see valid commands or 'quit' to exit): \n>> ").strip().lower()
             self.commander.handle_input(user_input)
 
 new_game = GameEngine()
 
-if __name__ == "__main__":   
-    pass
-    #start_game()
+if __name__ == "__main__":
     new_game.play_game()
