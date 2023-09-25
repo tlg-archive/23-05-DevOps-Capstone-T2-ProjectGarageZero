@@ -18,6 +18,14 @@ def convert_json():
     return game_text
 game_text = convert_json()
 
+def load_data(npcdata_file):
+    try:
+        with open(npcdata_file, 'r') as file:
+            return json.load(file)
+    except Exception as e:
+        print(f"Error loading JSON data: {e}")
+        exit()
+
 def gen_map():
     with open(map_file, "r") as file:
         map_list = file.readlines()
