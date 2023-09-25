@@ -4,7 +4,7 @@ import json
 import random
 from functools import partial
 from tkinter import Frame, messagebox
-from functionsTest import directions_data, locations_data, items_data, descriptions_data, map_visual
+from functionsTest import directions_data, locations_data, items_data
 from interaction import data as npc_data
 import pickle
 import pygame
@@ -15,6 +15,16 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 script_dir = os.path.dirname(os.path.realpath(__file__))
 text_file = os.path.join(script_dir, 'data', 'game-text.json')
 map_file = os.path.join(script_dir, 'data', 'map-file.txt')
+bg_music = os.path.join(script_dir, 'sound', 'garage_music.ogg')
+
+help_sfx = os.path.join(script_dir, 'sound', 'help.mp3')
+go_sfx = os.path.join(script_dir, 'sound', 'go.mp3')
+get_sfx = os.path.join(script_dir, 'sound', 'get.mp3')
+map_sfx = os.path.join(script_dir, 'sound', 'map.mp3')
+cardoor_sfx = os.path.join(script_dir, 'sound', 'cardoor.mp3')
+carstart_sfx = os.path.join(script_dir, 'sound', 'carstart.mp3')
+drop_sfx = os.path.join(script_dir, 'sound', 'drop.mp3')
+
 def convert_json():
     with open(text_file) as json_file:
         game_text = json.load(json_file)
@@ -56,11 +66,15 @@ class SoundController:
         self.current_sfx_volume = 0.5
 
     def background_music(self):
+        song_name_list = bg_music.split('/')
+        array_len = len(song_name_list)
+        sound_file_path = os.path.join(script_dir, 'sound', song_name_list[array_len-1])
+
         pygame.init()
         pygame.mixer.init()
         s = 'sound'  # folder for music and FX
-        music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
-        pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
+        music = pygame.mixer.Sound(sound_file_path)
+        pygame.mixer.music.load(sound_file_path)
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(self.current_music_volume)
 
@@ -96,10 +110,17 @@ class SoundController:
         self.current_sfx_volume -= 0.1
         pygame.mixer.Channel(0).set_volume(self.current_sfx_volume)
 
+    def play_sfx(self,sound_file):
+        song_name_list = sound_file.split('/')
+        array_len = len(song_name_list)
+        sound_file_path = os.path.join(script_dir, 'sound', song_name_list[array_len-1])
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound(sound_file_path), maxtime=2000)
+
 game_sound = SoundController()
 #HELP TEXT
 def display_help():
-    pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/help.mp3'), maxtime=2000)
+    game_sound.play_sfx(help_sfx)
+    #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/help.mp3'), maxtime=2000)
     messagebox.showinfo("showinfo", game_text['help'])
 
 def display_quit():
@@ -118,7 +139,8 @@ def display_map():
     game_map_array = show_map(map_list)
     game_map = ''.join(game_map_array)
     #print(game_map)
-    pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/map.mp3'), maxtime=1000)
+    game_sound.play_sfx(map_sfx)
+    #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/map.mp3'), maxtime=1000)
     messagebox.showinfo("showinfo", game_map)
 
 # Save game functionality
@@ -210,8 +232,7 @@ menubar.add_cascade(menu=help_menu, label="Help")
 def start_game():
     show_frame(game_frame)
     update_game_text()
-    game_sound.background_music()
-    game_sound.setup_sfx()
+    #game_sound.background_music()
 
 #Title Frame Items
 title_label = tk.Label(title_frame, text=game_text["title"], wraplength=500)
@@ -442,6 +463,7 @@ class TextParser():
             counter -= 1
             clear_choices()
             update_game_text()
+            game_sound.play_sfx(go_sfx)
             #text_parser.parse_command(noun)
         else:
             messagebox.showinfo("showinfo", f"Invalid choice. You cannot go {noun} Try again")
@@ -455,7 +477,8 @@ class TextParser():
                 if car_started == False:
                     car_started = True
                     #print('You started car your car')
-                    pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/carstart.mp3'), maxtime=5000)
+                    #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/carstart.mp3'), maxtime=5000)
+                    game_sound.play_sfx(carstart_sfx)
                     messagebox.showinfo("showinfo", "You started car your car. You can drive around the parking lot now.")
                 else:
                     messagebox.showinfo("showinfo", 'Your car is already started')
@@ -507,9 +530,11 @@ class TextParser():
             clear_choices()
             tk.Label(desc_frame,text=f"You now have {obtained_item}.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
             if noun == 'mazda':
-                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+                game_sound.play_sfx(cardoor_sfx)
             else:
-                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1000)
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1000)
+                game_sound.play_sfx(get_sfx)
             update_game_text()
         else:
             messagebox.showinfo("showinfo", f"{noun} not here! (hint: type the name exactly)")
@@ -547,10 +572,12 @@ class TextParser():
             clear_choices()
             if noun == 'mazda':
                 tk.Label(desc_frame,text=f"You have exited the Mazda.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
-                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+                game_sound.play_sfx(cardoor_sfx)
             else:
                 tk.Label(desc_frame,text=f"You dropped {noun}.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
-                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=1000)
+                #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=1000)
+                game_sound.play_sfx(drop_sfx)
             update_game_text()
         else:
             messagebox.showinfo("showinfo", f"You don't have {noun} on you!")
@@ -601,4 +628,6 @@ game_command.bind('<Return>', process_input)
 game_command.grid(row=5, column=0)
 
 if __name__ == "__main__":
+    game_sound.background_music()
+    game_sound.setup_sfx()
     gui_window.mainloop()
