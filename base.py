@@ -99,31 +99,46 @@ class SoundController:
         self.current_sfx_volume = 0.7
 
     def background_music():
-        pass
+        pygame.init()
+        pygame.mixer.init()
+        s = 'sound'  # folder for music and FX
+        music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
+        pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(current_music_volume)
 
     def stop_background_music():
-        pass
+        pygame.mixer.music.stop()
 
     def volume_up():
-        pass
-
+        global current_music_volume
+        current_music_volume += 0.1 
+        pygame.mixer.music.set_volume(current_music_volume)
+    
     def volume_down():
-        pass
+        global current_music_volume
+        current_music_volume -= 0.1
+        pygame.mixer.music.set_volume(current_music_volume)
 
     def setup_sfx():
-        pass
+        pygame.mixer.set_num_channels(8) 
 
     def sfx_on():
-        pass
+        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
 
     def sfx_off():
-        pass
+        pygame.mixer.Channel(0).set_volume(0.0)
 
     def sfx_volume_up():
-        pass
+        global current_sfx_volume
+        current_sfx_volume += 0.1
+        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
 
     def sfx_volume_down():
-        pass
+        global current_sfx_volume
+        current_sfx_volume -= 0.1
+        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+
 
 """
 Player CLASS HAS
