@@ -1,6 +1,9 @@
 import unittest
 import functionsTest
 from functionsTest import get_item, items_data, drop_item, look_at_item  # Import your game module
+from refactor import Player, SoundController, TextParser
+
+#ADD TESTS FROM REFACTOR.PY BELOW
 
 class TestGame(unittest.TestCase):
     def setUp(self):
@@ -16,11 +19,6 @@ class TestGame(unittest.TestCase):
         get_item(added_item,functionsTest.current_location)
         # Then
         assert new_inventory == functionsTest.inventory
-
-#START GAME
-#EAIT FORT USER IMPIT (or test input)
-#check if response is correct
-#end loop
 
 if __name__ == '__main__':
     unittest.main()
