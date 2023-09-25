@@ -4,14 +4,13 @@ import json
 import random
 from functools import partial
 from tkinter import Frame, messagebox
-from functionsTest import directions_data, locations_data, items_data, descriptions_data, map_visual
+from functionsTest import directions_data, locations_data, items_data, descriptions_data
 from interaction import data as npc_data
-import pickle
 
 #helper functions
 script_dir = os.path.dirname(os.path.realpath(__file__))
 text_file = os.path.join(script_dir, 'data', 'game-text.json')
-map_file = os.path.join(script_dir, 'data', 'map.txt')
+
 def convert_json():
     with open(text_file) as json_file:
         game_text = json.load(json_file)
@@ -49,94 +48,14 @@ dialogue_frame.place(in_=gui_window, x=0, y=0, relwidth=1, relheight=1)
 
 show_frame(title_frame)
 
-#MUSIC FUNCTIONALITY
-# Setting current music volume value
-current_music_volume=.3
-# Setting current SFX volume value
-current_sfx_volume = 0.7
-
 #HELP TEXT
 def display_help():
-    messagebox.showinfo("showinfo", game_text['help'])
+    messagebox.showinfo("showinfo", game_text["help"])
 
 def display_quit():
     answer = messagebox.askyesno("askyesno", game_text["quit"])
     if answer:
         gui_window.destroy()
-
-def show_map(map_list):
-    map_array = []
-    for line in map_list:
-        map_array.append(line)
-    return map_array
-
-def display_map():
-    map_list = gen_map()
-    game_map_array = show_map(map_list)
-    game_map = ''.join(game_map_array)
-    print(game_map)
-    messagebox.showinfo("showinfo", game_map)
-
-def display_history():
-    for i in range(min(len(previous_locations), len(previous_commands))):
-        print(f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'")
-
-# Save game functionality
-previous_commands = []
-previous_locations = []
-def save_game():
-    game_state = {
-        "current_location": current_location,
-        "counter": counter,
-        "inventory": inventory,
-        "items_data": items_data,
-        "previous_commands": previous_commands,
-        "previous_locations": previous_locations,
-        "current_music_volume": current_music_volume,
-        "current_sfx_volume": current_sfx_volume
-    }
-    
-    with open('saved_game.pkl', 'wb') as file:
-        pickle.dump(game_state, file)
-
-    messagebox.showinfo("showinfo", "Your game has been saved!")
-    print("Game saved!")
-
-def load_game():
-    global current_location, counter, inventory, items_data, previous_commands, previous_locations, current_music_volume, current_sfx_volume
-  
-    try:
-        with open('saved_game.pkl', 'rb') as file:
-            game_state = pickle.load(file)
-
-        current_location = game_state['current_location']
-        counter = game_state['counter']
-        inventory = game_state['inventory']
-        items_data = game_state['items_data']
-        previous_commands = game_state['previous_commands']
-        previous_locations = game_state['previous_locations']
-        current_music_volume = game_state['current_music_volume']
-        current_sfx_volume = game_state['current_sfx_volume']
-
-        print("Game successfully loaded!")
-        messagebox.showinfo("showinfo", "Game successfully loaded!")
-        start_game()
-    except FileNotFoundError:
-        print("No saved game found!")
-        messagebox.showinfo("showinfo", "No saved game found!")
-
-def display_history():
-    #print("History:")
-    command_history = ["COMMAND HISTORY"]
-    for i in range(min(len(previous_locations), len(previous_commands))):
-        line = f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'"
-        #print(line)
-        command_history.append(line)
-
-    if len(command_history) == 0:
-        messagebox.showinfo("showinfo", "You don't have any saved commands. Play the game to get some!")
-    else:
-        messagebox.showinfo('Command History', '\n\n'.join(''.join(command) for command in command_history))
 
 def func_placeholder():
     messagebox.showinfo("showinfo", "Still in Development!")
@@ -149,10 +68,8 @@ help_menu = tk.Menu(menubar, tearoff=0)
 help_menu.add_command(label="Help", command=display_help)
 
 game_options_menu = tk.Menu(menubar, tearoff=0)
-game_options_menu.add_command(label="Show Map", command=display_map)
-game_options_menu.add_command(label="Show Input History", command=display_history)
-game_options_menu.add_command(label="Save Game", command=save_game)
-game_options_menu.add_command(label="Load Game", command=load_game)
+game_options_menu.add_command(label="Save Game", command=func_placeholder)
+game_options_menu.add_command(label="Load Game", command=func_placeholder)
 
 sound_menu = tk.Menu(menubar, tearoff=0)
 sound_menu.add_command(label="Music Settings", command=func_placeholder)
@@ -171,6 +88,7 @@ def start_game():
     show_frame(game_frame)
     update_game_text()
 
+
 #Title Frame Items
 title_label = tk.Label(title_frame, text=game_text["title"], wraplength=500)
 title_label.pack()
@@ -178,7 +96,7 @@ title_label.pack()
 start_button = tk.Button(title_frame, text="Start Game", command = start_game)
 start_button.pack()
 
-load_button = tk.Button(title_frame, text="Load Game", command = load_game)
+load_button = tk.Button(title_frame, text="Load Game", command = func_placeholder)
 load_button.pack()
 
 quit_button = tk.Button(title_frame, text="Quit Game", command = display_quit)
@@ -348,7 +266,7 @@ class TextParser():
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
         print(f"verb {verb} noun {noun}")
 
-        """ if verb == 'save':
+        if verb == 'save':
             self.save_game()
             print(game_text["save_game"])
             return
@@ -356,7 +274,7 @@ class TextParser():
         if verb == 'load':
             self.load_game()
             print(game_text["load_game"])
-            return """
+            return
 
         synonyms = {
             'go' : ["go", "move", "travel", "proceed", "journey", "advance"],
@@ -400,9 +318,6 @@ class TextParser():
             current_location = current_location_data["Directions"][choice]
             #print(f'CURRENT LOCATION: {current_location}')
             #test_location()
-            if 'mazda' in inventory and current_location == 'Elevator':
-                messagebox.showinfo("showinfo", "You can't bring your car on the elevator.")
-                return
             counter += 1
             clear_choices()
             update_game_text()
@@ -414,28 +329,32 @@ class TextParser():
     def handle_start(self, noun):
         #set car start == true
         global car_started
-        if noun == 'mazda':
-            if 'mazda' in inventory:
-                if car_started == False:
-                    car_started = True
-                    print('You started car your car')
-                    messagebox.showinfo("showinfo", "You started car your car. You can drive around the parking lot now.")
-                else:
-                    messagebox.showinfo("showinfo", 'Your car is already started')
-                    print('Your car is already started')
+        if 'mazda' in inventory:
+            if car_started == False:
+                car_started = True
+                print('You started car your car')
+                messagebox.showinfo("showinfo", "You started car your car. You can drive around the parking lot now.")
+            else:
+                messagebox.showinfo("showinfo", 'Your car is already started')
+                print('Your car is already started')
         else:
             messagebox.showinfo("showinfo", "You can't start anything right now. Have you found your car yet?")
             print("You can't start anything right now. Have you found your car yet?")
 
     def handle_enter(self, noun):
-        global current_location
-        if noun == 'mazda':
-            if current_location == 'Parking West 2' and 'mazda' not in inventory:
-                # Add the "mazda" to the inventory
-                self.handle_get(noun)
-            elif 'mazda' in inventory:
-                print("You are already in the Mazda.")
-                messagebox.showinfo("showinfo", "You are already in the Mazda.")
+        if current_location == 'Parking West 2' and 'mazda' not in inventory:
+            # Add the "mazda" to the inventory
+            inventory.append('mazda')
+            # play a sound on channel 0 with a max time of 1500 milliseconds
+            #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+            clear_choices()
+            tk.Label(desc_frame,text=f"You have entered the Mazda.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
+            update_game_text()
+            print("You have entered the Mazda.")
+            messagebox.showinfo("showinfo", "You have entered the Mazda.")
+        elif 'mazda' in inventory:
+            print("You are already in the Mazda.")
+            messagebox.showinfo("showinfo", "You are already in the Mazda.")
         else:
             messagebox.showinfo("showinfo", f'You cannot enter {noun}')
             print(f'You cannot enter {noun}')
@@ -529,15 +448,9 @@ class TextParser():
 # Function to handle user input
 text_parser = TextParser()
 def process_input(event=None):
-    global previous_commands
-    global previous_locations
-    global current_location
-    
     user_input = game_command.get().strip()
     game_command.delete(0, tk.END)
     text_parser.parse_command(user_input)
-    previous_commands.append(user_input)
-    previous_locations.append(current_location)
 
 game_command = tk.Entry(game_frame)
 game_command.bind('<Return>', process_input)
