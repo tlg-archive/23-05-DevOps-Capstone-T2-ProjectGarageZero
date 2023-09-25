@@ -425,8 +425,7 @@ GameCommand CLASS HAS
 - Display Map function
 """
 class GameCommand:   
-    def __init__(self, game_engine_instance):
-        self.game_engine = game_engine_instance
+    def __init__(self):
         self.previous_commands = []
         self.previous_locations = []
         #USE THIS TO CALL THE SOUND CONTROLLER FUNCTIONS
@@ -440,9 +439,9 @@ class GameCommand:
 
     def handle_input(self, command):
         if command in ['save']:
-            self.game_engine.save_game()
+            new_game.save_game()
         elif command in ['load']:
-            self.game_engine.load_game() 
+            new_game.load_game() 
         elif command in ['musicon']:
             pass
         elif command in ['musicoff']:
@@ -493,10 +492,9 @@ class GameEngine:
         self.insideMazda = False
         self.car_started = False
         self.current_location = 'Elevator'
-        self.commander = GameCommand(self)
+        self.commander = GameCommand()
         self.text_parser = TextParser()
         self.npcs = NPCData()
-        self.items_data = {"Items": []}
 
     def save_game(self):
         game_state = {
@@ -548,5 +546,3 @@ new_game = GameEngine()
 
 if __name__ == "__main__":
     new_game.play_game()
-    game_engine = GameEngine()
-    game_command = GameCommand(game_engine)
