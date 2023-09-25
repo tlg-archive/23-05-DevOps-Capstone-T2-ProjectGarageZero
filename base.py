@@ -447,10 +447,14 @@ class GameCommand:
         self.sound_settings = SoundController()
 
     def show_history(self):
-        pass
+        print("History:")
+        for i in range(min(len(self.previous_locations), len(self.previous_commands))):
+            print(f"You used the '{self.previous_commands[i]}' command in the '{self.previous_locations[i]}'")
 
     def display_map(self):
-        pass
+        print("Map:")
+        for line in map_visual:
+            print(line)
 
     def handle_input(self, command):
         if command in ['save']:
@@ -458,29 +462,29 @@ class GameCommand:
         elif command in ['load']:
             new_game.load_game() 
         elif command in ['musicon']:
-            pass
+            self.sound_settings.background_music()
         elif command in ['musicoff']:
-            pass
+            self.sound_settings.stop_background_music()
         elif command in ['musicup']:
-            pass
+            self.sound_settings.volume_up()
         elif command in ['musicdown']:
-            pass
+            self.sound_settings.volume_down()
         elif command in ['sfxon']:
-            pass
+            self.sound_settings.sfx_on()
         elif command in ['sfxoff']:
-            pass
+            self.sound_settings.sfx_off()
         elif command in ['sfxup']:
-            pass
+            self.sound_settings.sfx_volume_up()
         elif command in ['sfxdown']:
-            pass
+            self.sound_settings.sfx_volume_down()
         elif command in ['help']:
             pass
         elif command in ['inventory']:
             pass
         elif command in ['map']:
-            pass
+            self.display_map()
         elif command in ['history']:
-            pass
+            self.show_history()
         elif command in ['quit']:
             pass
         else:
