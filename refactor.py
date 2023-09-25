@@ -89,6 +89,7 @@ def clear_screen():
 SoundController CLASS HAS
 - Background Music Settings
 - SFX Sound Settings
+- needs functions brought in from functionTest
 """
 
 class SoundController:
@@ -130,6 +131,7 @@ Player CLASS HAS
 - Inventory
 - get item function
 - drop item function
+- needs functions brought in from functionTest
 """
 class Player:
     def __init__(self):
@@ -405,6 +407,7 @@ GameCommand CLASS HAS
 - Base input logic
 - Show history function
 - Display Map function
+- needs functions brought in from functionTest
 """
 class GameCommand:   
     def __init__(self):

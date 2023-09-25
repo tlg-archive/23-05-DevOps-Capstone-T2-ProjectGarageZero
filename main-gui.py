@@ -69,10 +69,6 @@ def display_map():
     print(game_map)
     messagebox.showinfo("showinfo", game_map)
 
-def display_history():
-    for i in range(min(len(previous_locations), len(previous_commands))):
-        print(f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'")
-
 # Save game functionality
 previous_commands = []
 previous_locations = []
