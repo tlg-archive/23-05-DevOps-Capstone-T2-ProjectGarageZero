@@ -145,8 +145,26 @@ class Player:
                 return
         print("That's not here! (hint: type name exactly!)")
     
-    def drop_item(self):
-        pass
+    def drop_item(self, item_name, current_location):
+        # Check if the item is in the player's inventory
+        if item_name in self.inventory:
+            # Dictionary for item data
+            item_to_drop = {
+                "Name": item_name,
+                "Location": current_location,
+                "Use": "none",
+                "Type": "none",
+                "Note": "none",
+                "Description": f"A {item_name} on the ground."
+        }
+
+            # Add the item to the current location's items
+            items_data['Items'].append(item_to_drop)
+            # Remove the item from the player's inventory
+            self.inventory.remove(item_name)
+            print(f"You dropped {item_name}.")
+        else:
+            print("You don't have that on you!")
 
 """
 LocationData CLASS HAS
@@ -384,8 +402,8 @@ class TextParser:
         new_game.player.get_item(noun)
 
     def handle_drop(self, noun):
-        print(f"Handling DROP command for {noun}")
-        new_game.player.drop_item(noun)
+        current_location = new_game.current_location
+        new_game.player.drop_item(noun, current_location)
 
     def handle_look(self, noun):
         print(f"Handling LOOK command for {noun}")
@@ -407,7 +425,8 @@ GameCommand CLASS HAS
 - Display Map function
 """
 class GameCommand:   
-    def __init__(self):
+    def __init__(self, game_engine_instance):
+        self.game_engine = game_engine_instance
         self.previous_commands = []
         self.previous_locations = []
         #USE THIS TO CALL THE SOUND CONTROLLER FUNCTIONS
@@ -421,9 +440,9 @@ class GameCommand:
 
     def handle_input(self, command):
         if command in ['save']:
-            print(f"Handling SAVE command for {command}")
+            self.game_engine.save_game()
         elif command in ['load']:
-            pass
+            self.game_engine.load_game() 
         elif command in ['musicon']:
             pass
         elif command in ['musicoff']:
@@ -474,15 +493,47 @@ class GameEngine:
         self.insideMazda = False
         self.car_started = False
         self.current_location = 'Elevator'
-        self.commander = GameCommand()
+        self.commander = GameCommand(self)
         self.text_parser = TextParser()
         self.npcs = NPCData()
+        self.items_data = {"Items": []}
 
     def save_game(self):
-        pass
+        game_state = {
+            "current_location": self.current_location,
+            "counter": self.counter,
+            "inventory": self.player.inventory,
+            # Assuming you add items_data and volume settings to GameEngine or another class
+            # "items_data": self.items_data,
+            # "current_music_volume": self.sound_settings.current_music_volume,
+            # "current_sfx_volume": self.sound_settings.current_sfx_volume,
+            "previous_commands": self.commander.previous_commands,
+            "previous_locations": self.commander.previous_locations
+        }
+        
+        with open('saved_game.pkl', 'wb') as file:
+            pickle.dump(game_state, file)
+
+        print("Game saved!")
 
     def load_game(self):
-        pass
+        try:
+            with open('saved_game.pkl', 'rb') as file:
+                game_state = pickle.load(file)
+
+            self.current_location = game_state['current_location']
+            self.counter = game_state['counter']
+            self.player.inventory = game_state['inventory']
+            # Assuming you add items_data and volume settings to GameEngine or another class
+            # self.items_data = game_state['items_data']
+            # self.sound_settings.current_music_volume = game_state['current_music_volume']
+            # self.sound_settings.current_sfx_volume = game_state['current_sfx_volume']
+            self.commander.previous_commands = game_state['previous_commands']
+            self.commander.previous_locations = game_state['previous_locations']
+
+            print("Game successfully loaded!")
+        except FileNotFoundError:
+            print("No saved game found!")
 
     #ADD START BACKGROUND MUSIC AND SFX COMMAND WHEN THEY ARE BUILT IN
     def play_game(self):
@@ -497,3 +548,5 @@ new_game = GameEngine()
 
 if __name__ == "__main__":
     new_game.play_game()
+    game_engine = GameEngine()
+    game_command = GameCommand(game_engine)
