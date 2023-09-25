@@ -7,6 +7,7 @@ from tkinter import Frame, messagebox
 from functionsTest import directions_data, locations_data, items_data, descriptions_data, map_visual
 from interaction import data as npc_data
 import pickle
+import pygame
 
 #helper functions
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -41,11 +42,57 @@ dialogue_frame.place(in_=gui_window, x=0, y=0, relwidth=1, relheight=1)
 
 show_frame(title_frame)
 
+
 #MUSIC FUNCTIONALITY
 # Setting current music volume value
-current_music_volume=.3
-# Setting current SFX volume value
-current_sfx_volume = 0.7
+
+class SoundController:
+    def __init__(self):
+        # Setting current music volume value
+        self.current_music_volume=.3
+        # Setting current SFX volume value
+        self.current_sfx_volume = 0.7
+
+    def background_music():
+        pygame.init()
+        pygame.mixer.init()
+        s = 'sound'  # folder for music and FX
+        music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
+        pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(current_music_volume)
+
+    def stop_background_music():
+        pygame.mixer.music.stop()
+
+    def volume_up():
+        global current_music_volume
+        current_music_volume += 0.1 
+        pygame.mixer.music.set_volume(current_music_volume)
+    
+    def volume_down():
+        global current_music_volume
+        current_music_volume -= 0.1
+        pygame.mixer.music.set_volume(current_music_volume)
+
+    def setup_sfx():
+        pygame.mixer.set_num_channels(8) 
+
+    def sfx_on():
+        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+
+    def sfx_off():
+        pygame.mixer.Channel(0).set_volume(0.0)
+
+    def sfx_volume_up():
+        global current_sfx_volume
+        current_sfx_volume += 0.1
+        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+
+    def sfx_volume_down():
+        global current_sfx_volume
+        current_sfx_volume -= 0.1
+        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
 
 #HELP TEXT
 def display_help():
