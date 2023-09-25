@@ -8,11 +8,13 @@ from functionsTest import directions_data, locations_data, items_data, descripti
 from interaction import data as npc_data
 import pickle
 import pygame
+#Suppressing Pygame support prompt that was displaying pre-splash screen
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
 #helper functions
 script_dir = os.path.dirname(os.path.realpath(__file__))
 text_file = os.path.join(script_dir, 'data', 'game-text.json')
-map_file = os.path.join(script_dir, 'data', 'map.txt')
+map_file = os.path.join(script_dir, 'data', 'map-file.txt')
 def convert_json():
     with open(text_file) as json_file:
         game_text = json.load(json_file)
@@ -51,51 +53,53 @@ class SoundController:
         # Setting current music volume value
         self.current_music_volume=.3
         # Setting current SFX volume value
-        self.current_sfx_volume = 0.7
+        self.current_sfx_volume = 0.5
 
-    def background_music():
+    def background_music(self):
         pygame.init()
         pygame.mixer.init()
         s = 'sound'  # folder for music and FX
         music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
         pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(current_music_volume)
+        pygame.mixer.music.set_volume(self.current_music_volume)
 
-    def stop_background_music():
+    def stop_background_music(self):
         pygame.mixer.music.stop()
 
-    def volume_up():
-        global current_music_volume
-        current_music_volume += 0.1 
-        pygame.mixer.music.set_volume(current_music_volume)
+    def volume_up(self):
+        #global current_music_volume
+        self.current_music_volume += 0.1 
+        pygame.mixer.music.set_volume(self.current_music_volume)
     
-    def volume_down():
-        global current_music_volume
-        current_music_volume -= 0.1
-        pygame.mixer.music.set_volume(current_music_volume)
+    def volume_down(self):
+        #global current_music_volume
+        self.current_music_volume -= 0.1
+        pygame.mixer.music.set_volume(self.current_music_volume)
 
-    def setup_sfx():
+    def setup_sfx(self):
         pygame.mixer.set_num_channels(8) 
 
-    def sfx_on():
-        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+    def sfx_on(self):
+        pygame.mixer.Channel(0).set_volume(self.current_sfx_volume)
 
-    def sfx_off():
+    def sfx_off(self):
         pygame.mixer.Channel(0).set_volume(0.0)
 
-    def sfx_volume_up():
-        global current_sfx_volume
-        current_sfx_volume += 0.1
-        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+    def sfx_volume_up(self):
+        #global current_sfx_volume
+        self.current_sfx_volume += 0.1
+        pygame.mixer.Channel(0).set_volume(self.current_sfx_volume)
 
-    def sfx_volume_down():
-        global current_sfx_volume
-        current_sfx_volume -= 0.1
-        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+    def sfx_volume_down(self):
+        #global current_sfx_volume
+        self.current_sfx_volume -= 0.1
+        pygame.mixer.Channel(0).set_volume(self.current_sfx_volume)
 
+game_sound = SoundController()
 #HELP TEXT
 def display_help():
+    pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/help.mp3'), maxtime=2000)
     messagebox.showinfo("showinfo", game_text['help'])
 
 def display_quit():
@@ -113,12 +117,9 @@ def display_map():
     map_list = gen_map()
     game_map_array = show_map(map_list)
     game_map = ''.join(game_map_array)
-    print(game_map)
+    #print(game_map)
+    pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/map.mp3'), maxtime=1000)
     messagebox.showinfo("showinfo", game_map)
-
-def display_history():
-    for i in range(min(len(previous_locations), len(previous_commands))):
-        print(f"You used the '{previous_commands[i]}' command in the '{previous_locations[i]}'")
 
 # Save game functionality
 previous_commands = []
@@ -131,8 +132,8 @@ def save_game():
         "items_data": items_data,
         "previous_commands": previous_commands,
         "previous_locations": previous_locations,
-        "current_music_volume": current_music_volume,
-        "current_sfx_volume": current_sfx_volume
+        "current_music_volume": game_sound.current_music_volume,
+        "current_sfx_volume": game_sound.current_sfx_volume
     }
     
     with open('saved_game.pkl', 'wb') as file:
@@ -142,8 +143,7 @@ def save_game():
     print("Game saved!")
 
 def load_game():
-    global current_location, counter, inventory, items_data, previous_commands, previous_locations, current_music_volume, current_sfx_volume
-  
+    global current_location, counter, inventory, items_data, previous_commands, previous_locations
     try:
         with open('saved_game.pkl', 'rb') as file:
             game_state = pickle.load(file)
@@ -154,8 +154,8 @@ def load_game():
         items_data = game_state['items_data']
         previous_commands = game_state['previous_commands']
         previous_locations = game_state['previous_locations']
-        current_music_volume = game_state['current_music_volume']
-        current_sfx_volume = game_state['current_sfx_volume']
+        game_sound.current_music_volume = game_state['current_music_volume']
+        game_sound.current_sfx_volume = game_state['current_sfx_volume']
 
         print("Game successfully loaded!")
         messagebox.showinfo("showinfo", "Game successfully loaded!")
@@ -206,9 +206,12 @@ menubar.add_cascade(menu=sound_menu, label="Sound Options")
 menubar.add_cascade(menu=quit_menu, label="Quit Game")
 menubar.add_cascade(menu=help_menu, label="Help")
 
+
 def start_game():
     show_frame(game_frame)
     update_game_text()
+    game_sound.background_music()
+    game_sound.setup_sfx()
 
 #Title Frame Items
 title_label = tk.Label(title_frame, text=game_text["title"], wraplength=500)
@@ -225,7 +228,7 @@ quit_button.pack()
 
 #Game Frame Stuff
 current_location = 'Elevator'
-counter = 0
+counter = 15
 inventory = []
 car_started = False
 
@@ -260,7 +263,7 @@ npc_response = tk.Label(dialogue_frame)
 npc_response.grid(row=1, column=0)
 
 def get_location_data():
-    print(f"CURRENT LOCATION IN GET LOCATION DATA: {current_location}")
+    #print(f"CURRENT LOCATION IN GET LOCATION DATA: {current_location}")
     #print(f"LOCATION LOOP: {locations_data['Locations']}")
     for location in locations_data['Locations']:
         #print(f"LOCATION LOOP: {location}")
@@ -341,7 +344,7 @@ def clear_choices():
 def update_game_text():
     #output_text.delete(1.0, tk.END)
     #print("LOCATIONS DATA",current_location_data)
-    print(f'Desc frame loaded: {desc_frame.winfo_children()}')
+    #print(f'Desc frame loaded: {desc_frame.winfo_children()}')
     global inventory
     current_location_data, available_directions, available_items = get_location_data()
     # Print the current location
@@ -385,17 +388,7 @@ class TextParser():
         print(command_words)
         verb = command_words[0]
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
-        print(f"verb {verb} noun {noun}")
-
-        """ if verb == 'save':
-            self.save_game()
-            print(game_text["save_game"])
-            return
-
-        if verb == 'load':
-            self.load_game()
-            print(game_text["load_game"])
-            return """
+        #print(f"verb {verb} noun {noun}")
 
         synonyms = {
             'go' : ["go", "move", "travel", "proceed", "journey", "advance"],
@@ -419,14 +412,14 @@ class TextParser():
         print(game_text["invalid"])
     
     def handle_go(self,noun):
-        print(f'inventory: {inventory}')
+        #print(f'inventory: {inventory}')
         if 'mazda' in inventory:
             self.handle_go_mazda(noun)
         else:
             self.handle_go_norm(noun)
     
     def handle_go_norm(self, noun):
-        print(f"Handling GO command for {noun}")
+        #print(f"Handling GO command for {noun}")
         global current_location  # Declare current_location as global
         global current_location_data
         global counter
@@ -434,6 +427,10 @@ class TextParser():
         #print(f"noun in GO: {noun}")
         #print(f"current location: {current_location}")
         #print(f"current location data: {current_location_data['Directions']}")
+        if counter == 1:
+            messagebox.showinfo("showinfo", "OH NO! Time is up and you did not leave the parking lot before you had to pay the extra parking fee. Try again and see if you can get your car and leave!")
+            gui_window.destroy()
+
         if noun.title() in current_location_data["Directions"]:
             choice = noun.title()
             current_location = current_location_data["Directions"][choice]
@@ -442,7 +439,7 @@ class TextParser():
             if 'mazda' in inventory and current_location == 'Elevator':
                 messagebox.showinfo("showinfo", "You can't bring your car on the elevator.")
                 return
-            counter += 1
+            counter -= 1
             clear_choices()
             update_game_text()
             #text_parser.parse_command(noun)
@@ -457,14 +454,15 @@ class TextParser():
             if 'mazda' in inventory:
                 if car_started == False:
                     car_started = True
-                    print('You started car your car')
+                    #print('You started car your car')
+                    pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/carstart.mp3'), maxtime=5000)
                     messagebox.showinfo("showinfo", "You started car your car. You can drive around the parking lot now.")
                 else:
                     messagebox.showinfo("showinfo", 'Your car is already started')
-                    print('Your car is already started')
+                    #print('Your car is already started')
         else:
             messagebox.showinfo("showinfo", "You can't start anything right now. Have you found your car yet?")
-            print("You can't start anything right now. Have you found your car yet?")
+            #print("You can't start anything right now. Have you found your car yet?")
 
     def handle_enter(self, noun):
         global current_location
@@ -473,22 +471,22 @@ class TextParser():
                 # Add the "mazda" to the inventory
                 self.handle_get(noun)
             elif 'mazda' in inventory:
-                print("You are already in the Mazda.")
+                #print("You are already in the Mazda.")
                 messagebox.showinfo("showinfo", "You are already in the Mazda.")
         else:
             messagebox.showinfo("showinfo", f'You cannot enter {noun}')
-            print(f'You cannot enter {noun}')
+            #print(f'You cannot enter {noun}')
 
     def handle_go_mazda(self, noun):
         global car_started
         if car_started == False:
             messagebox.showinfo("showinfo", 'Please start your car to continue on')
-            print('Please start your car to continue on')
+            #print('Please start your car to continue on')
         else:
             self.handle_go_norm(noun)
 
     def handle_get(self, noun):
-        print(f"Handling GET command for {noun}")
+        #print(f"Handling GET command for {noun}")
         # Check if the item is in the current room
         global available_items
         global current_location
@@ -497,25 +495,39 @@ class TextParser():
         if noun in available_items:
             # Call the get_item function to pick up the item
             # play a sound on channel 0 with a max time of 1250 milliseconds
-            #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1250)
             # Check if the item is in the current location
             for item_data in items_data['Items']:
                 if item_data['Name'].lower() == noun and item_data['Location'] == current_location:
                     inventory.append(item_data['Name'])
                     # Remove the item from the current location
                     items_data['Items'].remove(item_data)
-                    print(f"You now have {item_data['Name']}.")
+                    #print(f"You now have {item_data['Name']}.")
                     obtained_item = item_data['Name']
                     #return
             clear_choices()
             tk.Label(desc_frame,text=f"You now have {obtained_item}.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
+            if noun == 'mazda':
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+            else:
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/get.mp3'), maxtime=1000)
             update_game_text()
         else:
-            messagebox.showinfo("showinfo", "That's not here! (hint: type the name exactly)")
-            print(f"{noun} is not here! (hint: type the name exactly)")
+            messagebox.showinfo("showinfo", f"{noun} not here! (hint: type the name exactly)")
+            #print(f"{noun} is not here! (hint: type the name exactly)")
+
+    def handle_exit(self, noun):
+        if noun == 'mazda':
+            if 'mazda' in inventory:
+                # Remove the Mazda from the inventory
+                self.handle_drop('mazda')
+            else:
+                messagebox.showinfo("showinfo", f"You are not inside the Mazda.")
+                #print("You are not inside the Mazda.")
+        else:
+            messagebox.showinfo("showinfo", f"You can't exit {noun}")
 
     def handle_drop(self, noun):
-        print(f"Handling DROP command for {noun}")
+        #print(f"Handling DROP command for {noun}")
         if noun in inventory:
             # Dictionary for item data
             item_to_drop = {
@@ -531,15 +543,21 @@ class TextParser():
             items_data['Items'].append(item_to_drop)
             # Remove the item from the player's inventory
             inventory.remove(noun)
-            print(f"You dropped {noun}.")
+            #print(f"You dropped {noun}.")
             clear_choices()
+            if noun == 'mazda':
+                tk.Label(desc_frame,text=f"You have exited the Mazda.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
+            else:
+                tk.Label(desc_frame,text=f"You dropped {noun}.",bg='#fff', fg='#f00', pady=10, padx=10, font=15).pack()
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/go.mp3'), maxtime=1000)
             update_game_text()
         else:
             messagebox.showinfo("showinfo", f"You don't have {noun} on you!")
-            print("You don't have that on you!")
+            #print("You don't have that on you!")
 
     def handle_look(self, noun):
-        print(f"Handling LOOK command for {noun}")
+        #print(f"Handling LOOK command for {noun}")
         global available_items
         available_items = get_location_data()[2]
         if noun in available_items:
@@ -556,14 +574,14 @@ class TextParser():
             messagebox.showinfo("showinfo", f"The item '{noun}' is not here or cannot be examined.")
 
     def handle_talk(self, noun):
-        print(f"Handling TALK command for {noun}")
+        #print(f"Handling TALK command for {noun}")
         npc = get_npc(noun)  
         if npc:
-            print(f"found npc: {noun}")
+            #print(f"found npc: {noun}")
             interact_with_npc(npc)  
         else:
             messagebox.showinfo("showinfo", f"No NPC named {noun} found.")
-            print(f"No NPC named {noun} found.")
+            #print(f"No NPC named {noun} found.")
 
 # Function to handle user input
 text_parser = TextParser()
