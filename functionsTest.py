@@ -590,7 +590,7 @@ def start_game():
                     inventory.append('mazda')
                     # play a sound on channel 0 with a max time of 1500 milliseconds
                     pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/cardoor.mp3'), maxtime=1500)
-                    press_enter_to_return()
+                    #press_enter_to_return()
                     print("You have entered the Mazda.")
                     continue
                 elif 'mazda' in inventory:
@@ -613,7 +613,7 @@ def start_game():
                 car_started = True
                 # play a sound on channel 0 with a max time of 50000 milliseconds
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/carstart.mp3'), maxtime=5000)
-                press_enter_to_return()
+                #press_enter_to_return()
                 print("You have started the car.")
                 continue
             
