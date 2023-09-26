@@ -3,7 +3,7 @@ import os
 import json
 import random
 from functools import partial
-from tkinter import Frame, messagebox
+from tkinter import Frame, messagebox, Toplevel, LabelFrame
 from functionsTest import directions_data, locations_data, items_data
 from interaction import data as npc_data
 import pickle
@@ -38,6 +38,7 @@ def gen_map():
 
 #initilize the tkinter window and size
 gui_window = tk.Tk()
+gui_window.title("Project Garage Zero")
 gui_window.minsize(700,400)
 
 def show_frame(frame):
@@ -143,6 +144,63 @@ def display_map():
     #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/map.mp3'), maxtime=1000)
     messagebox.showinfo("showinfo", game_map)
 
+def display_sound():
+    newWindow = Toplevel(gui_window)
+    #newWindow.minsize(400,400)
+    newWindow.title("Sound Settings")
+    #newWindow.grid(row=0, column=0)
+    #Label(newWindow, text="Sound Settings").pack()
+
+    volume_frame = LabelFrame(newWindow, text="Volume")
+    volume_frame.grid(row=0, column=0, pady=10, padx=10)
+
+    sfx_frame = LabelFrame(newWindow, text="Sound Effect")
+    sfx_frame.grid(row=1, column=0, pady=10, padx=10)
+    
+    #Checkboxes for sound on or off
+
+    bgm_state = tk.IntVar(value=1)
+    sfx_state = tk.IntVar(value=1)
+
+    def volume_toggle():
+        if bgm_state.get() == 1:
+            pygame.mixer.music.set_volume(game_sound.current_music_volume)
+        else:
+            pygame.mixer.music.set_volume(0.0)
+
+    def sfx_toggle():
+        if sfx_state.get() == 1:
+            game_sound.sfx_on()
+            game_sound.play_sfx(get_sfx)
+        else:
+            game_sound.sfx_off()
+
+    bgm_check = tk.Checkbutton(volume_frame, text="Background Music ON or OFF", variable=bgm_state, command=volume_toggle)
+    bgm_check.grid()
+
+    sfx_check = tk.Checkbutton(sfx_frame, text="Background Music ON or OFF", variable=sfx_state, command=sfx_toggle)
+    sfx_check.grid()
+
+    #SLIDERS FOR SOUND LEVELS
+    def volume_slide(vol):
+        #vol = vol/100
+        game_sound.current_music_volume = volume_slider.get()/100
+        pygame.mixer.music.set_volume(game_sound.current_music_volume)
+
+    def sfx_slide(vol):
+        game_sound.current_sfx_volume = sfx_slider.get()/100
+        pygame.mixer.Channel(0).set_volume(game_sound.current_sfx_volume)
+        game_sound.play_sfx(get_sfx)
+
+    volume_slider = tk.Scale(volume_frame, from_=0, to=100, orient="vertical", command = volume_slide)
+
+    volume_slider.set(game_sound.current_music_volume*100)
+    volume_slider.grid()
+
+    sfx_slider = tk.Scale(sfx_frame, from_=0, to=100, orient="vertical", command = sfx_slide)
+    sfx_slider.set(game_sound.current_sfx_volume*100)
+    sfx_slider.grid()
+
 # Save game functionality
 previous_commands = []
 previous_locations = []
@@ -216,8 +274,7 @@ game_options_menu.add_command(label="Save Game", command=save_game)
 game_options_menu.add_command(label="Load Game", command=load_game)
 
 sound_menu = tk.Menu(menubar, tearoff=0)
-sound_menu.add_command(label="Music Settings", command=func_placeholder)
-sound_menu.add_command(label="SFX Settings", command=func_placeholder) 
+sound_menu.add_command(label="Sound Settings", command=display_sound)
 
 quit_menu = tk.Menu(menubar, tearoff=0)
 quit_menu.add_command(label="Return to Title Screen", command=lambda: show_frame(title_frame))
