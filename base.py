@@ -181,6 +181,13 @@ class Player:
         else:
             print("You don't have that on you!")
 
+    def add_to_inventory(self, item_name, description=""):
+        if item_name not in self.inventory:
+            self.inventory.append(item_name)
+            print(f"You received {item_name}!")
+        else:
+            print(f"You already have {item_name}.")
+
 """
 LocationData CLASS HAS
 - Load location data
@@ -252,11 +259,11 @@ NPCData CLASS HAS
 - interact with npc function
 """
 class NPCData:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, npc_data) -> None:
+        self.npc_data = npc_data
     
     def get_npc(self, npc_name):
-        for npc in npc_data['NPCs']:
+        for npc in self.npc_data['NPCs']:
             if npc['Name'] == npc_name:
                 return npc
         return None
@@ -268,7 +275,7 @@ class NPCData:
 
     def interact_with_npc(self, npc):
         print(self.greet_npc(npc))
-        
+
         if 'PlayerChoices' in npc:
             while True:  # This loop allows the player to keep choosing until they decide to exit
                 for idx, choice in enumerate(npc['PlayerChoices']):
@@ -283,13 +290,26 @@ class NPCData:
                 try:
                     choice_index = int(player_choice) - 1
                     if 0 <= choice_index < len(npc['PlayerChoices']):
-                        if 'Response' in npc['PlayerChoices'][choice_index]:
-                            response = npc['PlayerChoices'][choice_index]['Response']
-                        elif 'ResponseOptions' in npc['PlayerChoices'][choice_index]:
-                            response = random.choice(npc['PlayerChoices'][choice_index]['ResponseOptions'])
+                        selected_choice = npc['PlayerChoices'][choice_index]
+                    
+                        if "Reward" in selected_choice:
+                            new_game.player.add_to_inventory(selected_choice["Reward"], description=f"A {selected_choice['Reward']} given as a reward.")
+                    
+                        if 'Response' in selected_choice:
+                            response = selected_choice['Response']
+                        elif 'ResponseOptions' in selected_choice:
+                            response = random.choice(selected_choice['ResponseOptions'])
                         else:
                             response = "No response found."
                         print(response)
+                    
+                        # Check for game ending condition after processing the choice
+                        if 'Outcome' in selected_choice:
+                            if selected_choice['Outcome']['Condition'] == "HasLollipop":
+                                print(selected_choice['Outcome']['Result'])
+                                new_game.game_ended = True
+                                return
+
                     elif choice_index + 1 == exit_option_index:  # Exit conversation
                         print("Exiting conversation.")
                         return  # This returns the player to the main command input
@@ -297,6 +317,9 @@ class NPCData:
                         print("Invalid choice.")
                 except ValueError:
                     print("Invalid choice.")
+
+    def get_all_npcs(self):
+        return self.npc_data["NPCs"]
 
 """
 TextParser CLASS HAS
@@ -427,11 +450,41 @@ class TextParser:
     def handle_talk(self, noun):
         npc_name = noun
         print(f"Handling TALK command for {noun}")
-        npc = new_game.npcs.get_npc(npc_name)
+
+        current_location = new_game.current_location
+        npcs_in_location = [npc for npc in new_game.npcs.get_all_npcs() if npc["Location"] == current_location]
+
+        npc = next((n for n in npcs_in_location if n["Name"].lower() == npc_name.lower()), None)
+
         if npc:
-            interact_with_npc(npc)
+            greeting = random.choice(npc["Greetings"])
+            print(greeting)
+
+            for index, choice in enumerate(npc["PlayerChoices"]):
+                print(f"{index + 1}. {choice['Choice']}")
+
+            choice = input("What will you say? (Enter the number) ")
+            if choice.isdigit() and 1 <= int(choice) <= len(npc["PlayerChoices"]):
+                selected_choice = npc["PlayerChoices"][int(choice) - 1]
+                print(selected_choice["Response"])
+
+                if npc_name.lower() == "attendant":
+                    if selected_choice["Choice"] == "yes":
+                        if new_game.current_location == 'Parking Exit' and 'mazda' in new_game.player.inventory and new_game.car_started:
+                            print("Congratulations! You successfully exited the parking lot with your car!")
+                            new_game.game_ended = True   
+                    elif selected_choice["Choice"] == "Offer lollipop" and "Lollipop" in new_game.player.inventory:
+                        #print("Attempting to end game due to lollipop...")
+                        print(selected_choice["Outcome"]["Result"])
+                        new_game.game_ended = True
+                        #print(f"Game Ended: {new_game.game_ended}")
+                elif npc_name.lower() == "creepy man" and "Reward" in selected_choice:
+                    new_game.player.add_to_inventory(selected_choice["Reward"])
+                    print(f"You received a {selected_choice['Reward']}!")
+            else:
+                print("Invalid choice.")
         else:
-            print(f"No NPC named {npc_name} found.")
+            print(f"No NPC named {npc_name} found in this location.")
 
 """
 GameCommand CLASS HAS
@@ -520,7 +573,8 @@ class GameEngine:
         self.current_location = 'Elevator'
         self.commander = GameCommand()
         self.text_parser = TextParser()
-        self.npcs = NPCData()
+        self.npcs = NPCData(npc_data)
+        self.game_ended = False
 
     def save_game(self):
         game_state = {
@@ -562,7 +616,7 @@ class GameEngine:
         #self.location_data.show_location_data()
         self.commander.sound_settings.background_music()
         self.commander.sound_settings.setup_sfx()
-        while True:
+        while not self.game_ended:
             self.location_data.show_location_data()
             user_input = input("What would you like to do next? (type 'help' to see valid commands or 'quit' to exit): \n>> ").strip().lower()
             self.commander.handle_input(user_input)
