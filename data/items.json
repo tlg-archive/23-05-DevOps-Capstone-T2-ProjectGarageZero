@@ -10,15 +10,6 @@
       "Description": "A dark grey cupholder."
     },
     {
-      "Name": "elevator",
-      "DescriptionID": "elevator_description",
-      "Location": "Elevator",
-      "Use": "none",
-      "Type": "none",
-      "Note": "none",
-      "Description": "Leaving the elevator, you enter a well-lit underground garage with clear parking spaces, directional signs, and safe walkways for pedestrians."
-    },
-    {
       "Name": "garbage can",
       "DescriptionID": "garbage_can_description",
       "Location": "Elevator",
