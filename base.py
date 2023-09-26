@@ -542,14 +542,15 @@ class GameEngine:
         try:
             with open('saved_game.pkl', 'rb') as file:
                 game_state = pickle.load(file)
+                print(game_state)
 
-            self.current_location = game_state['current_location']
-            self.counter = game_state['counter']
-            self.player.inventory = game_state['inventory']
-            self.commander.sound_settings.current_music_volume = game_state['current_music_volume']
-            self.commander.sound_settings.current_sfx_volume = game_state['current_sfx_volume']
-            self.commander.previous_commands = game_state['previous_commands']
-            self.commander.previous_locations = game_state['previous_locations']
+            self.current_location = game_state.get('current_location', 'Elevator')
+            self.counter = game_state.get('counter', 15)
+            self.player.inventory = game_state.get('inventory', [])
+            self.commander.sound_settings.current_music_volume = game_state.get('current_music_volume', 0.5)
+            self.commander.sound_settings.current_sfx_volume = game_state.get('current_sfx_volume', 0.5)
+            self.commander.previous_commands = game_state.get('previous_commands', [])
+            self.commander.previous_locations = game_state.get('previous_locations', []) 
 
             print("Game successfully loaded!")
         except FileNotFoundError:
