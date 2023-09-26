@@ -184,7 +184,7 @@ class Player:
     def add_to_inventory(self, item_name, description=""):
         if item_name not in self.inventory:
             self.inventory.append(item_name)
-            print(f"You received {item_name}!")
+            #print(f"You received {item_name}!")
         else:
             print(f"You already have {item_name}.")
 
