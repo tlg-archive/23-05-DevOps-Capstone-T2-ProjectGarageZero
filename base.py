@@ -98,46 +98,46 @@ class SoundController:
         # Setting current SFX volume value
         self.current_sfx_volume = 0.7
 
-    def background_music():
+    def background_music(self):
         pygame.init()
         pygame.mixer.init()
         s = 'sound'  # folder for music and FX
         music = pygame.mixer.Sound(os.path.join(s, 'garage_music.ogg'))
         pygame.mixer.music.load(os.path.join(s, 'garage_music.ogg'))
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(current_music_volume)
+        pygame.mixer.music.set_volume(self.current_music_volume)
 
-    def stop_background_music():
+    def stop_background_music(self):
         pygame.mixer.music.stop()
 
-    def volume_up():
-        global current_music_volume
-        current_music_volume += 0.1 
-        pygame.mixer.music.set_volume(current_music_volume)
+    def volume_up(self):
+        #global current_music_volume
+        self.current_music_volume += 0.1 
+        pygame.mixer.music.set_volume(self.current_music_volume)
     
-    def volume_down():
-        global current_music_volume
-        current_music_volume -= 0.1
-        pygame.mixer.music.set_volume(current_music_volume)
+    def volume_down(self):
+        #global current_music_volume
+        self.current_music_volume -= 0.1
+        pygame.mixer.music.set_volume(self.current_music_volume)
 
-    def setup_sfx():
+    def setup_sfx(self):
         pygame.mixer.set_num_channels(8) 
 
-    def sfx_on():
-        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+    def sfx_on(self):
+        pygame.mixer.Channel(0).set_volume(self.current_sfx_volume)
 
-    def sfx_off():
+    def sfx_off(self):
         pygame.mixer.Channel(0).set_volume(0.0)
 
-    def sfx_volume_up():
-        global current_sfx_volume
-        current_sfx_volume += 0.1
-        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+    def sfx_volume_up(self):
+        #global current_sfx_volume
+        self.current_sfx_volume += 0.1
+        pygame.mixer.Channel(0).set_volume(self.current_sfx_volume)
 
-    def sfx_volume_down():
-        global current_sfx_volume
-        current_sfx_volume -= 0.1
-        pygame.mixer.Channel(0).set_volume(current_sfx_volume)
+    def sfx_volume_down(self):
+        #global current_sfx_volume
+        self.current_sfx_volume -= 0.1
+        pygame.mixer.Channel(0).set_volume(self.current_sfx_volume)
 
 
 """
@@ -456,6 +456,13 @@ class GameCommand:
         for line in map_visual:
             print(line)
 
+    def display_help(self):
+        print(game_text['help'])
+
+    def quit_game(self):
+        print("Exiting the game. Goodbye!")
+        sys.exit()
+
     def handle_input(self, command):
         if command in ['save']:
             new_game.save_game()
@@ -478,15 +485,15 @@ class GameCommand:
         elif command in ['sfxdown']:
             self.sound_settings.sfx_volume_down()
         elif command in ['help']:
-            pass
+            self.display_help()
         elif command in ['inventory']:
-            pass
+            new_game.player.display_inventory()
         elif command in ['map']:
             self.display_map()
         elif command in ['history']:
             self.show_history()
         elif command in ['quit']:
-            pass
+            self.quit_game()
         else:
             new_game.text_parser.parse_command(command)
 
@@ -520,10 +527,8 @@ class GameEngine:
             "current_location": self.current_location,
             "counter": self.counter,
             "inventory": self.player.inventory,
-            # Assuming you add items_data and volume settings to GameEngine or another class
-            # "items_data": self.items_data,
-            # "current_music_volume": self.sound_settings.current_music_volume,
-            # "current_sfx_volume": self.sound_settings.current_sfx_volume,
+            "current_music_volume": self.commander.sound_settings.current_music_volume,
+            "current_sfx_volume": self.commander.sound_settings.current_sfx_volume,
             "previous_commands": self.commander.previous_commands,
             "previous_locations": self.commander.previous_locations
         }
@@ -541,10 +546,8 @@ class GameEngine:
             self.current_location = game_state['current_location']
             self.counter = game_state['counter']
             self.player.inventory = game_state['inventory']
-            # Assuming you add items_data and volume settings to GameEngine or another class
-            # self.items_data = game_state['items_data']
-            # self.sound_settings.current_music_volume = game_state['current_music_volume']
-            # self.sound_settings.current_sfx_volume = game_state['current_sfx_volume']
+            self.commander.sound_settings.current_music_volume = game_state['current_music_volume']
+            self.commander.sound_settings.current_sfx_volume = game_state['current_sfx_volume']
             self.commander.previous_commands = game_state['previous_commands']
             self.commander.previous_locations = game_state['previous_locations']
 
@@ -556,6 +559,8 @@ class GameEngine:
     def play_game(self):
         self.current_location = 'Elevator'
         #self.location_data.show_location_data()
+        self.commander.sound_settings.background_music()
+        self.commander.sound_settings.setup_sfx()
         while True:
             self.location_data.show_location_data()
             user_input = input("What would you like to do next? (type 'help' to see valid commands or 'quit' to exit): \n>> ").strip().lower()
