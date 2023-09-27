@@ -23,7 +23,7 @@
         "Attendant"
       ],
       "Note": "none",
-      "Description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you. You can TALK to the ATTENDANT"
+      "Description": "A parking attendant slouches in a dingy booth next to the lowered gate. They look up and eye you. You can TALK to the ATTENDANT."
     },
     {
       "Name": "Parking East 1",
@@ -54,7 +54,7 @@
         "Newspaper"
       ],
       "Note": "none",
-      "Description": "In a dimly lit parking lot with spaced cars, a mysterious man in a long leather jacket and wide hat moved strangely, making people curious and uneasy in the quiet night."
+      "Description": "In a dimly lit parking lot with spaced cars, you see a creepy man in a long leather jacket and wide hat moving strangely, making people curious and uneasy in the quiet night. You can TALK to the CREEPY MAN."
     },
     {
       "Name": "Parking East 3",

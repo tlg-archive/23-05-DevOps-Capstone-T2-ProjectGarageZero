@@ -3,7 +3,7 @@ import os
 import json
 import random
 from functools import partial
-from tkinter import Frame, messagebox
+from tkinter import Frame, messagebox, Toplevel, LabelFrame
 from functionsTest import directions_data, locations_data, items_data
 from interaction import data as npc_data
 import pickle
@@ -38,6 +38,7 @@ def gen_map():
 
 #initilize the tkinter window and size
 gui_window = tk.Tk()
+gui_window.title("Project Garage Zero")
 gui_window.minsize(700,400)
 
 def show_frame(frame):
@@ -143,6 +144,63 @@ def display_map():
     #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./sound/map.mp3'), maxtime=1000)
     messagebox.showinfo("showinfo", game_map)
 
+def display_sound():
+    newWindow = Toplevel(gui_window)
+    #newWindow.minsize(400,400)
+    newWindow.title("Sound Settings")
+    #newWindow.grid(row=0, column=0)
+    #Label(newWindow, text="Sound Settings").pack()
+
+    volume_frame = LabelFrame(newWindow, text="Volume")
+    volume_frame.grid(row=0, column=0, pady=10, padx=10)
+
+    sfx_frame = LabelFrame(newWindow, text="Sound Effect")
+    sfx_frame.grid(row=1, column=0, pady=10, padx=10)
+    
+    #Checkboxes for sound on or off
+
+    bgm_state = tk.IntVar(value=1)
+    sfx_state = tk.IntVar(value=1)
+
+    def volume_toggle():
+        if bgm_state.get() == 1:
+            pygame.mixer.music.set_volume(game_sound.current_music_volume)
+        else:
+            pygame.mixer.music.set_volume(0.0)
+
+    def sfx_toggle():
+        if sfx_state.get() == 1:
+            game_sound.sfx_on()
+            game_sound.play_sfx(get_sfx)
+        else:
+            game_sound.sfx_off()
+
+    bgm_check = tk.Checkbutton(volume_frame, text="Background Music ON or OFF", variable=bgm_state, command=volume_toggle)
+    bgm_check.grid()
+
+    sfx_check = tk.Checkbutton(sfx_frame, text="Background Music ON or OFF", variable=sfx_state, command=sfx_toggle)
+    sfx_check.grid()
+
+    #SLIDERS FOR SOUND LEVELS
+    def volume_slide(vol):
+        #vol = vol/100
+        game_sound.current_music_volume = volume_slider.get()/100
+        pygame.mixer.music.set_volume(game_sound.current_music_volume)
+
+    def sfx_slide(vol):
+        game_sound.current_sfx_volume = sfx_slider.get()/100
+        pygame.mixer.Channel(0).set_volume(game_sound.current_sfx_volume)
+        game_sound.play_sfx(get_sfx)
+
+    volume_slider = tk.Scale(volume_frame, from_=0, to=100, orient="vertical", command = volume_slide)
+
+    volume_slider.set(game_sound.current_music_volume*100)
+    volume_slider.grid()
+
+    sfx_slider = tk.Scale(sfx_frame, from_=0, to=100, orient="vertical", command = sfx_slide)
+    sfx_slider.set(game_sound.current_sfx_volume*100)
+    sfx_slider.grid()
+
 # Save game functionality
 previous_commands = []
 previous_locations = []
@@ -155,19 +213,20 @@ def save_game():
         "previous_commands": previous_commands,
         "previous_locations": previous_locations,
         "current_music_volume": game_sound.current_music_volume,
-        "current_sfx_volume": game_sound.current_sfx_volume
+        "current_sfx_volume": game_sound.current_sfx_volume,
+        "car_started": car_started
     }
     
-    with open('saved_game.pkl', 'wb') as file:
+    with open('saved_game_gui.pkl', 'wb') as file:
         pickle.dump(game_state, file)
 
     messagebox.showinfo("showinfo", "Your game has been saved!")
     print("Game saved!")
 
 def load_game():
-    global current_location, counter, inventory, items_data, previous_commands, previous_locations
+    global current_location, counter, inventory, items_data, previous_commands, previous_locations, car_started
     try:
-        with open('saved_game.pkl', 'rb') as file:
+        with open('saved_game_gui.pkl', 'rb') as file:
             game_state = pickle.load(file)
 
         current_location = game_state['current_location']
@@ -178,9 +237,11 @@ def load_game():
         previous_locations = game_state['previous_locations']
         game_sound.current_music_volume = game_state['current_music_volume']
         game_sound.current_sfx_volume = game_state['current_sfx_volume']
+        car_started = game_state["car_started"]
 
         print("Game successfully loaded!")
         messagebox.showinfo("showinfo", "Game successfully loaded!")
+        clear_choices()
         start_game()
     except FileNotFoundError:
         print("No saved game found!")
@@ -199,9 +260,6 @@ def display_history():
     else:
         messagebox.showinfo('Command History', '\n\n'.join(''.join(command) for command in command_history))
 
-def func_placeholder():
-    messagebox.showinfo("showinfo", "Still in Development!")
-
 #MENUBAR SECTION
 menubar = tk.Menu(gui_window)
 gui_window.config(menu=menubar)
@@ -216,8 +274,7 @@ game_options_menu.add_command(label="Save Game", command=save_game)
 game_options_menu.add_command(label="Load Game", command=load_game)
 
 sound_menu = tk.Menu(menubar, tearoff=0)
-sound_menu.add_command(label="Music Settings", command=func_placeholder)
-sound_menu.add_command(label="SFX Settings", command=func_placeholder) 
+sound_menu.add_command(label="Sound Settings", command=display_sound)
 
 quit_menu = tk.Menu(menubar, tearoff=0)
 quit_menu.add_command(label="Return to Title Screen", command=lambda: show_frame(title_frame))
@@ -228,11 +285,9 @@ menubar.add_cascade(menu=sound_menu, label="Sound Options")
 menubar.add_cascade(menu=quit_menu, label="Quit Game")
 menubar.add_cascade(menu=help_menu, label="Help")
 
-
 def start_game():
     show_frame(game_frame)
     update_game_text()
-    #game_sound.background_music()
 
 #Title Frame Items
 title_label = tk.Label(title_frame, text=game_text["title"], wraplength=500)
@@ -283,6 +338,9 @@ npc_title.grid(row=0, column=0)
 npc_response = tk.Label(dialogue_frame)
 npc_response.grid(row=1, column=0)
 
+answer_frame = Frame(dialogue_frame)
+answer_frame.grid(row=2, column=0)
+
 def get_location_data():
     #print(f"CURRENT LOCATION IN GET LOCATION DATA: {current_location}")
     #print(f"LOCATION LOOP: {locations_data['Locations']}")
@@ -320,28 +378,66 @@ def greet_npc(npc):
     if 'Greetings' in npc:
         return random.choice(npc['Greetings'])
 
-def talk_npc(choice,npc_ans):
-    print(f"choice: {choice}")
-    print(f"Chatting: {npc_ans}")
-    npc_response.configure(text=npc_ans)
+def beat_game():
+    messagebox.showinfo("showinfo", "Congratulations! You successfully exited the parking lot with your car! \nThanks for playing!!!!!!")
+    gui_window.destroy()
+
+def talk_npc(choice,npc_ans, npc_data):
+    #print(f"choice: {choice}")
+    #print(f"Chatting: {npc_ans}")
+    #print(f"NPC DATA {npc_data}")
+    global current_location
+    global inventory
+    #npc_response.configure(text=npc_ans)
+    if npc_data['Name'].lower() == "attendant":
+        if choice == "yes":
+            if 'mazda' in inventory:
+                npc_response.configure(text=npc_ans)
+                #print("Congratulations! You successfully exited the parking lot with your car!")
+                beat_game()
+            else:
+                npc_response.configure(text="Where's your car?")
+        elif choice == "Offer lollipop":
+            if "Lollipop" in inventory:
+                npc_response.configure(text=npc_ans)
+                beat_game()
+                #print("Congratulations! You successfully exited the parking lot with your car!")
+            else:
+                npc_response.configure(text="-____- You don't have a lollipop...")
+        else:
+            npc_response.configure(text=npc_ans)
+    elif npc_data['Name'].lower() == "creepy man":
+        if choice == 'Offer pack of gum' and 'gum' in inventory:
+            inventory.remove('gum')
+            inventory.append('Lollipop')
+            #new_game.player.add_to_inventory(selected_choice["Reward"])
+            print(f"You received a Lollipop!")
+            npc_response.configure(text=npc_ans)
+        elif choice == 'Offer pack of gum' and 'gum' not in inventory:
+            npc_response.configure(text="You don't even have any gum....")
+        else:
+            npc_response.configure(text=npc_ans)
 
 def return_to_game(npc_name):
-    print('RETURN TO THE MAIN GAME')
+    #print('RETURN TO THE MAIN GAME')
     answer = messagebox.askyesno("askyesno", f"Do you want to leave the conversation with {npc_name}?")
     if answer:
+        clear_choices()
+        update_game_text()
         show_frame(game_frame)
 
 def interact_with_npc(npc):
+    #clear_choices()
     show_frame(dialogue_frame)
 
     npc_title.configure(text=f"Talking with: {npc['Name']}")
     npc_response.configure(text=greet_npc(npc))
     
     for index, btn_name in enumerate(npc['PlayerChoices']):
-        btn = tk.Button(dialogue_frame, text='View '+str(btn_name['Choice']), command=partial(talk_npc, btn_name['Choice'], btn_name['Response']))
+        btn = tk.Button(answer_frame, text=str(btn_name['Choice']), command=partial(talk_npc, btn_name['Choice'], btn_name['Response'], npc))
         btn.grid(row=index+2, column=0)
 
-    exit_npc = tk.Button(dialogue_frame, text="Leave Conversation", command= lambda: return_to_game(npc['Name']))
+    exit_npc = tk.Button(answer_frame, text="Leave Conversation", command= lambda: return_to_game(npc['Name']))
     exit_npc.grid(row=len(npc['PlayerChoices'])+2, column=0)
     
 def clear_choices():
@@ -360,6 +456,9 @@ def clear_choices():
     for widget in desc_frame.winfo_children():
         #print(' I AM IN THE LOPPP FSIFHNALSCNSAL', widget)
         widget.destroy()
+    """ for widget in dialogue_frame.winfo_children():
+        #print(' I AM IN THE LOPPP FSIFHNALSCNSAL', widget)
+        widget.destroy() """
 
 # Function to update the game text
 def update_game_text():
@@ -369,24 +468,24 @@ def update_game_text():
     global inventory
     current_location_data, available_directions, available_items = get_location_data()
     # Print the current location
-    location_head = f"LOCATION: {current_location}"
-    move_head = f"MOVES MADE: {counter}"
+    location_head = f"LOCATION: {current_location}\n"
+    move_head = f"MOVES MADE: {counter}\n"
     #print(f"current inventory: {inventory}")
 
     # Printing header
-    location_status.configure(text=f"{location_head}\n{move_head}")
+    location_status.configure(text=f"{location_head}\n{move_head}", font='Helvetica 16 bold')
     output_text.configure(text=current_location_data["Description"],wraplength=500)
     if available_items:
-        tk.Label(items_frame, text='ITEMS').pack()
+        tk.Label(items_frame, text='ITEMS',font='Helvetica 16 bold').pack()
         for item in available_items:
             tk.Label(items_frame, text=item).pack()
 
-    tk.Label(choices_frame, text='EXITS').pack()
+    tk.Label(choices_frame, text='EXITS',font='Helvetica 14 bold').pack()
     for direction_data in available_directions:
         tk.Label(choices_frame,text=f"{direction_data['Direction']} - {direction_data['Destination']}").pack()
 
     #Update inventory frame
-    tk.Label(inventory_frame, text="INVENTORY").pack()
+    tk.Label(inventory_frame, text="INVENTORY",font='Helvetica 14 bold').pack()
     for item in inventory:
         tk.Label(inventory_frame, text=item).pack()
     
