@@ -1,8 +1,1 @@
-json
-os
 pygame==2.5.1
-datetime
-pickle
-shutil
-sys
-random
