@@ -45,10 +45,7 @@
 			"PlayerChoices": [
 				{
 					"Choice": "Hello, have you seen a grey Mazda?",
-					"ResponseOptions": [
-						"MAZDA MAZDA MAZDA! LOST LOST LOST!",
-						"CARS CARS CARS! GONE EVERYTHING GONE!"
-					]
+					"Response": "MAZDA MAZDA MAZDA! LOST LOST LOST! CARS CARS CARS! GONE EVERYTHING GONE!"
 				},
 				{
 					"Choice": "Offer pack of gum",
